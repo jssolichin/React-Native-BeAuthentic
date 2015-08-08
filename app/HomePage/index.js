@@ -1,0 +1,49 @@
+'use strict';
+
+var React = require('react-native');
+var {
+	StyleSheet,
+	TabBarIOS,
+	Text,
+	View,
+	StatusBarIOS,
+} = React;
+var Router = require('react-native-router');
+var globalStyles = require("../globalStyles.js");
+
+StatusBarIOS.setStyle('default');
+
+var HomePage = require('./homepage.js');
+
+var firstRoute = {
+	name: 'Latest Heart to Heart',
+	component: HomePage
+};
+var Navigator = React.createClass({
+
+	render: function() {
+		return (
+			<Router firstRoute={firstRoute} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} />
+		);
+	},
+
+});
+
+var styles = {
+	routerHeader: {
+		backgroundColor: 'rgba(0,0,0,.0)',
+		marginBottom: -20,
+		paddingBottom: -20,
+		borderBottomWidth: 1,
+		borderBottomColor: '#000',
+		borderTopWidth: 20,
+
+	},
+	routerTitle: {
+		marginTop: -17,
+		fontSize: 22,
+		color: '#000'
+	}
+}
+
+module.exports = Navigator;
