@@ -13,8 +13,8 @@ var globalStyles = require("../globalStyles.js");
 
 StatusBarIOS.setStyle('default');
 
-//var HomePage = require('./homepage.js');
-var HomePage = require('../SinglePage/index.js');
+var BackButton = require('../components/BackButton.js');
+var HomePage = require('./homepage.js');
 
 var firstRoute = {
 	name: 'Latest Heart to Heart',
@@ -24,7 +24,7 @@ var Navigator = React.createClass({
 
 	render: function() {
 		return (
-			<Router firstRoute={firstRoute} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} />
+			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} />
 		);
 	},
 

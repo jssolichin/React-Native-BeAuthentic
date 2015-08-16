@@ -6,6 +6,7 @@ var {
 	View,
 	ScrollView,
 	Image,
+	TouchableOpacity,
 } = React;
 var { Icon, } = require('react-native-icons');
 
@@ -20,63 +21,78 @@ var ListItem = React.createClass({
 		}	
 	},
 	render: function() {
-		return (
-			<View style={styles.container}>
-				<View style={[styles.eachDetail, styles.postHeader]}>
-					<View style={styles.profileLink}>
-						<Image
-							style={styles.profileImage}
-							source={require('image!profileImage')}
-							resizeMode='contain'
-						/>
-						<View style={styles.profileShort}>
-							<Text style={styles.profileName}>
-								{this.props.data.authorName}
-							</Text>
-							<Text style={styles.profileBlurb}>
-								Dreamer
-							</Text>
-						</View>
-					</View>
-					<View>
-						<Text style={styles.timeStamp}>
-							12m
-						</Text>
-					</View>
-				</View>
-				<View style={[styles.eachDetail, styles.hero]}>
+		var question;
+		if(this.props.href != undefined)
+			question = (
+				<TouchableOpacity onPress={this.props.href}>
 					<Text style={[styles.heroText, globalStyles.text.heading]}>
 						{this.props.data.question}
 					</Text>
-				</View>
-				<View style={[styles.eachDetail, styles.toolbar]}>
-					<View style={styles.actions}> 
-						<Icon
-							name='ion|ios-heart-outline'
-							size={35}
-							color='#000'
-							style={styles.icon}
-						/>
-						<Icon
-							name='ion|ios-chatbubble-outline'
-							size={35}
-							color='#000'
-							style={styles.icon}
-						/>
-					</View>
-					<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
-						{(this.props.data.tags.map((tag) => 
-												   <Text style={styles.tag}>
-													   {tag}	
-												   </Text> 
-												  ))}
-											  </ScrollView>
-										  </View>
-										  {(() => {
-										 	return this.showTopComments ? <CommentItem visibleUser={this.state.visible} visibleComment={true} data={this.props.data.topComment} /> : undefined; 
-										  })}
-									  </View>
-		);
+				</TouchableOpacity>
+			);
+			else
+				question = (
+					<Text style={[styles.heroText, globalStyles.text.heading]}>
+						{this.props.data.question}
+					</Text>
+				);
+			return (
+					<View style={styles.container}>
+						<View style={[styles.eachDetail, styles.postHeader]}>
+							<View style={styles.profileLink}>
+								<Image
+									style={styles.profileImage}
+									source={require('image!profileImage')}
+									resizeMode='contain'
+								/>
+								<View style={styles.profileShort}>
+									<Text style={styles.profileName}>
+										{this.props.data.authorName}
+									</Text>
+									<Text style={styles.profileBlurb}>
+										Dreamer
+									</Text>
+								</View>
+							</View>
+							<View>
+								<Text style={styles.timeStamp}>
+									12m
+								</Text>
+							</View>
+						</View>
+						<View style={[styles.eachDetail, styles.hero]}>
+							{question}
+						</View>
+						<View style={[styles.eachDetail, styles.toolbar]}>
+							<View style={styles.actions}> 
+								<Icon
+									name='ion|ios-heart-outline'
+									size={35}
+									color='#000'
+									style={styles.icon}
+								/>
+								<Icon
+									name='ion|ios-chatbubble-outline'
+									size={35}
+									color='#000'
+									style={styles.icon}
+								/>
+							</View>
+							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
+								{(this.props.data.tags.map((tag) => 
+														   <Text style={styles.tag}>
+															   {tag}	
+														   </Text> 
+														  ))}
+													  </ScrollView>
+												  </View>
+
+												  {(() => {
+													  return this.props.showTopComment ? <CommentItem visibleUser={this.state.visible} visibleComment={true} data={this.props.data.topComment} /> : undefined; 
+												  })()}
+
+											  </View>
+				);
 	}
 });
 

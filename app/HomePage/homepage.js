@@ -8,6 +8,8 @@ var {
 } = React;
 
 var ListItem = require('../components/ListItem.js');
+var SinglePage = require('../SinglePage/index.js');
+var EachDetail = require('../components/EachDetail.js');
 
 var listData = [
 	{
@@ -46,6 +48,12 @@ var HomePage = React.createClass({
 			dataSource: ds.cloneWithRows(listData),
 		};
 	},
+	_goToSinglePage: function() {
+	    this.props.toRoute({
+		      name: "A Heart Question",
+		      component: SinglePage
+		    });
+  	},
 	render: function() {
 		return (
 			<ListView
@@ -53,7 +61,8 @@ var HomePage = React.createClass({
 				contentInset={{bottom: 50}}
 				style={styles.container}
 				dataSource={this.state.dataSource}
-				renderRow={(rowData) => <ListItem showTopComment={true} data={rowData} />}
+				renderRow={(rowData) => <ListItem showTopComment={true} data={rowData} href={this._goToSinglePage}/>}
+				renderSeparator={() => <EachDetail style={{height: 50}}></EachDetail>}
 				/>
 		);
 	}
