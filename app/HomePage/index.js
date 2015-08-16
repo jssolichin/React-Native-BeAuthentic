@@ -13,7 +13,8 @@ var globalStyles = require("../globalStyles.js");
 
 StatusBarIOS.setStyle('default');
 
-var HomePage = require('./homepage.js');
+//var HomePage = require('./homepage.js');
+var HomePage = require('../SinglePage/index.js');
 
 var firstRoute = {
 	name: 'Latest Heart to Heart',

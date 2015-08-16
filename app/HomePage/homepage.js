@@ -21,7 +21,7 @@ var listData = [
 	},
 	{
 		authorName: 'Jonathan',
-		question: "What are three verbs that describes your life? Why?",
+		question: "What is your earliest memory?",
 		tags: ["Ice Breaker", "Love", "Adventurous"],
 		topComment: {
 			name: "Jonathan",
@@ -50,9 +50,10 @@ var HomePage = React.createClass({
 		return (
 			<ListView
 				automaticallyAdjustContentInsets={false}
+				contentInset={{bottom: 50}}
 				style={styles.container}
 				dataSource={this.state.dataSource}
-				renderRow={(rowData) => <ListItem data={rowData} />}
+				renderRow={(rowData) => <ListItem showTopComment={true} data={rowData} />}
 				/>
 		);
 	}

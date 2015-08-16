@@ -9,6 +9,8 @@ var {
 } = React;
 var { Icon, } = require('react-native-icons');
 
+var CommentItem = require("./CommentItem.js");
+var EachDetail = require('./EachDetail.js');
 var globalStyles = require("../globalStyles.js");
 
 var ListItem = React.createClass({
@@ -28,57 +30,52 @@ var ListItem = React.createClass({
 							resizeMode='contain'
 						/>
 						<View style={styles.profileShort}>
-					<Text style={styles.profileName}>
-						{this.props.data.authorName}
+							<Text style={styles.profileName}>
+								{this.props.data.authorName}
+							</Text>
+							<Text style={styles.profileBlurb}>
+								Dreamer
+							</Text>
+						</View>
+					</View>
+					<View>
+						<Text style={styles.timeStamp}>
+							12m
+						</Text>
+					</View>
+				</View>
+				<View style={[styles.eachDetail, styles.hero]}>
+					<Text style={[styles.heroText, globalStyles.text.heading]}>
+						{this.props.data.question}
 					</Text>
-					<Text style={styles.profileBlurb}>
-						Dreamer
-					</Text>
 				</View>
-				</View>
-				<View>
-					<Text style={styles.timeStamp}>
-						12m
-					</Text>
-				</View>
-			</View>
-			<View style={[styles.eachDetail, styles.hero]}>
-				<Text style={[styles.heroText, globalStyles.text.heading]}>
-					{this.props.data.question}
-				</Text>
-			</View>
-			<View style={[styles.eachDetail, styles.toolbar]}>
-				<View style={styles.actions}> 
-					<Icon
-						name='ion|ios-heart-outline'
-						size={35}
-						color='#000'
-						style={styles.icon}
-					/>
-					<Icon
-						name='ion|ios-chatbubble-outline'
-						size={35}
-						color='#000'
-						style={styles.icon}
-					/>
-				</View>
-				<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
-					{(this.props.data.tags.map((tag) => 
-											   <Text style={styles.tag}>
-												   {tag}	
-											   </Text> 
-											  ))}
-										  </ScrollView>
+				<View style={[styles.eachDetail, styles.toolbar]}>
+					<View style={styles.actions}> 
+						<Icon
+							name='ion|ios-heart-outline'
+							size={35}
+							color='#000'
+							style={styles.icon}
+						/>
+						<Icon
+							name='ion|ios-chatbubble-outline'
+							size={35}
+							color='#000'
+							style={styles.icon}
+						/>
+					</View>
+					<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
+						{(this.props.data.tags.map((tag) => 
+												   <Text style={styles.tag}>
+													   {tag}	
+												   </Text> 
+												  ))}
+											  </ScrollView>
+										  </View>
+										  {(() => {
+										 	return this.showTopComments ? <CommentItem visibleUser={this.state.visible} visibleComment={true} data={this.props.data.topComment} /> : undefined; 
+										  })}
 									  </View>
-									  <View style={styles.eachDetail}>
-										  <Text style={styles.eachDetailLead}>
-											  {this.state.visible ? this.props.data.topComment.name : '█████'}
-										  </Text>
-										  <Text style={styles.eachDetailText} numberOfLines="3">
-											  {this.props.data.topComment.comment}
-										  </Text>
-									  </View>
-								  </View>
 		);
 	}
 });
@@ -87,7 +84,6 @@ var ListItem = React.createClass({
 var styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		marginBottom: 30,
 	},
 	postHeader: {
 		padding: 10,
@@ -147,14 +143,6 @@ var styles = StyleSheet.create({
 		//borderRadius: 5,
 		marginRight: 2,
 		marginTop: -12,
-	},
-	eachDetailLead: {
-		width: 90,	
-		fontWeight: 'bold',
-	},
-	eachDetailText: {
-		width: 225, 
-		fontSize: 12,
 	},
 	icon: {
 		width: 35, 	

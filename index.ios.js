@@ -30,10 +30,11 @@ var GetToKnow = React.createClass({
         selectedTab={this.state.selectedTab}
         tintColor={'#fff'}
         barTintColor={'#000000'}
+		translucent={false}
         >
         <TabBarItemIOS
           name="home"
-          iconName={'ion|ios-home-outline'}
+          iconName={'ion|home'}
           title={''}
           iconSize={32}
           accessibilityLabel="Home Tab"
@@ -46,15 +47,57 @@ var GetToKnow = React.createClass({
 			<HomePage />
         </TabBarItemIOS>
         <TabBarItemIOS
-            name="articles"
-            iconName={'ion|ios-paper-outline'}
+            name="explore"
+            iconName={'ion|earth'}
             title={''}
             iconSize={32}
-            accessibilityLabel="Articles Tab"
-            selected={this.state.selectedTab === 'articles'}
+            accessibilityLabel="Explore Tab"
+            selected={this.state.selectedTab === 'explore'}
             onPress={() => {
             this.setState({
-              selectedTab: 'articles',
+              selectedTab: 'explore',
+            });
+          }}>
+			<HomePage />
+        </TabBarItemIOS>
+        <TabBarItemIOS
+            name="hearts"
+            iconName={'ion|ios-heart'}
+            title={''}
+            iconSize={32}
+            accessibilityLabel="My Hearts Tab"
+            selected={this.state.selectedTab === 'hearts'}
+            onPress={() => {
+            this.setState({
+              selectedTab: 'hearts',
+            });
+          }}>
+			<HomePage />
+        </TabBarItemIOS>
+        <TabBarItemIOS
+            name="notification"
+            iconName={'ion|chatbox'}
+            title={''}
+            iconSize={32}
+            accessibilityLabel="Notification Tab"
+            selected={this.state.selectedTab === 'notification'}
+            onPress={() => {
+            this.setState({
+              selectedTab: 'notification',
+            });
+          }}>
+			<HomePage />
+        </TabBarItemIOS>
+        <TabBarItemIOS
+            name="profile"
+            iconName={'ion|person'}
+            title={''}
+            iconSize={32}
+            accessibilityLabel="My Profile Tab"
+            selected={this.state.selectedTab === 'profile'}
+            onPress={() => {
+            this.setState({
+              selectedTab: 'profile',
             });
           }}>
 			<HomePage />
