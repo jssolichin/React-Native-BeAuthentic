@@ -17,7 +17,7 @@ var BackButton = require('../components/BackButton.js');
 var HomePage = require('./homepage.js');
 
 var firstRoute = {
-	name: 'My Heart',
+	name: 'Explore Hearts',
 	component: HomePage
 };
 var Navigator = React.createClass({

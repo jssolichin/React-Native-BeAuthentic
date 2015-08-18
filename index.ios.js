@@ -15,6 +15,8 @@ var { TabBarIOS, } = require('react-native-icons');
 var TabBarItemIOS = TabBarIOS.Item;
 
 var HomePage = require('./app/HomePage/index.js');
+var ExplorePage = require('./app/ExplorePage/index.js');
+var ProfilePage = require('./app/ProfilePage/index.js');
 
 var GetToKnow = React.createClass({
   getInitialState: function() {
@@ -58,7 +60,7 @@ var GetToKnow = React.createClass({
               selectedTab: 'explore',
             });
           }}>
-			<HomePage />
+		  <ExplorePage />
         </TabBarItemIOS>
         <TabBarItemIOS
             name="hearts"
@@ -100,7 +102,7 @@ var GetToKnow = React.createClass({
               selectedTab: 'profile',
             });
           }}>
-			<HomePage />
+			<ProfilePage />
         </TabBarItemIOS>
       </TabBarIOS>
     );

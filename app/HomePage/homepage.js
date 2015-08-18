@@ -61,7 +61,7 @@ var HomePage = React.createClass({
 				contentInset={{bottom: 50}}
 				style={styles.container}
 				dataSource={this.state.dataSource}
-				renderRow={(rowData) => <ListItem showTopComment={true} data={rowData} href={this._goToSinglePage}/>}
+				renderRow={(rowData) => <ListItem showTopComment={true} data={rowData} href={this._goToSinglePage} toRoute={this.props.toRoute}/>}
 				renderSeparator={() => <EachDetail style={{height: 50}}></EachDetail>}
 				/>
 		);

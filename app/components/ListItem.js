@@ -12,6 +12,7 @@ var { Icon, } = require('react-native-icons');
 
 var CommentItem = require("./CommentItem.js");
 var EachDetail = require('./EachDetail.js');
+var EachTag = require('./EachTag.js');
 var globalStyles = require("../globalStyles.js");
 
 var ListItem = React.createClass({
@@ -80,9 +81,7 @@ var ListItem = React.createClass({
 							</View>
 							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
 								{(this.props.data.tags.map((tag) => 
-														   <Text style={styles.tag}>
-															   {tag}	
-														   </Text> 
+														   <EachTag tag={tag} toRoute={this.props.toRoute}/>
 														  ))}
 													  </ScrollView>
 												  </View>
@@ -150,15 +149,6 @@ var styles = StyleSheet.create({
 	tagsList: {
 		flexDirection: 'row',
 		height: 35,
-	},
-	tag: {
-		backgroundColor: '#000',
-		color: '#fff',
-		padding: 2,
-		paddingHorizontal: 5,
-		//borderRadius: 5,
-		marginRight: 2,
-		marginTop: -12,
 	},
 	icon: {
 		width: 35, 	
