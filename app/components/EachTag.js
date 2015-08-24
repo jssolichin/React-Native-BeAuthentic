@@ -8,13 +8,14 @@ var {
 } = React;
 
 var globalStyles = require("../globalStyles.js");
-var ExplorePage = require("../ExplorePage/index.js");
 
 var EachTag = React.createClass({
 	_onPress: function (){
+		var ListView = require("./ListView.js");
+
 	    this.props.toRoute({
-		      name: "Find Hearts",
-		      component: ExplorePage
+		      name: 'Hearts On "' + this.props.tag + '"',
+		      component: ListView
 		    });
 	},
 	render: function() {

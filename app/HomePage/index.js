@@ -14,11 +14,11 @@ var globalStyles = require("../globalStyles.js");
 StatusBarIOS.setStyle('default');
 
 var BackButton = require('../components/BackButton.js');
-var HomePage = require('./homepage.js');
+var ListView = require('../components/ListView.js');
 
 var firstRoute = {
 	name: 'Latest Heart to Heart',
-	component: HomePage
+	component: ListView
 };
 var Navigator = React.createClass({
 
