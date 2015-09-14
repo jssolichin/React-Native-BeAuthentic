@@ -21,7 +21,7 @@ var EachTag = React.createClass({
 	render: function() {
 		return (
 		<TouchableOpacity onPress={this._onPress}>
-		   <Text style={styles.tag}>
+		   <Text style={[styles.tag, this.props.large && styles.large]}>
 			   {this.props.tag}	
 		   </Text> 
 	   </TouchableOpacity>
@@ -39,6 +39,13 @@ var styles = StyleSheet.create({
 		marginRight: 2,
 		marginTop: -12,
 	},
+	large: {
+		marginTop: 0,
+		paddingVertical: 10,
+		paddingHorizontal: 17,
+		marginBottom: 5,
+		marginRight: 5,
+	}
 });
 
 module.exports = EachTag;

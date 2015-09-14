@@ -47,7 +47,7 @@ var ListItem = React.createClass({
 									resizeMode='contain'
 								/>
 								<View style={styles.profileShort}>
-									<Text style={styles.profileName}>
+									<Text style={[globalStyles.text.weight.bold]}>
 										{this.props.data.authorName}
 									</Text>
 									<Text style={styles.profileBlurb}>
