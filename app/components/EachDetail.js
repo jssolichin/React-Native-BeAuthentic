@@ -11,11 +11,12 @@ var globalStyles = require("../globalStyles.js");
 var EachDetail = React.createClass({
 	render: function() {
 		return (
-			<View style={[styles.eachDetail, this.props.style, 
+			<View style={[styles.eachDetail,
 				this.props.padding != undefined && {padding: this.props.padding},
 				this.props.column && styles.column,
-				this.props.heading == true && {marginTop: 30},
-				this.props.invert && styles.invert
+				this.props.heading && {marginTop: 30},
+				this.props.invert && styles.invert,
+				this.props.style,
 			]}>
 				{this.props.children}
 			</View>

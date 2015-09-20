@@ -17,11 +17,12 @@ var TabBarItemIOS = TabBarIOS.Item;
 var HomePage = require('./app/HomePage/index.js');
 var ExplorePage = require('./app/ExplorePage/index.js');
 var ProfilePage = require('./app/ProfilePage/index.js');
+var HeartPage = require('./app/HeartPage/index.js');
 
 var GetToKnow = React.createClass({
   getInitialState: function() {
     return {
-      selectedTab: 'home',
+      selectedTab: 'heart',
       notifCount: 0,
       presses: 0,
     };
@@ -63,18 +64,18 @@ var GetToKnow = React.createClass({
 		  <ExplorePage />
         </TabBarItemIOS>
         <TabBarItemIOS
-            name="hearts"
+            name="heart"
             iconName={'ion|ios-heart'}
             title={''}
             iconSize={32}
-            accessibilityLabel="My Hearts Tab"
-            selected={this.state.selectedTab === 'hearts'}
+            accessibilityLabel="My Heart Tab"
+            selected={this.state.selectedTab === 'heart'}
             onPress={() => {
             this.setState({
-              selectedTab: 'hearts',
+              selectedTab: 'heart',
             });
           }}>
-			<HomePage />
+			<HeartPage />
         </TabBarItemIOS>
         <TabBarItemIOS
             name="notification"
