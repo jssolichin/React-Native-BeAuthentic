@@ -113,7 +113,7 @@ var styles = StyleSheet.create({
 		borderRadius: 17,
 		width: 35,
 		height: 35,
-		backgroundColor: '#333'
+		backgroundColor: '#000'
 	},
 	profileShort: {
 		marginLeft: 10,	

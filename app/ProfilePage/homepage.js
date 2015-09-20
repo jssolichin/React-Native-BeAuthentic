@@ -14,8 +14,9 @@ var { Icon, } = require('react-native-icons');
 
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
-var globalStyles = require("../globalStyles.js");
 var CommentItem = require('../components/CommentItem.js');
+var globalStyles = require("../globalStyles.js");
+var globalHelpers = require("../globalHelpers.js");
 
 var stats = [
 	{name: 'Questions', value: 100},
@@ -100,10 +101,10 @@ var ProfilePage = React.createClass({
 					{profileImage}
 				</TouchableOpacity>
 				<Text style={[globalStyles.text.center, globalStyles.text.weight.bold]}>
-					{this.props.visible ? 'Jonathan Solichin' : '█████'}
+					{globalHelpers.censorship('Jonathan Solichin', this.state.visible)}
 				</Text>
 				<Text style={[globalStyles.text.center]}>
-					{this.props.visible ? 'Something about myself here. #liveLoveLaugh' : '█████'}
+					{globalHelpers.censorship('Something about myself here. #liveLoveLaugh', this.state.visible)}
 				</Text>
 				{this.state.visible ? <Button text="Edit Profile" style={{marginTop: 20,}}/> : null}
 			</View>

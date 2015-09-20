@@ -23,7 +23,7 @@ var NotificationPage = require('./app/NotificationPage/index.js');
 var GetToKnow = React.createClass({
   getInitialState: function() {
     return {
-      selectedTab: 'profile',
+      selectedTab: 'home',
       notifCount: 0,
       presses: 0,
     };

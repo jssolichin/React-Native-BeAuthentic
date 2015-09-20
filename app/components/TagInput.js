@@ -23,7 +23,7 @@ var TagInput = React.createClass({
 	},
 	_getTypeAhead: function (text){
 		if(text.length > 2){
-			var filteredPossibleTags = possibleTags.filter((tag) => tag.indexOf(text) >= 0);
+			var filteredPossibleTags = possibleTags.filter((tag) => tag.toLowerCase().indexOf(text.toLowerCase()) >= 0);
 			this.setState({typeAheadList: filteredPossibleTags});
 		}
 		else 

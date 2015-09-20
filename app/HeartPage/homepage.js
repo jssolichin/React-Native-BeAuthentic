@@ -73,7 +73,7 @@ var WriteBox = React.createClass({
 var HeartPage = React.createClass({
 	getInitialState: function (){
 		return {
-			writingComment: true,
+			writingComment: false,
 		};
 	},
 	_onStartResponse: function (){

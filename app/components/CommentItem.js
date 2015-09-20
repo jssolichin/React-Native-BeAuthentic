@@ -11,22 +11,17 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
 var EachDetail = require('./EachDetail.js');
-
+var globalHelpers = require("../globalHelpers.js");
 var globalStyles = require("../globalStyles.js");
 
 var ListItem = React.createClass({
 	render: function() {
-		var hiddenComment = '';
-		for(var i = 0; i < this.props.data.comment.length; i++)
-		hiddenComment += '█';
+		var username = null;
 
-		var username;
-		if(this.props.hideUsername)
-				username = null;
-		else 
+		if(!this.props.hideUsername)
 			username = (
 				<Text style={styles.eachDetailLead}>
-					{this.props.visibleUser ? this.props.data.name : '█████'}
+					{globalHelpers.censorship(this.props.data.name, this.props.visibleUser)}
 				</Text>
 			)
 
@@ -34,7 +29,7 @@ var ListItem = React.createClass({
 			<EachDetail>
 				{username}
 				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-20}]} numberOfLines="3">
-					{this.props.visibleComment ? this.props.data.comment : hiddenComment}
+					{globalHelpers.censorship(this.props.data.comment, this.props.visibleComment)}
 				</Text>
 			</EachDetail>
 		);
@@ -44,7 +39,7 @@ var ListItem = React.createClass({
 
 var styles = StyleSheet.create({
 	eachDetailLead: {
-		width: width*.3 - 10, 
+		width: width*.3 - 15, 
 		fontWeight: 'bold',
 	},
 	eachDetailText: {

@@ -99,7 +99,7 @@ var SinglePage = React.createClass({
 		if(this.state.visible)
 			response = (
 				<Text style={[globalStyles.text.center, styles.thanksText]}>
-					💕 Thanks for sharing! 💕
+					 Thanks for sharing!
 				</Text>
 			);
 			else {
