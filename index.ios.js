@@ -18,11 +18,12 @@ var HomePage = require('./app/HomePage/index.js');
 var ExplorePage = require('./app/ExplorePage/index.js');
 var ProfilePage = require('./app/ProfilePage/index.js');
 var HeartPage = require('./app/HeartPage/index.js');
+var NotificationPage = require('./app/NotificationPage/index.js');
 
 var GetToKnow = React.createClass({
   getInitialState: function() {
     return {
-      selectedTab: 'heart',
+      selectedTab: 'notification',
       notifCount: 0,
       presses: 0,
     };
@@ -89,7 +90,7 @@ var GetToKnow = React.createClass({
               selectedTab: 'notification',
             });
           }}>
-			<HomePage />
+			<NotificationPage />
         </TabBarItemIOS>
         <TabBarItemIOS
             name="profile"

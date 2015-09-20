@@ -56,7 +56,7 @@ var ListItem = React.createClass({
 								</View>
 							</View>
 							<View>
-								<Text style={styles.timeStamp}>
+								<Text style={[globalStyles.text.color.gray]}>
 									12m
 								</Text>
 							</View>
@@ -122,9 +122,6 @@ var styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	profileBlurb: {
-	},
-	timeStamp: {
-		color: '#000',
 	},
 	hero: {
 		flexDirection: 'column',

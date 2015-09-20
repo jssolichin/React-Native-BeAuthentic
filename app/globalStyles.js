@@ -23,6 +23,9 @@ var styles = {
 			},
 			black: {
 				color: '#000',
+			},
+			gray: {
+				color: '#aaa',
 			}	
 		},
 		weight: {
