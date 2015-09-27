@@ -9,6 +9,9 @@ var {
 	TouchableOpacity,
 } = React;
 var { Icon, } = require('react-native-icons');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
+var TimeAgo = require('react-native-timeago');
 
 var CommentItem = require("./CommentItem.js");
 var EachDetail = require('./EachDetail.js');
@@ -17,27 +20,36 @@ var globalStyles = require("../globalStyles.js");
 
 var ListItem = React.createClass({
 	getInitialState: function () {
+		var tags = [];
+
+		for(var i=0; i<3; i++){
+			if(this.props.data['tag_'+i])
+				tags.push(this.props.data['tag_'+i])
+		}
+			
 		return {
 			visible: false,	
+			tags: tags,
 		}	
 	},
 	render: function() {
+		console.log(this.props.data)
 		var question;
 		if(this.props.href != undefined)
 			question = (
 				<TouchableOpacity onPress={this.props.href}>
 					<Text style={[styles.heroText, globalStyles.text.heading]}>
-						{this.props.data.question}
+						{this.props.data.text}
 					</Text>
 				</TouchableOpacity>
 			);
 			else
 				question = (
 					<Text style={[styles.heroText, globalStyles.text.heading]}>
-						{this.props.data.question}
+						{this.props.data.text}
 					</Text>
 				);
-			return (
+				return (
 					<View style={styles.container}>
 						<View style={[styles.eachDetail, styles.postHeader]}>
 							<View style={styles.profileLink}>
@@ -48,7 +60,7 @@ var ListItem = React.createClass({
 								/>
 								<View style={styles.profileShort}>
 									<Text style={[globalStyles.text.weight.bold]}>
-										{this.props.data.authorName}
+										{this.props.data.createdBy ? this.props.data.createdBy.username : "loading..."}
 									</Text>
 									<Text style={styles.profileBlurb}>
 										Dreamer
@@ -57,7 +69,7 @@ var ListItem = React.createClass({
 							</View>
 							<View>
 								<Text style={[globalStyles.text.color.gray]}>
-									12m
+									<TimeAgo time={this.props.data.createdAt.toString()} />
 								</Text>
 							</View>
 						</View>
@@ -79,18 +91,23 @@ var ListItem = React.createClass({
 									style={styles.icon}
 								/>
 							</View>
-							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
-								{(this.props.data.tags.map((tag) => 
-														   <EachTag tag={tag} toRoute={this.props.toRoute}/>
-														  ))}
-													  </ScrollView>
-												  </View>
 
-												  {(() => {
-													  return this.props.showTopComment ? <CommentItem visibleUser={this.state.visible} visibleComment={true} data={this.props.data.topComment} /> : undefined; 
-												  })()}
+								<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
+								{(this.state.tags.map((tag) => 
+									<EachTag tag={tag} toRoute={this.props.toRoute}/>
+								))}
+								</ScrollView>
 
-											  </View>
+							</View>
+
+							{ /*
+								 (() => {
+								return this.props.showTopComment ? <CommentItem visibleUser={this.state.visible} visibleComment={true} data={this.props.data.topComment} /> : undefined; 
+								})()
+								
+								*/}
+
+							</View>
 				);
 	}
 });

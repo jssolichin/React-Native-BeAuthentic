@@ -10,6 +10,8 @@ var {
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var Parse = require('parse').Parse;
+var ParseReact = require('parse-react');
 
 var Carousel = require('react-native-carousel');
 var Swiper = require('react-native-swiper')
@@ -90,6 +92,12 @@ var Hero = React.createClass({
 });
 
 var Homepage = React.createClass({
+	mixins: [ParseReact.Mixin],
+	observe: function(props, state) {
+		var tagQuery = new Parse.Query('Tag')
+			.ascending("text");
+	  return { tags: tagQuery };
+	},
 	render: function() {
 
 		var passiveDot = <View style={[styles.dot, {borderWidth: 1}]} />;
@@ -106,7 +114,7 @@ var Homepage = React.createClass({
 				</EachDetail>
 
 				<View style={styles.tagsList}>
-					{tags.map(
+					{this.data.tags.map(
 						(tag) => 
 						<EachTag tag={tag} large={true} toRoute={this.props.toRoute}/>)
 					}

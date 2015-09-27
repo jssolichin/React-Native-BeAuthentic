@@ -31,7 +31,7 @@ var EachTag = React.createClass({
 				this.props.large && styles.large,
 				this.props.normal && styles.normal
 				]}>
-			   {this.props.tag}	
+			   {this.props.tag.text}	
 		   </Text> 
 	   </TouchableOpacity>
 		);

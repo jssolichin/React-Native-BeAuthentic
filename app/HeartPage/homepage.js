@@ -11,6 +11,7 @@ var {
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var Parse = require('parse').Parse;
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
@@ -82,7 +83,24 @@ var HeartPage = React.createClass({
 		});	
 	},
 	_onSubmitResponse: function (){
-		AlertIOS.alert('submitted')
+		var Question = new Parse.Object.extend('Question');
+		var Tag = new Parse.Object.extend('Tag');
+
+		var tag1 = new Tag(); tag1.set('text', 'hello');
+		var tag2 = new Tag(); tag2.set('text', 'love');
+		var tag3 = new Tag(); tag3.set('text', 'helxlo');
+
+		var question = new Question();
+		question.set('text', 'hello world');
+		question.set('tag_1', tag1);
+		question.set('tag_2', tag2);
+		question.set('tag_3', tag3);
+
+		question.save({
+			success: (question) => {
+				AlertIOS.alert('submitted');
+			}	
+		})
 	},
 	render: function() {
 		if(this.state.writingComment == false)
