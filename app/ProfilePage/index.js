@@ -7,8 +7,12 @@ var {
 	Text,
 	View,
 	StatusBarIOS,
+	TouchableOpacity,
 } = React;
+var { Icon, } = require('react-native-icons');
 var Router = require('react-native-router');
+var Parse = require('parse').Parse;
+
 var globalStyles = require("../globalStyles.js");
 
 StatusBarIOS.setStyle('default');
@@ -20,10 +24,26 @@ var firstRoute = {
 	name: 'My Heart',
 	component: HomePage
 };
+
+var LogoutButton = React.createClass({
+	_onPress () {
+		Parse.User.logOut();	
+	},
+	render() {
+		return (
+			<TouchableOpacity onPress={this._onPress}>
+				<Text style={styles.rightButton}>LOG OUT</Text>
+			</TouchableOpacity>
+		)
+	}
+}); 
+
 var Navigator = React.createClass({
 	render: function() {
 		return (
-			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} />
+			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} 
+				//rightCorner={LogoutButton}
+			/>
 		);
 	},
 
@@ -43,6 +63,15 @@ var styles = {
 		marginTop: -17,
 		fontSize: 22,
 		color: '#000'
+	},
+	rightButton: {
+		marginTop: -32,	
+		marginRight: 7,
+		color: '#000',
+		borderWidth: 0,
+		padding: 5,
+		paddingHorizontal: 7,
+		borderColor: '#000'
 	}
 }
 
