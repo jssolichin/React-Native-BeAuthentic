@@ -11,7 +11,7 @@ var {
 } = React;
 var { Icon, } = require('react-native-icons');
 var Router = require('react-native-router');
-var Parse = require('parse').Parse;
+var Parse = require('parse/react-native');
 
 var globalStyles = require("../globalStyles.js");
 

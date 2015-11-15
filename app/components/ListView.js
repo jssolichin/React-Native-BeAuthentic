@@ -6,9 +6,8 @@ var {
 	View,
 	ListView,
 } = React;
-var Parse = require('parse').Parse;
-var ParseReact = require('parse-react');
-
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 var ListItem = require('../components/ListItem.js');
 var SinglePage = require('../SinglePage/index.js');
 var EachDetail = require('../components/EachDetail.js');
@@ -57,10 +56,11 @@ var HomePage = React.createClass({
 			dataSource: ds.cloneWithRows(listData),
 		};
 	},
-	_goToSinglePage: function() {
+	_goToSinglePage: function(rowData) {
 	    this.props.toRoute({
 		      name: "A Heart Question",
-		      component: SinglePage
+			  component: SinglePage,
+			  data: rowData,
 		    });
   	},
 	render: function() {
@@ -70,7 +70,7 @@ var HomePage = React.createClass({
 				contentInset={{bottom: 50}}
 				style={styles.container}
 				dataSource={this.state.dataSource.cloneWithRows(this.data.question)}
-				renderRow={(rowData) => <ListItem key={rowData.objectId} showTopComment={true} data={rowData} href={this._goToSinglePage} toRoute={this.props.toRoute}/>}
+				renderRow={(rowData) => <ListItem key={rowData.objectId} showTopComment={true} data={rowData} href={()=> {this._goToSinglePage(rowData)}} toRoute={this.props.toRoute}/>}
 				renderSeparator={() => <EachDetail style={{height: 50}}></EachDetail>}
 				/>
 		);

@@ -10,8 +10,8 @@ var {
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var Parse = require('parse').Parse;
-var ParseReact = require('parse-react');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 
 var Carousel = require('react-native-carousel');
 var Swiper = require('react-native-swiper')

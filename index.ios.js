@@ -13,12 +13,12 @@ var {
 } = React;
 var { TabBarIOS, } = require('react-native-icons');
 var TabBarItemIOS = TabBarIOS.Item;
-var Parse = require('parse').Parse;
+var Parse = require('parse/react-native');
 Parse.initialize(
 	'N5En87e1m9jZbT2dX9BJQm0yGnoQ8LGtYPP9KDwd',
 	'TbgrWR8WAIF9vk9Cbs01Y81L43UZqt9Fb3Ykm53d'
 );
-var ParseReact = require('parse-react');
+var ParseReact = require('parse-react/react-native');
 
 var LoginPage = require('./app/LoginPage/index.js');
 var HomePage = require('./app/HomePage/index.js');

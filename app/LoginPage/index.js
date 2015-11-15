@@ -11,7 +11,7 @@ var {
 
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var Parse = require('parse').Parse;
+var Parse = require('parse/react-native');
 
 var Button = require('../components/Button.js');
 var globalStyles = require('../globalStyles.js');

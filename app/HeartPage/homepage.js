@@ -11,7 +11,7 @@ var {
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var Parse = require('parse').Parse;
+var Parse = require('parse/react-native');
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');

@@ -9,13 +9,14 @@ var {
 	TouchableOpacity,
 } = React;
 var { Icon, } = require('react-native-icons');
-var Parse = require('parse').Parse;
+var Parse = require('parse/react-native');
 var ParseReact = require('parse-react');
 var TimeAgo = require('react-native-timeago');
 
 var CommentItem = require("./CommentItem.js");
 var EachDetail = require('./EachDetail.js');
 var EachTag = require('./EachTag.js');
+var globalHelpers = require("../globalHelpers.js");
 var globalStyles = require("../globalStyles.js");
 
 var ListItem = React.createClass({
@@ -55,7 +56,7 @@ var ListItem = React.createClass({
 							<View style={styles.profileLink}>
 								<Image
 									style={styles.profileImage}
-									source={require('image!profileImage')}
+									source={{uri: this.props.data.createdBy.img_url ? this.props.data.createdBy.img_url.url(): undefined }}
 									resizeMode='contain'
 								/>
 								<View style={styles.profileShort}>
@@ -63,7 +64,7 @@ var ListItem = React.createClass({
 										{this.props.data.createdBy ? this.props.data.createdBy.username : "loading..."}
 									</Text>
 									<Text style={styles.profileBlurb}>
-										Dreamer
+										{this.props.data.createdBy ? globalHelpers.shorten(this.props.data.createdBy.description, 25) : "loading..."}
 									</Text>
 								</View>
 							</View>
