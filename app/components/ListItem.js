@@ -59,8 +59,13 @@ var ListItem = React.createClass({
 									source={{uri: this.props.data.createdBy.img_url ? this.props.data.createdBy.img_url.url(): undefined }}
 									resizeMode='contain'
 								/>
-								<View style={styles.profileShort}>
-									<Text style={[globalStyles.text.weight.bold]}>
+								<View style={[
+									styles.profileShort,
+								]}>
+									<Text style={[
+										globalStyles.text.weight.bold, 
+										{transform: [{rotateZ: '90deg'}]}
+									]}>
 										{this.props.data.createdBy ? this.props.data.createdBy.username : "loading..."}
 									</Text>
 									<Text style={styles.profileBlurb}>

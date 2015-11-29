@@ -14,11 +14,11 @@ var globalStyles = require("../globalStyles.js");
 StatusBarIOS.setStyle('default');
 
 var BackButton = require('../components/BackButton.js');
-var ListView = require('../components/ListView.js');
+var NewHome = require('../HomePage/new.js');
 
 var firstRoute = {
 	name: 'Latest Heart to Heart',
-	component: ListView
+	component: NewHome
 };
 var Navigator = React.createClass({
 
@@ -32,18 +32,11 @@ var Navigator = React.createClass({
 
 var styles = {
 	routerHeader: {
-		backgroundColor: 'rgba(0,0,0,.0)',
-		marginBottom: -20,
-		paddingBottom: -20,
-		borderBottomWidth: 1,
-		borderBottomColor: '#000',
-		borderTopWidth: 20,
-
+		backgroundColor: '#000',
 	},
 	routerTitle: {
-		marginTop: -17,
 		fontSize: 22,
-		color: '#000'
+		color: '#fff',
 	}
 }
 

@@ -11,6 +11,7 @@
     "parse-react": "^0.5.0",
     "react-native": "^0.10.1",
     "react-native-icons": "^0.3.0",
+    "react-native-linear-gradient": "^0.3.2",
     "react-native-swiper": "git+https://github.com/ForkForgery/react-native-swiper.git",
     "react-native-timeago": "0.0.6"
   }

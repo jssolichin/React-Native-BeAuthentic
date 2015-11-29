@@ -11,8 +11,16 @@ var globalStyles = require("../globalStyles.js");
 var EachDetail = React.createClass({
 	render: function() {
 		return (
-			<View style={[styles.button, this.props.style, this.props.invert && styles.invertButton]}>
-				<Text style={this.props.invert && styles.invertText}>
+			<View style={[styles.button, 
+				this.props.style, 
+				this.props.invert && styles.invertButton,
+				this.props.noBorder && styles.noBorder,
+			]}>
+				<Text style={[
+					globalStyles.text.roman,
+					globalStyles.text.size.medium,
+					this.props.invert && styles.invertText
+				]}>
 					{this.props.text}
 				</Text>
 			</View>
@@ -25,6 +33,9 @@ var styles = StyleSheet.create({
 		padding: 5,
 		paddingHorizontal: 10,
 		borderWidth: 1,
+	},
+	noBorder: {
+		borderWidth: 0,	
 	},
 	invertButton: {
 		borderColor: '#fff',

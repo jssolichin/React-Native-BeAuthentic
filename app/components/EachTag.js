@@ -28,6 +28,8 @@ var EachTag = React.createClass({
 		return (
 		<TouchableOpacity onPress={this._onPress}>
 			<Text style={[styles.tag, 
+				globalStyles.text.roman,
+				globalStyles.text.size.medium,
 				this.props.large && styles.large,
 				this.props.normal && styles.normal
 				]}>
@@ -45,7 +47,7 @@ var styles = StyleSheet.create({
 		padding: 2,
 		paddingHorizontal: 5,
 		//borderRadius: 5,
-		marginRight: 2,
+		marginRight: 5,
 		marginTop: -12,
 	},
 	normal: {
