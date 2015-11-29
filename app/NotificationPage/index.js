@@ -24,27 +24,10 @@ var Navigator = React.createClass({
 
 	render: function() {
 		return (
-			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={styles.routerHeader} titleStyle={[styles.routerTitle, globalStyles.text.heading]} />
+			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={globalStyles.router.header} titleStyle={[globalStyles.router.title, globalStyles.text.heading]} />
 		);
 	},
 
 });
-
-var styles = {
-	routerHeader: {
-		backgroundColor: 'rgba(0,0,0,.0)',
-		marginBottom: -20,
-		paddingBottom: -20,
-		borderBottomWidth: 1,
-		borderBottomColor: '#000',
-		borderTopWidth: 20,
-
-	},
-	routerTitle: {
-		marginTop: -17,
-		fontSize: 22,
-		color: '#000'
-	}
-}
 
 module.exports = Navigator;

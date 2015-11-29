@@ -1,4 +1,13 @@
 var styles = {
+	router: {
+		header: {
+			backgroundColor: '#000',
+		},
+		title: {
+			fontSize: 22,
+			color: '#fff',
+		},
+	},
 	centerContent: {
 		flex: 1, alignItems: 'center', justifyContent: 'center',
 	},
