@@ -58,10 +58,11 @@ var styles = StyleSheet.create({
 	},
 	large: {
 		marginTop: 0,
-		paddingVertical: 10,
-		paddingHorizontal: 17,
+		paddingVertical: 5,
+		paddingHorizontal: 15,
 		marginBottom: 5,
 		marginRight: 5,
+		fontSize: 16,
 	}
 });
 

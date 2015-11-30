@@ -15,6 +15,7 @@ var { Icon, } = require('react-native-icons');
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
 var CommentItem = require('../components/CommentItem.js');
+var MiniItem = require('../components/MiniItem.js');
 var globalStyles = require("../globalStyles.js");
 var globalHelpers = require("../globalHelpers.js");
 
@@ -49,12 +50,12 @@ var comments = [
 var Stat = React.createClass({
 	render: function (){
 		return (
-			<View style={{}}>
-				<Text style={[ globalStyles.text.size.small]}>
-					{this.props.data.name}
-				</Text>
-				<Text style={[globalStyles.text.size.large, globalStyles.text.weight.bold,]}>
+			<View style={[styles.stat]}>
+				<Text style={[globalStyles.text.heading, globalStyles.text.weight.bold, {fontSize: 40,}]}>
 					{this.props.data.value}
+				</Text>
+				<Text style={[globalStyles.text.roman, {marginTop: -10, fontSize: 11,}]}>
+					{this.props.data.name}
 				</Text>
 			</View>
 		)	
@@ -64,7 +65,7 @@ var Stat = React.createClass({
 var ProfilePage = React.createClass({
 	getInitialState: function (){
 		return {
-			visible: false,
+			visible: true,
 			comments: comments
 		};
 	},
@@ -100,47 +101,38 @@ var ProfilePage = React.createClass({
 				<TouchableOpacity onPress={this._addFriend}>
 					{profileImage}
 				</TouchableOpacity>
-				<Text style={[globalStyles.text.center, globalStyles.text.weight.bold]}>
-					{globalHelpers.censorship('Jonathan Solichin', this.state.visible)}
-				</Text>
-				<Text style={[globalStyles.text.center]}>
-					{globalHelpers.censorship('Something about myself here. #liveLoveLaugh', this.state.visible)}
-				</Text>
-				{this.state.visible ? <Button text="Edit Profile" style={{marginTop: 20,}}/> : null}
+				<View style={styles.userInfo}>
+					<Text style={[globalStyles.text.heading, globalStyles.text.size.large, globalStyles.text.weight.bold]}>
+						{globalHelpers.censorship('Jonathan Solichin', this.state.visible)}
+					</Text>
+					<Text style={[globalStyles.text.roman, {marginTop: -5,}]}>
+						{globalHelpers.censorship('Something about myself here. #LiveLoveLaugh', this.state.visible)}
+					</Text>
+					{this.state.visible ? <Button text="Edit Profile" style={{marginVertical: 10,}}/> : null}
+				</View>
 			</View>
 
 			<View style={styles.statsContainer}>
 				{stats.map((stat) => <Stat data={stat} />)}
 			</View>
 
-			<EachDetail style={{marginTop: 30,}}>
-				<Text style={globalStyles.text.weight.bold}>HEARTS SHARED</Text>
+			<EachDetail heading={true}>
+				<Text style={globalStyles.text.roman}>Questions I have answered</Text>
 			</EachDetail>
 				{this.state.comments.map((comment) =>
 					 <CommentItem hideUsername={true} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
 					 )}
 
-			<EachDetail style={{marginTop: 30,}}>
-				<Text style={globalStyles.text.weight.bold}>QUESTIONS ASKED</Text>
+			<EachDetail heading={true}>
+				<Text style={globalStyles.text.roman}>Questions I have asked</Text>
 			</EachDetail>
+			<View style={[globalStyles.flexRow]}>
 			{topQuestions.slice(0,5).map(
 				(question) => 
-				<EachDetail >
-					<Text style={{width: width-20}}>{question}</Text>	
-				</EachDetail>
+					<MiniItem question={question}/>
 				)
 			}
-
-			<EachDetail style={{marginTop: 30,}}>
-				<Text style={globalStyles.text.weight.bold}>QUESTIONS HEARTED</Text>
-			</EachDetail>
-			{topQuestions.slice(0,5).map(
-				(question) => 
-				<EachDetail >
-					<Text style={{width: width-20}}>{question}</Text>	
-				</EachDetail>
-				)
-			}
+			</View>
 
 			<View style={styles.hintsContainer}>
 			<Text style={[globalStyles.text.color.gray, styles.hint]}>
@@ -175,7 +167,13 @@ var styles = StyleSheet.create({
   },
   heroContainer: {
  	padding: 20, 
-    alignItems: 'center',
+	flexDirection: 'row',
+  },
+  userInfo: {
+	  width: width - 140, 
+	  marginLeft: 20,
+	  marginTop: 10,
+	  alignItems: 'flex-start',
   },
 	profileImage: {
 		borderRadius: 40,
@@ -188,9 +186,14 @@ var styles = StyleSheet.create({
 	  flexDirection: 'row',
 	  alignItems: 'center',
 	  justifyContent: 'space-between',
-	  padding: 10,
-	  borderTopWidth: 1,
+	  paddingHorizontal: 20,
+  },
+  stat: {
+	  alignItems: 'center',
 	  borderBottomWidth: 1,
+	  paddingBottom: 5,
+	  paddingHorizontal: 2,
+	  borderColor: '#979797',
   },
   hintsContainer: {
  	marginVertical: 10, 

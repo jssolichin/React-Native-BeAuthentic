@@ -14,7 +14,7 @@ var EachDetail = React.createClass({
 			<View style={[styles.eachDetail,
 				this.props.padding != undefined && {padding: this.props.padding},
 				this.props.column && styles.column,
-				this.props.heading && {marginTop: 30},
+				this.props.heading && {marginTop: 30, paddingBottom: 5,},
 				this.props.invert && styles.invert,
 				this.props.style,
 			]}>
@@ -27,9 +27,9 @@ var EachDetail = React.createClass({
 var styles = StyleSheet.create({
 	eachDetail: {
 		padding: 10,
-		paddingHorizontal: 10,
+		paddingHorizontal: 20,
 		borderBottomWidth: 1,
-		borderBottomColor: '#000',
+		borderBottomColor: '#979797',
 		flexDirection: 'row',
 	},
 	column: {

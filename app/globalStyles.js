@@ -11,6 +11,10 @@ var styles = {
 	centerContent: {
 		flex: 1, alignItems: 'center', justifyContent: 'center',
 	},
+	flexRow: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+	},
 	text: {
 		heading: {
 			'fontFamily': 'DINCondensed-Bold'	
@@ -32,7 +36,7 @@ var styles = {
 				fontSize: 14,	
 			},
 			large: {
-				fontSize: 20,
+				fontSize: 23,
 			}
 		},
 		color: {

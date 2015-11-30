@@ -16,6 +16,7 @@ var Parse = require('parse/react-native');
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
 var Button = require('../components/Button.js');
+var MiniItem = require('../components/MiniItem.js');
 var globalStyles = require('../globalStyles.js');
 
 var topQuestions = [
@@ -118,13 +119,13 @@ var HeartPage = React.createClass({
 					<Text style={globalStyles.text.weight.bold}>QUESTIONS HEARTED</Text>
 					<Text style={[globalStyles.text.size.small, {marginTop: 2, color: '#999'}]}>You should ask IRL, or share your heart and answer!</Text>
 				</EachDetail>
-				{topQuestions.slice(0,5).map(
-					(question) => 
-					<EachDetail >
-						<Text style={{width: width-20}}>{question}</Text>	
-					</EachDetail>
-					)
-				}
+				<View style={globalStyles.flexRow}>
+					{topQuestions.slice(0,5).map(
+						(question) => 
+						<MiniItem question={question} />
+						)
+					}
+				</View>
 			</ScrollView>
 		);
 	}

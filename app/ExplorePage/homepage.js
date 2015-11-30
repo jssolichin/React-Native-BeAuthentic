@@ -7,6 +7,7 @@ var {
 	Text,
 	View,
 	ScrollView,
+	Image,
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -18,6 +19,7 @@ var Swiper = require('react-native-swiper')
 var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
 var EachTag = require('../components/EachTag.js');
+var MiniItem = require('../components/MiniItem.js');
 
 var globalStyles = require("../globalStyles.js");
 
@@ -67,7 +69,7 @@ var comments = [
 	{
 		name: "Jonathan",
 		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	},
+},
 	{
 		name: "Jonathan",
 		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
@@ -77,16 +79,19 @@ var comments = [
 var Hero = React.createClass({
 	render: function() {
 		return (
-			<View style={styles.heroContainer}>
+				<Image
+					style={styles.heroContainer}
+					source={{uri: 'http://i.imgur.com/h4L179U.png'}}
+					>
 				<View style={styles.heroBorder}>
-					<Text style={[globalStyles.text.color.white, globalStyles.text.heading, globalStyles.text.size.large]}>
+					<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
 						{this.props.main.toUpperCase()}
 					</Text>
-					<Text style={[globalStyles.text.color.white, globalStyles.text.size.small]}>
+					<Text style={[globalStyles.text.roman, {marginTop: -5}]}>
 						{this.props.subtitle}
 					</Text>
 				</View>
-			</View>
+			</Image>
 		);
 	}
 });
@@ -105,12 +110,12 @@ var Homepage = React.createClass({
 
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
-				<Swiper dot={passiveDot} activeDot={activeDot} height={120} showPagination={true} autoplay={true}>
+				<Swiper dot={passiveDot} activeDot={activeDot} height={145} showPagination={true} autoplay={true}>
 					{heroItems.map((tag) => <Hero main={tag.title} subtitle={tag.subtitle}/> )}
 				</Swiper>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.weight.bold}>EXPLORE TRENDING TAGS</Text>
+					<Text style={globalStyles.text.roman}>Explore Trending tags</Text>
 				</EachDetail>
 
 				<View style={styles.tagsList}>
@@ -120,16 +125,16 @@ var Homepage = React.createClass({
 					}
 				</View>
 
-				<EachDetail style={{marginTop: 30,}}>
-					<Text style={globalStyles.text.weight.bold}>EXPLORE QUESTIONS</Text>
+				<EachDetail heading={true}>
+					<Text style={globalStyles.text.roman}>Explore trending questions</Text>
 				</EachDetail>
-				{topQuestions.slice(0,5).map(
-					(question) => 
-					<EachDetail >
-						<Text style={{width: width-20}}>{question}</Text>	
-					</EachDetail>
-					)
-				}
+				<View style={globalStyles.flexRow}>
+					{topQuestions.slice(0,5).map(
+						(question) => 
+							<MiniItem question={question}/>
+						)
+					}
+				</View>
 
 				<EachDetail style={{marginTop: 30,}}>
 					<Text style={globalStyles.text.weight.bold}>EXPLORE RESPONSES</Text>
@@ -162,11 +167,10 @@ var styles = StyleSheet.create({
 	},
 	heroBorder: {
 		flex: 1,
-		width: width-40,
+		width: width - width*0.25,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderWidth: 1,
-		borderColor: '#fff',
+		backgroundColor: 'rgba(255,255,255,.4)',
 		margin: 20,
 	},
 	dot: {
@@ -177,7 +181,7 @@ var styles = StyleSheet.create({
 		marginBottom: -75,
 	},
 	tagsList: {
-		paddingHorizontal: 10,
+		paddingHorizontal: 20,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		width: width ,
