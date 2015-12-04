@@ -15,6 +15,7 @@ var { Icon, } = require('react-native-icons');
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
 var Button = require('../components/Button.js');
+var Banner = require('../components/Banner.js');
 var SinglePage = require('../SinglePage/index.js');
 var globalStyles = require('../globalStyles.js');
 
@@ -108,19 +109,29 @@ var NotificationPage = React.createClass({
 	getInitialState: function() {
 	  var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 	  return {
+		  showHint: true,
 	      dataSource: ds.cloneWithRows(notifications),
 	    };
 	},
-
+	_closeHint: function (){
+		this.setState({'showHint': false});
+	},
 	render: function() {
+		
 	  return (
+	  <View style={styles.container} >
+		  {this.state.showHint ? 
+			  <Banner title='Bond over experiences ' body='When you share your response, you are subscribed to the question and will get notified when others share their responses.' onPress={this._closeHint}/> 
+				  : null
+		  }
 	      <ListView
 			  contentInset={{bottom: 48,}} 
+			  style={{backgroundColor: 'transparent'}}
 			  automaticallyAdjustContentInsets={false}
-			style={styles.container}
 	        dataSource={this.state.dataSource}
 			renderRow={(rowData) => <NotificationItem data={rowData} toRoute={this.props.toRoute}/>}
 	      />
+	  </View>
 	    );
 	},
 });
