@@ -33,7 +33,9 @@ var EachTag = React.createClass({
 				this.props.large && styles.large,
 				this.props.normal && styles.normal
 				]}>
+			   {this.props.displayPlus ? '+ ' : null}	
 			   {this.props.tag.text}	
+			   {this.props.displayX ? ' ×' : null}	
 		   </Text> 
 	   </TouchableOpacity>
 		);

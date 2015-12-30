@@ -34,9 +34,10 @@ var NewHome = React.createClass({
 		return (
 			<ScrollView 
 				automaticallyAdjustContentInsets={false}
-				contentInset={{bottom: 50}}
+				contentInset={{bottom: 230}}
+				style={styles.container}
 				>
-			<View style={styles.container}>
+			<View style={styles.insideContainer}>
 				<Image
 					style={styles.profileImage}
 					source={{uri: 'http://i.imgur.com/h4L179U.png'}}
@@ -110,9 +111,11 @@ var NewHome = React.createClass({
 var imageHeight = height - height*0.33;
 var styles = {
 	container: {
+		backgroundColor: '#fff',
+	},
+	insideContainer: {
 		justifyContainer: 'center',
 		alignItems: 'center',
-		backgroundColor: '#fff',
 	},
 	profileImage: {
 		width: width - width*0.25,

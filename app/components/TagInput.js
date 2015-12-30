@@ -8,6 +8,8 @@ var {
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 
 var EachTag = require('./EachTag.js');
 var globalStyles = require("../globalStyles.js");
@@ -22,39 +24,52 @@ var TagInput = React.createClass({
 		}	
 	},
 	_getTypeAhead: function (text){
-		if(text.length > 2){
-			var filteredPossibleTags = possibleTags.filter((tag) => tag.toLowerCase().indexOf(text.toLowerCase()) >= 0);
-			this.setState({typeAheadList: filteredPossibleTags});
+		if(text.length >=3){
+			var tagQuery = new Parse.Query('Tag')
+				.contains('text', text.toLowerCase())
+				.ascending("text");
+
+			tagQuery.find({
+				success: (results) => {
+
+					var tags = [];
+
+					results.forEach(function(result){
+						var tagText = result.get('text')	
+						tags.push({text: tagText});
+					})
+
+					this.setState({typeAheadList: tags});
+
+				},
+				error: (error) => console.log(error)
+			})
 		}
-		else 
-			this.setState({typeAheadList: []});
+		else {
+			this._clearTypeahead();
+		}
 	},
 	_clearTypeahead: function (){
 		this.setState({typeAheadList: []});
 	},
-	_addTag: function (tag){
-		//if tag is an object, its received via enter key and not passed by function call in callback
-		//therefore, it does not have the addition of "+ "
-		if(Object.prototype.toString.call(tag) != '[object Object]')
-			tag = tag.substring(2);
-		else
-			tag = this.state.text; 
-
+	_addTag: function (tag,b,c){
 		if(this.state.chosenTags.indexOf(tag) < 0)
-			this.setState({chosenTags: this.state.chosenTags.concat([tag])});
+			this.setState({chosenTags: this.state.chosenTags.concat([tag])},
+						 ()=>this.props.callback(this.state.chosenTags));
 
 		this.setState({text: ''});
 		this._clearTypeahead();
 	},
 	_removeTag: function (tag){
-		tag = tag.substring(0, tag.length-2);
 		var indexOfTag = this.state.chosenTags.indexOf(tag);
 
 		if(indexOfTag >= 0){
 			var newChosenTags= this.state.chosenTags.slice()
 			newChosenTags.splice(indexOfTag, 1);
 			this.setState({chosenTags: newChosenTags})
+			this.props.callback(this.state.chosenTags)
 		}
+
 	},
 	render: function() {
 		var TypeAhead = null;
@@ -62,16 +77,19 @@ var TagInput = React.createClass({
 	   if(this.state.typeAheadList.length > 0 )
 		   var TypeAhead = <View style={styles.typeAheadListContainer}>
 			   {this.state.typeAheadList.map((item) => 
-						<EachTag tag={"+ " + item} large={true} callback={this._addTag}/>
-				 )}
-						 </View>;
+						<EachTag tag={item} large={true} callback={this._addTag} displayPlus={true} />
+				 )}</View>;
+		 else if(this.state.text && this.state.text.length >= 3) 
+			 TypeAhead = <View style={styles.typeAheadListContainer}>
+				 <EachTag tag={{text: this.state.text.toLowerCase()}} large={true} callback={this._addTag} displayPlus={true} />
+			 </View>;
 
 		return (
 			<View style={[styles.container]}>
 			<View style={[styles.inputContainer]}>
 				<View style={styles.tagsList}>
 				{(this.state.chosenTags.map((tag) => 
-					<EachTag tag={tag + " x"} normal={true} callback={this._removeTag}/>))}
+					<EachTag tag={tag} normal={true} callback={this._removeTag} displayX={true}/>))}
 				</View>
 				<TextInput
 					style={[styles.inputText, this.state.chosenTags.length >= 3 && {width: 0}]}
@@ -79,7 +97,7 @@ var TagInput = React.createClass({
 						this._getTypeAhead(text);
 						this.setState({text});
 					}}
-					onSubmitEditing={this._addTag}
+					//onSubmitEditing={this._addTag}
 					value={this.state.text}
 					placeholder="Add up to 3 tags"
 					placeholderTextColor='#aaa'

@@ -29,6 +29,23 @@ var topQuestions = [
 	"Do you have a secret hunch about how you will die?",
 ]
 
+var PostSuccess = React.createClass({
+	render: function (){
+		return (
+			<View style={globalStyles.centerContent}>
+				<Text style={[globalStyles.text.center, styles.hintText]}>
+					Thanks for submitting a question! We will let you know when people answer in the activity tab.
+				</Text>
+				<TouchableHighlight onPress={this.props.callback} underlayColor='#fff'>
+					<View>
+						<Button text="Ask Another Question" invert={true} />
+					</View>
+				</TouchableHighlight>
+			</View>
+		);
+	}
+});
+
 var WritePrompt = React.createClass({
 	render: function (){
 		return (
@@ -49,7 +66,60 @@ var WritePrompt = React.createClass({
 var WriteBox = React.createClass({
 	getInitialState: function (){
 		return {
+			tags: []
 		};
+	},
+	setTags: function (tags){
+		this.setState({tags: tags});
+	},
+	_onSubmitResponse: function (){
+		var that = this;
+
+		var Tag = new Parse.Object.extend('Tag');
+		var Question = new Parse.Object.extend('Question');
+
+		var tagQuery = new Parse.Query('Tag');
+
+		var question = new Question();
+
+		var postACL = new Parse.ACL(Parse.User.current());
+		postACL.setPublicReadAccess(true);
+		question.setACL(postACL);
+
+		question.set('text', this.state.text);
+
+		var promises = [];
+		this.state.tags.forEach((tag, i) => {
+			promises.push(tagQuery.equalTo('text', tag.text).first());
+		})
+		Parse.Promise.when(promises).then(function(tag1,tag2,tag3){
+			var tags = [tag1, tag2, tag3];
+
+			tags.forEach(function(tag,i){
+				if(tag)	{
+					question.set('tag_'+(i+1), tag);
+				}
+				else {
+					if(that.state.tags[i]){
+						//tag doesnt exist yet so we need to make
+						var theTag = new Tag(); 
+						theTag.set('text', that.state.tags[i].text);
+
+						question.set('tag_'+(i+1), theTag);
+					}
+				}
+
+			})
+
+			//save everything 
+			question.save({
+				success: (question) => {
+					AlertIOS.alert('submitted');
+					that.props.callback(true);
+				}	
+			})
+		})
+
 	},
 	render: function (){
 		return (
@@ -62,10 +132,10 @@ var WriteBox = React.createClass({
 					placeholderTextColor='#aaa'
 					multiline={true}
 				/>
-				<TagInput />
-				<TouchableHighlight onPress={this.props.callback} underlayColor='#fff'>
+				<TagInput callback={this.setTags}/>
+				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
 					<View>
-						<Button text="Share My Heart" invert={true} />
+						<Button text="Ask this Question" invert={true} />
 					</View>
 				</TouchableHighlight>
 			</View>
@@ -75,39 +145,38 @@ var WriteBox = React.createClass({
 var HeartPage = React.createClass({
 	getInitialState: function (){
 		return {
-			writingComment: false,
+			writingQuestion: false,
+			postSuccess: false,
 		};
 	},
 	_onStartResponse: function (){
 		this.setState({
-			writingComment: true,	
+			writingQuestion: true,	
 		});	
 	},
-	_onSubmitResponse: function (){
-		var Question = new Parse.Object.extend('Question');
-		var Tag = new Parse.Object.extend('Tag');
-
-		var tag1 = new Tag(); tag1.set('text', 'hello');
-		var tag2 = new Tag(); tag2.set('text', 'love');
-		var tag3 = new Tag(); tag3.set('text', 'helxlo');
-
-		var question = new Question();
-		question.set('text', 'hello world');
-		question.set('tag_1', tag1);
-		question.set('tag_2', tag2);
-		question.set('tag_3', tag3);
-
-		question.save({
-			success: (question) => {
-				AlertIOS.alert('submitted');
-			}	
-		})
+	_onPostSuccess: function(){
+		this.setState({
+			postSuccess: true,	
+		})	
+	},
+	_resetWriting: function(){
+		this.setState({
+			postSuccess: false,	
+			writingQuestion: true,	
+		})	
 	},
 	render: function() {
-		if(this.state.writingComment == false)
-			response = <WritePrompt callback={this._onStartResponse}/>
-		else 
-			response = <WriteBox callback={this._onSubmitResponse}/>
+		var response;
+
+		if(this.state.postSuccess){
+			response = <PostSuccess callback={this._resetWriting}/>
+		}
+		else {
+			if(this.state.writingQuestion == false)
+				response = <WritePrompt callback={this._onStartResponse}/>
+			else
+				response = <WriteBox callback={this._onPostSuccess}/>
+		}
 
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
@@ -115,10 +184,11 @@ var HeartPage = React.createClass({
 					{response}
 				</EachDetail>
 
-				<EachDetail column={true} style={{marginTop: 30, alignItems: 'flex-start'}}>
-					<Text style={globalStyles.text.weight.bold}>QUESTIONS HEARTED</Text>
-					<Text style={[globalStyles.text.size.small, {marginTop: 2, color: '#999'}]}>You should ask IRL, or share your heart and answer!</Text>
+				<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
+					<Text style={globalStyles.text.roman}>Questions hearted</Text>
+					<Text style={[globalStyles.text.size.small, {marginTop: 2, marginBottom: 5, color: '#999'}]}>You should ask IRL, or share your heart and answer!</Text>
 				</EachDetail>
+
 				<View style={globalStyles.flexRow}>
 					{topQuestions.slice(0,5).map(
 						(question) => 

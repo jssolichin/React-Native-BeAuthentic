@@ -100,7 +100,8 @@ var Homepage = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function(props, state) {
 		var tagQuery = new Parse.Query('Tag')
-			.ascending("text");
+			.ascending("text")
+			.limit(10);
 	  return { tags: tagQuery };
 	},
 	render: function() {
@@ -121,7 +122,7 @@ var Homepage = React.createClass({
 				<View style={styles.tagsList}>
 					{this.data.tags.map(
 						(tag) => 
-						<EachTag tag={tag} large={true} toRoute={this.props.toRoute}/>)
+						<EachTag tag={{text: tag.text}} large={true} toRoute={this.props.toRoute}/>)
 					}
 				</View>
 
@@ -136,8 +137,8 @@ var Homepage = React.createClass({
 					}
 				</View>
 
-				<EachDetail style={{marginTop: 30,}}>
-					<Text style={globalStyles.text.weight.bold}>EXPLORE RESPONSES</Text>
+				<EachDetail heading={true}>
+					<Text style={globalStyles.text.roman}>Explore latest questions</Text>
 				</EachDetail>
 				{comments.map(
 					(comment) => 
