@@ -113,14 +113,14 @@ var ProfilePage = React.createClass({
 			</View>
 
 			<View style={styles.statsContainer}>
-				{stats.map((stat) => <Stat data={stat} />)}
+				{stats.map((stat,i) => <Stat key={i} data={stat} />)}
 			</View>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions I have answered</Text>
 			</EachDetail>
-				{this.state.comments.map((comment) =>
-					 <CommentItem hideUsername={true} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
+				{this.state.comments.map((comment, i) =>
+					 <CommentItem key={i} hideUsername={true} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
 					 )}
 
 			<EachDetail heading={true}>
@@ -128,8 +128,8 @@ var ProfilePage = React.createClass({
 			</EachDetail>
 			<View style={[globalStyles.flexRow]}>
 			{topQuestions.slice(0,5).map(
-				(question) => 
-					<MiniItem question={question}/>
+				(question, i) => 
+					<MiniItem key={i} question={question}/>
 				)
 			}
 			</View>

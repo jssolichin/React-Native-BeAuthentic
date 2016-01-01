@@ -112,7 +112,7 @@ var Homepage = React.createClass({
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
 				<Swiper dot={passiveDot} activeDot={activeDot} height={145} showPagination={true} autoplay={true}>
-					{heroItems.map((tag) => <Hero main={tag.title} subtitle={tag.subtitle}/> )}
+					{heroItems.map((tag, i) => <Hero key={i} main={tag.title} subtitle={tag.subtitle}/> )}
 				</Swiper>
 
 				<EachDetail heading={true}>
@@ -121,8 +121,8 @@ var Homepage = React.createClass({
 
 				<View style={styles.tagsList}>
 					{this.data.tags.map(
-						(tag) => 
-						<EachTag tag={{text: tag.text}} large={true} toRoute={this.props.toRoute}/>)
+						(tag, i) => 
+						<EachTag key={i} tag={{text: tag.text}} large={true} toRoute={this.props.toRoute}/>)
 					}
 				</View>
 
@@ -131,8 +131,8 @@ var Homepage = React.createClass({
 				</EachDetail>
 				<View style={globalStyles.flexRow}>
 					{topQuestions.slice(0,5).map(
-						(question) => 
-							<MiniItem question={question}/>
+						(question,i) => 
+							<MiniItem key={i} question={question}/>
 						)
 					}
 				</View>
@@ -141,8 +141,9 @@ var Homepage = React.createClass({
 					<Text style={globalStyles.text.roman}>Explore latest questions</Text>
 				</EachDetail>
 				{comments.map(
-					(comment) => 
+					(comment, i) => 
 					<CommentItem 
+						key={i}
 						visibleUser={false} 
 						visibleComment={true} 
 						data={comment} />

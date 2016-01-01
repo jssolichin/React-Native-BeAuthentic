@@ -14,7 +14,7 @@ var EachDetail = require('./EachDetail.js');
 var globalHelpers = require("../globalHelpers.js");
 var globalStyles = require("../globalStyles.js");
 
-var ListItem = React.createClass({
+var CommentItem = React.createClass({
 	render: function() {
 		var username = null;
 
@@ -28,7 +28,7 @@ var ListItem = React.createClass({
 		return (
 			<EachDetail>
 				{username}
-				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-20}]} numberOfLines="3">
+				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-40}]} numberOfLines={2}>
 					{globalHelpers.censorship(this.props.data.comment, this.props.visibleComment)}
 				</Text>
 			</EachDetail>
@@ -47,4 +47,4 @@ var styles = StyleSheet.create({
 	},
 });
 
-module.exports = ListItem;
+module.exports = CommentItem;

@@ -15,7 +15,9 @@ var MiniItem = React.createClass({
 		return (
 			<View style={styles.container}>
 				<View style={styles.background}>
-					<Text style={[
+					<Text 
+					numberOfLines={7}
+					style={[
 						globalStyles.text.heading, 
 						styles.text
 					]}>
