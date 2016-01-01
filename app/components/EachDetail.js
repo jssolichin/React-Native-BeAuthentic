@@ -40,7 +40,6 @@ var styles = StyleSheet.create({
 	},
 	invert: {
 		backgroundColor: '#000',
-		color: '#fff',
 	}
 });
 

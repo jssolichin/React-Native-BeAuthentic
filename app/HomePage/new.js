@@ -54,9 +54,9 @@ var NewHome = React.createClass({
 						</TouchableOpacity>
 
 						<View style={styles.metaData}>
-							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 0,bottom:-50}} >
-								{(tags.map((tag) => 
-									<EachTag tag={tag} toRoute={this.props.toRoute}/>
+							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 50,bottom:-50}} >
+								{(tags.map((tag,i) => 
+									<EachTag key={i} tag={tag} toRoute={this.props.toRoute}/>
 								))}
 							</ScrollView>
 
@@ -114,7 +114,7 @@ var styles = {
 		backgroundColor: '#fff',
 	},
 	insideContainer: {
-		justifyContainer: 'center',
+		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	profileImage: {

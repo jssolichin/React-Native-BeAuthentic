@@ -8,10 +8,13 @@ var {
 	TextInput,
 	TouchableHighlight,
 	AlertIOS,
+	Image,
+	NativeModules,
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
+var imagePicker = require('react-native-imagepicker');
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
@@ -32,7 +35,7 @@ var topQuestions = [
 var PostSuccess = React.createClass({
 	render: function (){
 		return (
-			<View style={globalStyles.centerContent}>
+			<View style={globalStyles.centerContent} style={{paddingVertical: 20, alignItems: 'center'}}>
 				<Text style={[globalStyles.text.center, styles.hintText]}>
 					Thanks for submitting a question! We will let you know when people answer in the activity tab.
 				</Text>
@@ -49,7 +52,7 @@ var PostSuccess = React.createClass({
 var WritePrompt = React.createClass({
 	render: function (){
 		return (
-			<View style={globalStyles.centerContent}>
+			<View style={globalStyles.centerContent} style={{paddingVertical: 20, alignItems: 'center'}}>
 				<Text style={[globalStyles.text.center, styles.hintText]}>
 					Want a heart to heart?	
 				</Text>
@@ -66,7 +69,8 @@ var WritePrompt = React.createClass({
 var WriteBox = React.createClass({
 	getInitialState: function (){
 		return {
-			tags: []
+			text: '',
+			tags: [],
 		};
 	},
 	setTags: function (tags){
@@ -77,23 +81,48 @@ var WriteBox = React.createClass({
 
 		var Tag = new Parse.Object.extend('Tag');
 		var Question = new Parse.Object.extend('Question');
-
 		var tagQuery = new Parse.Query('Tag');
-
 		var question = new Question();
+		
+		//check to make sure we have every field filled
+		if( this.state.text.length < 5 || this.state.tags.length < 1 || !this.state.imageUri){
+			if(this.state.text.length < 5)
+				AlertIOS.alert('Please add a good question.');
+			if(this.state.tags.length < 1)
+				AlertIOS.alert('Please add at least one tag.');
+			if(!this.state.imageUri)
+				AlertIOS.alert('Please add a cover image.');
 
+			return false;
+		}
+
+		//get coverImage data / name
+		var coverImage = new Parse.Promise();
+		NativeModules.ReadImageData.readImage(this.state.imageUri, (imageFile) => {
+			var filename = this.state.imageUri.match(/(\w+)(\.\w+)+(?!.*(\w+)(\.\w+)+)/);
+			var parseImageFile = new Parse.File(filename[0], {base64: imageFile})
+			console.log(imageFile)
+			coverImage.resolve(parseImageFile);
+		});
+
+		//set permission as public read, write only by current user
 		var postACL = new Parse.ACL(Parse.User.current());
 		postACL.setPublicReadAccess(true);
-		question.setACL(postACL);
 
-		question.set('text', this.state.text);
-
-		var promises = [];
+		//create promises to make sure we have every part of the current question
+		var promises = [coverImage];
 		this.state.tags.forEach((tag, i) => {
 			promises.push(tagQuery.equalTo('text', tag.text).first());
 		})
-		Parse.Promise.when(promises).then(function(tag1,tag2,tag3){
+		
+		//attach question attributes to the question itself.
+		Parse.Promise.when(promises).then(function(coverImage, tag1,tag2,tag3){
 			var tags = [tag1, tag2, tag3];
+
+			question.setACL(postACL);
+			question.set('createdBy', Parse.User.current());
+			question.set('text', that.state.text);
+			question.set('coverImage', coverImage);
 
 			tags.forEach(function(tag,i){
 				if(tag)	{
@@ -114,16 +143,34 @@ var WriteBox = React.createClass({
 			//save everything 
 			question.save({
 				success: (question) => {
-					AlertIOS.alert('submitted');
 					that.props.callback(true);
-				}	
-			})
+				},
+				error: (error) => console.log(error)
+			});
 		})
 
 	},
+	_pickImage: function(){
+		var that = this;
+		var image = imagePicker.open({
+		    takePhoto: true,
+		    useLastPhoto: true,
+		    chooseFromLibrary: true
+		}).then(function(imageUri) {
+			console.log('direct',imageUri)
+			that.setState({'imageUri': imageUri});
+		}, function() {
+		    console.log('user cancel');
+		});
+	},
 	render: function (){
 		return (
-			<View style={globalStyles.centerContent}>
+				<Image
+					style={[styles.writeBoxImageContainer]}
+					source={{uri: this.state.imageUri}}>
+			<View style={[globalStyles.centerContent,styles.writeBoxContainer,
+				this.state.imageUri && {backgroundColor: 'rgba(255,255,255,.3)'}
+			]}>
 				<TextInput
 					style={styles.inputText}
 					onChangeText={(text) => this.setState({text})}
@@ -133,12 +180,23 @@ var WriteBox = React.createClass({
 					multiline={true}
 				/>
 				<TagInput callback={this.setTags}/>
+
+				<View style={{marginBottom: 20}}>
+					<TouchableHighlight onPress={this._pickImage} underlayColor='#fff' >
+						<View>
+							<Button text={this.state.imageUri ? "Change Image" : "Pick an Image"} invert={true} style={{width: width - 30}}/>
+						</View>
+					</TouchableHighlight>
+				</View>
+
 				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
 					<View>
 						<Button text="Ask this Question" invert={true} />
 					</View>
 				</TouchableHighlight>
+
 			</View>
+			</Image>
 		)
 	}
 });
@@ -180,7 +238,7 @@ var HeartPage = React.createClass({
 
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
-				<EachDetail column={true} padding={20} invert={true}>
+				<EachDetail column={true} style={{margin: 0, padding: 0}} invert={true}>
 					{response}
 				</EachDetail>
 
@@ -191,8 +249,8 @@ var HeartPage = React.createClass({
 
 				<View style={globalStyles.flexRow}>
 					{topQuestions.slice(0,5).map(
-						(question) => 
-						<MiniItem question={question} />
+						(question,i) => 
+						<MiniItem key={i} question={question} />
 						)
 					}
 				</View>
@@ -222,7 +280,14 @@ var styles = StyleSheet.create({
 		fontSize: 15,
 		backgroundColor: '#fff',
 		marginBottom: 20,
-	}
+	},
+	writeBoxImageContainer: {
+		width: width,
+		alignItems: 'center',
+	},
+	writeBoxContainer: {
+		padding: 20,
+	},
 });
 
 module.exports = HeartPage;

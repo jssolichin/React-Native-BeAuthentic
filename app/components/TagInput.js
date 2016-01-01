@@ -76,8 +76,8 @@ var TagInput = React.createClass({
 
 	   if(this.state.typeAheadList.length > 0 )
 		   var TypeAhead = <View style={styles.typeAheadListContainer}>
-			   {this.state.typeAheadList.map((item) => 
-						<EachTag tag={item} large={true} callback={this._addTag} displayPlus={true} />
+			   {this.state.typeAheadList.map((item, i) => 
+						<EachTag key={i} tag={item} large={true} callback={this._addTag} displayPlus={true} />
 				 )}</View>;
 		 else if(this.state.text && this.state.text.length >= 3) 
 			 TypeAhead = <View style={styles.typeAheadListContainer}>
@@ -88,8 +88,8 @@ var TagInput = React.createClass({
 			<View style={[styles.container]}>
 			<View style={[styles.inputContainer]}>
 				<View style={styles.tagsList}>
-				{(this.state.chosenTags.map((tag) => 
-					<EachTag tag={tag} normal={true} callback={this._removeTag} displayX={true}/>))}
+				{(this.state.chosenTags.map((tag, i) => 
+					<EachTag key={i} tag={tag} normal={true} callback={this._removeTag} displayX={true}/>))}
 				</View>
 				<TextInput
 					style={[styles.inputText, this.state.chosenTags.length >= 3 && {width: 0}]}
