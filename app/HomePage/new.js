@@ -10,12 +10,16 @@ var {
 	ScrollView,
 } = React;
 var { Icon, } = require('react-native-icons');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
+var LinearGradient = require('react-native-linear-gradient');
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
+
 var globalStyles = require("../globalStyles.js");
 var EachTag = require('../components/EachTag.js');
 var Button = require('../components/Button.js');
-var Dimensions = require('Dimensions');
-var {width, height} = Dimensions.get('window');
-var LinearGradient = require('react-native-linear-gradient');
+var LargeItem = require('../components/LargeItem.js');
 
 var tags = [
 	{
@@ -29,79 +33,51 @@ var tags = [
 	},
 ]
 var NewHome = React.createClass({
-	//source={require('image!profileImage')}
+	mixins: [ParseReact.Mixin],
+	observe: function() {
+		var Activity = Parse.Object.extend("Activity");
+		var query = new Parse.Query(Activity);
+		var lastQuotd = query
+			.equalTo('type', 'quotd')
+			.descending("updatedAt")
+			.limit(1)
+			.include(['question', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
+
+	  return {
+			lastQuotd: lastQuotd 
+		  };
+	},
+	getInitialState: function (){
+		return {
+		}
+	},
 	render: function() {
+		console.log(this.data.lastQuotd)
+		var lastQuotdData;
+		if(this.data.lastQuotd[0])
+			lastQuotdData = this.data.lastQuotd[0].question;
+
 		return (
 			<ScrollView 
 				automaticallyAdjustContentInsets={false}
-				contentInset={{bottom: 230}}
+				contentInset={{bottom: 50}}
 				style={styles.container}
 				>
-			<View style={styles.insideContainer}>
-				<Image
-					style={styles.profileImage}
-					source={{uri: 'http://i.imgur.com/h4L179U.png'}}
-					>
-					<LinearGradient colors={['rgba(0,0,0,0)', 'rgba(255,255,255,1)']} style={styles.linearGradient}>
-						<View style={styles.imageMask}>
-						</View>
-					</LinearGradient>
-					<View style={styles.mainContainer}>
-						<TouchableOpacity onPress={this.props.href}>
-							<Text style={[styles.heroText, globalStyles.text.heading]}>
-								Given the choice of anyone in the world whom would you want as a dinner guest?
-							</Text>
-						</TouchableOpacity>
 
-						<View style={styles.metaData}>
-							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 50,bottom:-50}} >
-								{(tags.map((tag,i) => 
-									<EachTag key={i} tag={tag} toRoute={this.props.toRoute}/>
-								))}
-							</ScrollView>
+				<LargeItem data={lastQuotdData}/>
 
-							<Icon
-								name='ion|ios-heart-outline'
-								size={35}
-								color='#000'
-								style={styles.icon}
-							/>
-						</View>
+				<View style={styles.actionContainer}>
+					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
+						<Button text="Share My Heart" />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
+						<Button text="See Responses From Others" noBorder={true}/>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
+						<Button text="Ask a Question" noBorder={true}/>
+					</TouchableOpacity>
+				</View>
 
-						<View style={styles.actionContainer}>
-							<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-								<Button text="Share My Heart" />
-							</TouchableOpacity>
-							<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-								<Button text="See Responses From Others" noBorder={true}/>
-							</TouchableOpacity>
-							<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-								<Button text="Ask a Question" noBorder={true}/>
-							</TouchableOpacity>
-						</View>
-					</View>
-
-					<View style={[
-						styles.metaDataVertical
-					]}>
-						<Text style={globalStyles.text.roman}>
-							<Text style={globalStyles.text.romanBold}>Tues.</Text>
-							13
-						</Text>
-
-						<Text style={globalStyles.text.roman}>
-							Asked by&nbsp; 
-							<Text style={globalStyles.text.romanBold}>jssolichin</Text>
-						</Text>
-						
-						<Text>
-						</Text>
-						<Text>
-						</Text>
-					</View>
-
-			</Image>
-		</View>
 	</ScrollView>
 		);
 	},
@@ -113,69 +89,15 @@ var styles = {
 	container: {
 		backgroundColor: '#fff',
 	},
-	insideContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	profileImage: {
-		width: width - width*0.25,
-		height: imageHeight,
-		resizeMode: 'cover',
-		marginTop: 51,
-		overflow: 'visible',
-	},
-	imageMask: {
-		backgroundColor: 'rgba(255,255,255,.5)',
-		width: width - width*0.2,
-		height: height - height*0.28,
-	},
-	linearGradient: {
-		flex: 1,
-		backgroundColor: 'transparent',
-		marginBottom: -1,
-	},
-	mainContainer: {
-		position: 'absolute',
-		backgroundColor: 'transparent',
-		top: -20,
-		left: -20,
-	},
-	heroText: {
-		paddingTop: 2,
-		fontSize: 50,
-		lineHeight: 48,
-	},
 	actionContainer: {
-		width: width - 55,
-		marginTop:17, 
+		width: width - 50,
+		margin: 25,
+		marginTop: 50,
+		marginLeft: 20,
 	},
 	actionItem: {
 		marginTop: 5,	
 	},
-	metaData: {
-		justifyContent: 'space-between',
-		flexDirection: 'row',
-		width: width - 40,
-	},
-	tagsList: {
-		flexDirection: 'row',
-		height: 35,
-	},
-	icon: {
-		width: 35, 	
-		height: 35, 
-		marginRight: 5,
-	},
-	metaDataVertical: {
-		backgroundColor: 'transparent',
-		transform: [{rotateZ: '90deg'}],
-		justifyContent: 'space-between',
-		flexDirection: 'row',
-		position: 'absolute',
-		top: 215,
-		right: -245,
-		width: imageHeight,
-	}
 
 }
 

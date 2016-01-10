@@ -3,6 +3,8 @@
 #import "RCTBridgeModule.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <UIKit/UIKit.h>
+#import <ImageIO/ImageIO.h>
+
 @interface ReadImageData : NSObject <RCTBridgeModule>
 @end
 
@@ -26,8 +28,14 @@ RCT_EXPORT_METHOD(readImage:(NSString *)input callback:(RCTResponseSenderBlock)c
     // Create an ALAssetRepresentation object using our asset
     // and turn it into a bitmap using the CGImageRef opaque type.
     CGImageRef imageRef = [[asset defaultRepresentation] fullResolutionImage];
+    
+    CGSize size = [[asset defaultRepresentation] dimensions];
+    
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, CGRectMake(size.width/2, size.height/2, 570, 862));
+    UIImage *croppedImage = [UIImage imageWithCGImage:subImageRef];
+    
     // Create UIImageJPEGRepresentation from CGImageRef
-    NSData *imageData = UIImageJPEGRepresentation([UIImage imageWithCGImage:imageRef], 1);
+    NSData *imageData = UIImageJPEGRepresentation(croppedImage, 1);
     
     // Convert to base64 encoded string
     NSString *base64Encoded = [imageData base64EncodedStringWithOptions:0];

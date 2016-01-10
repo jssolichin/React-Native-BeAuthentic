@@ -31,7 +31,8 @@ var EachTag = React.createClass({
 				globalStyles.text.roman,
 				globalStyles.text.size.medium,
 				this.props.large && styles.large,
-				this.props.normal && styles.normal
+				this.props.normal && styles.normal,
+				this.props.style,
 				]}>
 			   {this.props.displayPlus ? '+ ' : null}	
 			   {this.props.tag.text}	
