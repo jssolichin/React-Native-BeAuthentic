@@ -17,30 +17,88 @@ var moment = require('moment');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var LinearGradient = require('react-native-linear-gradient');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 
 var LargeItem = React.createClass({
 	//source={require('image!profileImage')}
+	mixins: [ParseReact.Mixin],
+	observe: function (){
+
+		console.log('observe')
+		var question = new Parse.Object('Question');
+		question.id = this.props.data.objectId;
+
+		var query = new Parse.Query('Activity')
+				.equalTo('type', 'liked')
+				.equalTo('fromUser', Parse.User.current())
+				.equalTo('question', question);
+				
+		return {
+			likeCount: query,
+		}	
+
+	},
+	getInitialState: function (){
+		return {
+		}	
+	},
+	_markAsLiked: function (){
+
+		var that = this;
+
+		var postACL = new Parse.ACL(Parse.User.current());
+		postACL.setPublicReadAccess(true);
+
+		var creator = ParseReact.Mutation.Create('Activity', {
+			ACL: postACL,
+			fromUser: Parse.User.current(),
+			toUser: this.props.data.createdBy,
+			question: this.props.data,
+			type: 'liked',
+		});
+
+		creator.dispatch()
+			.then((a,b,c)=>{
+				that.refreshQueries('likeCount');
+			})
+	},
+	_markAsUnliked: function (){
+
+		var batch = new ParseReact.Mutation.Batch();
+
+		this.data.likeCount.map((like) => {
+			ParseReact.Mutation.Destroy(like)
+				.dispatch({batch: batch});
+		})
+
+		batch.dispatch()
+			.then((a,b,c)=>{
+				//that.refreshQueries('likeCount');
+			})
+	},
+	_toggleLike: function (){
+
+		if(this.data.likeCount.length > 0)
+			this._markAsUnliked();
+		else 
+			this._markAsLiked();	
+
+	},
 	render: function() {
 
-		var dataLoadingView = (
-			<View>
-				<Text> Loading... </Text>
-			</View>
-		);
-
-		if(this.props.data){
-
-			//TODO: programmatically add tags
-			var tags=[];
-			for(var i = 1;i<4; i++){
-				var eachTag = this.props.data['tag_'+i];
-				if(eachTag)	
-					tags.push(eachTag);
-			}
+		console.log(this.data)
+		//TODO: programmatically add tags
+		var tags=[];
+		for(var i = 1;i<4; i++){
+			var eachTag = this.props.data['tag_'+i];
+			if(eachTag)	
+				tags.push(eachTag);
+		}
 
 		var createdAt = moment(this.props.data.createdAt);
 		
-		var dataLoadedView = (
+		return (
 			<View style={styles.insideContainer}>
 				<Image
 					style={styles.heroImage}
@@ -49,28 +107,31 @@ var LargeItem = React.createClass({
 					>
 					<LinearGradient colors={['rgba(255,255,255,.3)', 'rgba(255,255,255,1)']} style={styles.linearGradient}>
 					</LinearGradient>
+
 					<View style={styles.mainContainer}>
-						<TouchableOpacity onPress={this.props.href}>
+						<TouchableOpacity onPress={this._toggleLike}>
 							<Text style={[styles.heroText, globalStyles.text.heading]}>
 								{this.props.data.text}	
 							</Text>
 						</TouchableOpacity>
+					</View>
+				</Image>
 
-						<View style={styles.metaData}>
-							<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 50,bottom:-50}} >
-								{(tags.map((tag,i) => 
-									<EachTag style={{marginTop: 7}} key={i} tag={tag} toRoute={this.props.toRoute}/>
-								))}
-							</ScrollView>
+					<View style={styles.metaData}>
+						<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 50,bottom:-50}} >
+							{(tags.map((tag,i) => 
+								<EachTag style={{marginTop: 7}} key={i} tag={tag} toRoute={this.props.toRoute}/>
+							))}
+						</ScrollView>
 
+						<TouchableOpacity onPress={this._toggleLike}>
 							<Icon
-								name='ion|ios-heart-outline'
+								name={this.data.likeCount.length > 0 ? 'ion|ios-heart' : 'ion|ios-heart-outline'}
 								size={35}
-								color='#000'
+								color={this.data.likeCount.length > 0 ? 'red' : '#000'}
 								style={styles.icon}
 							/>
-
-						</View>
+						</TouchableOpacity>
 
 					</View>
 
@@ -87,22 +148,35 @@ var LargeItem = React.createClass({
 							Asked by&nbsp; 
 							<Text style={globalStyles.text.romanBold}>{this.props.data.createdBy.username}</Text>
 						</Text>
+
+						<Text>
+						</Text>
+						<Text>
+						</Text>
 						
-						<Text>
-						</Text>
-						<Text>
-						</Text>
 					</View>
 
-			</Image>
 		</View>
 		);
-		}
 
-		return this.props.data ? dataLoadedView : dataLoadingView; 
 	},
 
 });
+
+var Loader = React.createClass({
+	render: function (){
+		var dataLoadingView = (
+			<View>
+				<Text> Loading... </Text>
+			</View>
+		);
+
+		var dataLoadedView = <LargeItem data={this.props.data} />;
+
+		return this.props.data ? dataLoadedView : dataLoadingView; 
+	
+	}
+})
 
 var imageHeight = height - height*0.33;
 var imageWidth = width - width*0.25;
@@ -129,7 +203,6 @@ var styles = {
 		marginBottom: -1,
 	},
 	mainContainer: {
-		position: 'absolute',
 		backgroundColor: 'transparent',
 		top: -20,
 		left: -20,
@@ -143,7 +216,7 @@ var styles = {
 	metaData: {
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		width: width - 30,
+		width: width - 40,
 	},
 	tagsList: {
 		flexDirection: 'row',
@@ -160,12 +233,12 @@ var styles = {
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		position: 'absolute',
-		top: 180,
-		right: -210,
+		top: imageHeight/2 + 40,
+		right: -imageWidth/2 - 50,
 		width: imageHeight,
 		height: 20,
 	}
 
 }
 
-module.exports = LargeItem;
+module.exports = Loader;

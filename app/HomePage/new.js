@@ -21,17 +21,6 @@ var EachTag = require('../components/EachTag.js');
 var Button = require('../components/Button.js');
 var LargeItem = require('../components/LargeItem.js');
 
-var tags = [
-	{
-		text: 'Love'	
-	},
-	{
-		text: 'Friend'	
-	},
-	{
-		text: 'Couple'	
-	},
-]
 var NewHome = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function() {
@@ -41,7 +30,7 @@ var NewHome = React.createClass({
 			.equalTo('type', 'quotd')
 			.descending("updatedAt")
 			.limit(1)
-			.include(['question', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
+			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
 
 	  return {
 			lastQuotd: lastQuotd 
@@ -52,7 +41,6 @@ var NewHome = React.createClass({
 		}
 	},
 	render: function() {
-		console.log(this.data.lastQuotd)
 		var lastQuotdData;
 		if(this.data.lastQuotd[0])
 			lastQuotdData = this.data.lastQuotd[0].question;
@@ -68,7 +56,7 @@ var NewHome = React.createClass({
 
 				<View style={styles.actionContainer}>
 					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-						<Button text="Share My Heart" />
+						<Button text="Respond" />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
 						<Button text="See Responses From Others" noBorder={true}/>
@@ -92,8 +80,8 @@ var styles = {
 	actionContainer: {
 		width: width - 50,
 		margin: 25,
-		marginTop: 50,
 		marginLeft: 20,
+		marginTop: 10,
 	},
 	actionItem: {
 		marginTop: 5,	

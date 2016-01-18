@@ -72,6 +72,7 @@ var LoginPage = React.createClass({
 					<TextInput
 						style={styles.inputText}
 						onChangeText={(username) => this.setState({username})}
+						autoCorrect={false}
 						value={this.state.username}
 						placeholder="username"
 						placeholderTextColor='#aaa'
@@ -84,6 +85,7 @@ var LoginPage = React.createClass({
 					style={styles.inputText}
 					onChangeText={(password) => this.setState({password})}
 					value={this.state.password}
+					autoCorrect={false}
 					placeholder="password"
 					placeholderTextColor='#aaa'
 					secureTextEntry={true}
