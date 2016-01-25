@@ -16,7 +16,7 @@ var BackButton = React.createClass({
 			<Icon
 				name='ion|ios-arrow-back'
 				size={35}
-				color='#000'
+				color='#bbb'
 				style={styles.icon}
 			/>
 		)
@@ -27,7 +27,6 @@ var styles = StyleSheet.create({
 	icon: {
 		width: 35, 	
 		height: 35, 
-		marginTop: -35,
 	},
 });
 

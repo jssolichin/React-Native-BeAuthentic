@@ -244,7 +244,7 @@ var HeartPage = React.createClass({
 
 				<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
 					<Text style={globalStyles.text.roman}>Questions hearted</Text>
-					<Text style={[globalStyles.text.size.small, {marginTop: 2, marginBottom: 5, color: '#999'}]}>You should ask IRL, or share your heart and answer!</Text>
+					<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
 				</EachDetail>
 
 				<View style={globalStyles.flexRow}>

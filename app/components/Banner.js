@@ -19,10 +19,12 @@ var Banner = React.createClass({
 					<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
 						{this.props.title}
 					</Text>
-					<Text style={[globalStyles.text.roman]}>
+					{this.props.body == undefined ? null : 
+						<Text style={[globalStyles.text.roman]}>
 						{this.props.body}
-					</Text>
+					</Text>}
 				</View>
+				{this.props.onPress == undefined ? null : 
 				<TouchableOpacity onPress={this.props.onPress} style={styles.iconPosition }>
 					<Icon
 						name={'ion|ios-close-empty'}
@@ -30,7 +32,7 @@ var Banner = React.createClass({
 						color='#979797'
 						style={styles.icon}
 					/>
-				</TouchableOpacity>
+				</TouchableOpacity>}
 			</View>
 		);
 	}

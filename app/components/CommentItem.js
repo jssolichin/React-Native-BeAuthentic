@@ -43,7 +43,7 @@ var styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	eachDetailText: {
-		width: width*.7 - 10, 
+		width: width*.7 - 20, 
 	},
 });
 

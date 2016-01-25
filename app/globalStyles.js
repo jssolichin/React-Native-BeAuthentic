@@ -19,6 +19,12 @@ var styles = {
 		heading: {
 			'fontFamily': 'DINCondensed-Bold'	
 		},
+		eachDetailSubheading: {
+			marginTop: 2, 
+			marginBottom: 5, 
+			color: '#999',
+			fontSize: 10,	
+		},
 		roman: {
 			'fontFamily': 'BodoniSvtyTwoITCTT-Book' 
 		},
@@ -33,7 +39,7 @@ var styles = {
 				fontSize: 10,	
 			},
 			medium: {
-				fontSize: 14,	
+				fontSize: 16,	
 			},
 			large: {
 				fontSize: 23,

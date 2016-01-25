@@ -20,6 +20,7 @@ var globalStyles = require("../globalStyles.js");
 var EachTag = require('../components/EachTag.js');
 var Button = require('../components/Button.js');
 var LargeItem = require('../components/LargeItem.js');
+var SinglePage = require('../SinglePage/new.js');
 
 var NewHome = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -40,6 +41,15 @@ var NewHome = React.createClass({
 		return {
 		}
 	},
+	_goToSinglePage: function (){
+		this.props.toRoute({
+			name: 'Respond',
+			component: SinglePage,
+			data: {
+				question: this.data.lastQuotd[0].question,
+			}
+		})	
+	},
 	render: function() {
 		var lastQuotdData;
 		if(this.data.lastQuotd[0])
@@ -55,7 +65,7 @@ var NewHome = React.createClass({
 				<LargeItem data={lastQuotdData}/>
 
 				<View style={styles.actionContainer}>
-					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
+					<TouchableOpacity onPress={this._goToSinglePage} style={styles.actionItem}>
 						<Button text="Respond" />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
