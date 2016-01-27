@@ -46,8 +46,26 @@ var WriteBox = React.createClass({
 	_onSubmitResponse: function (){
 		this.props.onSubmit({
 			text: this.state.text,
-			publicallyShared: this.state.publicallyShared,
+			publicallyShared: true, //make sure we're turning private to public only
 		});
+	},
+	_confirmMakePublic: function (value){
+		if(value){ //make sure we're turning private to public only
+
+			AlertIOS.alert(
+				'You can\'t undo this',
+				'Our community is built on trust. Because you will see private answers that can\'t be unread, you can\'t make private your public responses',
+				[
+					{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+					{text: 'OK', onPress: () => {
+							this.setState({publicallyShared: value});
+							this._onSubmitResponse();
+						}
+					},
+				],
+			);
+
+		}
 	},
 	render: function (){
 		return (
@@ -70,9 +88,9 @@ var WriteBox = React.createClass({
 						Share Publically
 					</Text>
 					<SwitchIOS
+						disabled={this.props.publicallyShared}
 						onValueChange={(value) => {
-							this.setState({publicallyShared: value});
-							this._onSubmitResponse();
+							this._confirmMakePublic(value);
 						}}
 						style={{marginLeft: 10}}
 						value={this.props.publicallyShared} />
@@ -189,8 +207,8 @@ var SinglePage = React.createClass({
 					<Text style={globalStyles.text.eachDetailSubheading}>To see other's hearts, you must share yours</Text>
 				</EachDetail>
 
-				{this.state.comments.map((comment, i) =>
-					 <CommentItem key={i} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
+				{this.data.answer.map((answer, i) =>
+					 <CommentItem key={i} visibleUser={publicallyShared} visibleComment={publicallyShared} data={answer} />
 				 )}
 
 			 </ScrollView>

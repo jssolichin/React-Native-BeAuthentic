@@ -2,7 +2,7 @@ var globalHelpers = {
   censorship: function (text, visible) {
 	  if(visible)
 		  return text;
-	  else {
+	  else if(text){
 		var hiddenComment = '';
 		for(var i = 0; i < text.length; i++)
 			hiddenComment += '█'

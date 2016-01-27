@@ -21,7 +21,7 @@ var CommentItem = React.createClass({
 		if(!this.props.hideUsername)
 			username = (
 				<Text style={styles.eachDetailLead}>
-					{globalHelpers.censorship(this.props.data.name, this.props.visibleUser)}
+					{globalHelpers.censorship(this.props.data.createdBy.username, this.props.visibleUser)}
 				</Text>
 			)
 
@@ -29,7 +29,7 @@ var CommentItem = React.createClass({
 			<EachDetail>
 				{username}
 				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-40}]} numberOfLines={2}>
-					{globalHelpers.censorship(this.props.data.comment, this.props.visibleComment)}
+					{globalHelpers.censorship(this.props.data.text, this.props.visibleComment)}
 				</Text>
 			</EachDetail>
 		);

@@ -87,7 +87,6 @@ var LargeItem = React.createClass({
 	},
 	render: function() {
 
-		console.log(this.data)
 		//TODO: programmatically add tags
 		var tags=[];
 		for(var i = 1;i<4; i++){

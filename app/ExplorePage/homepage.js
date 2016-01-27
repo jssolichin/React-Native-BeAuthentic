@@ -137,6 +137,7 @@ var Homepage = React.createClass({
 					}
 				</View>
 
+				{/*
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore latest questions</Text>
 				</EachDetail>
@@ -149,6 +150,7 @@ var Homepage = React.createClass({
 						data={comment} />
 					)
 				}
+				*/}
 
 			</ScrollView>
 		);
