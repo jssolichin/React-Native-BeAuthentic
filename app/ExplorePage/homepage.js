@@ -20,11 +20,13 @@ var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
 var EachTag = require('../components/EachTag.js');
 var MiniItem = require('../components/MiniItem.js');
+var CollectionItem = require('../components/CollectionItem.js');
 
 var globalStyles = require("../globalStyles.js");
 
 var tags = ["Business", "Group-talk", "Family", "Dreams", "Career", "Ice Breaker", "Love", "Adventurous", "Sibling"];
 
+var collectionName = ['DATE NIGHT', 'GROUP KICK BACK', 'FIRST DATE' ];;
 var heroItems = [
 	{
 		title: "Love Everlasting",
@@ -102,7 +104,15 @@ var Homepage = React.createClass({
 		var tagQuery = new Parse.Query('Tag')
 			.ascending("text")
 			.limit(10);
-	  return { tags: tagQuery };
+
+		var collectionQuery = new Parse.Query('Collection')
+			.ascending("text")
+			.limit(5);
+
+		return { 
+			tags: tagQuery,
+			collection: collectionQuery,
+		};
 	},
 	render: function() {
 
@@ -118,13 +128,23 @@ var Homepage = React.createClass({
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Trending tags</Text>
 				</EachDetail>
-
 				<View style={styles.tagsList}>
 					{this.data.tags.map(
 						(tag, i) => 
 						<EachTag key={i} tag={{text: tag.text}} large={true} toRoute={this.props.toRoute}/>)
 					}
 				</View>
+
+				<EachDetail heading={true}>
+					<Text style={globalStyles.text.roman}>What are you doing?</Text>
+				</EachDetail>
+				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
+					{this.data.collection.map(
+						(collection,i) => 
+							<CollectionItem key={i} data={collection} style={{marginRight: 10,}}/>
+						)
+					}
+				</ScrollView>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore trending questions</Text>
@@ -171,7 +191,7 @@ var styles = StyleSheet.create({
 	},
 	heroBorder: {
 		flex: 1,
-		width: width - width*0.25,
+		width: width - 40,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: 'rgba(255,255,255,.4)',
@@ -190,7 +210,12 @@ var styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		width: width ,
 		marginTop: 10,
-	}
+	},
+	collectionList: {
+		marginTop: 20,
+		marginLeft: 20,
+		height: (width/3 *.65) * 2.1,
+	},
 });
 
 module.exports = Homepage;

@@ -177,8 +177,8 @@ var Loader = React.createClass({
 	}
 })
 
-var imageHeight = height - height*0.33;
-var imageWidth = width - width*0.25;
+var imageWidth = width * .75;
+var imageHeight = imageWidth * 1.50;
 
 var styles = {
 	insideContainer: {
@@ -233,7 +233,7 @@ var styles = {
 		flexDirection: 'row',
 		position: 'absolute',
 		top: imageHeight/2 + 40,
-		right: -imageWidth/2 - 50,
+		right: -imageWidth/2 - 40,
 		width: imageHeight,
 		height: 20,
 	}
