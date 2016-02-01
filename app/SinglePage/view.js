@@ -22,38 +22,27 @@ var Button = require('../components/Button.js');
 var LargeItem = require('../components/LargeItem.js');
 var SinglePage = require('../SinglePage/new.js');
 
-var NewHome = React.createClass({
+var ViewSingle = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function() {
-		var Activity = Parse.Object.extend("Activity");
-		var query = new Parse.Query(Activity);
-		var lastQuotd = query
-			.equalTo('type', 'quotd')
-			.descending("updatedAt")
+		var Question = Parse.Object.extend("Question");
+		var questionQuery = new Parse.Query(Question)
+			.equalTo('objectId', this.props.data.question.objectId)
 			.limit(1)
-			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
+			.include(['createdBy', 'tag_1', 'tag_2', 'tag_3']);
 
 	  return {
-			lastQuotd: lastQuotd 
+			question: questionQuery 
 		  };
 	},
 	getInitialState: function (){
 		return {
 		}
 	},
-	_goToSinglePage: function (){
-		this.props.toRoute({
-			name: 'Respond',
-			component: SinglePage,
-			data: {
-				question: this.data.lastQuotd[0].question,
-			}
-		})	
-	},
 	render: function() {
-		var lastQuotdData;
-		if(this.data.lastQuotd[0])
-			lastQuotdData = this.data.lastQuotd[0].question;
+		var questionData;
+		if(this.data && this.data.question[0])
+			questionData = this.data.question[0];
 
 		return (
 			<ScrollView 
@@ -62,21 +51,9 @@ var NewHome = React.createClass({
 				style={styles.container}
 				>
 
-				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute}/>
+				<LargeItem data={questionData} toRoute={this.props.data.toRoute}/>
 
-				<View style={styles.actionContainer}>
-					<TouchableOpacity onPress={this._goToSinglePage} style={styles.actionItem}>
-						<Button text="Respond" />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-						<Button text="See Responses From Others" noBorder={true}/>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-						<Button text="Ask a Question" noBorder={true}/>
-					</TouchableOpacity>
-				</View>
-
-	</ScrollView>
+			</ScrollView>
 		);
 	},
 
@@ -99,4 +76,4 @@ var styles = {
 
 }
 
-module.exports = NewHome;
+module.exports = ViewSingle;

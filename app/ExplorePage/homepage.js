@@ -24,8 +24,6 @@ var CollectionItem = require('../components/CollectionItem.js');
 
 var globalStyles = require("../globalStyles.js");
 
-var tags = ["Business", "Group-talk", "Family", "Dreams", "Career", "Ice Breaker", "Love", "Adventurous", "Sibling"];
-
 var collectionName = ['DATE NIGHT', 'GROUP KICK BACK', 'FIRST DATE' ];;
 var heroItems = [
 	{
@@ -46,13 +44,13 @@ var heroItems = [
 ];
 
 var topQuestions = [
-	"Given the choice of anyone in the world, whom would you want as a dinner guest?",
-	"Would you like to be famous? In what way?",
-	"Before making a telephone call, do you ever rehearse what you are going to say? Why?",
-	"What would constitute a “perfect” day for you?",
-	"When did you last sing to yourself? To someone else?",
-	"If you were able to live to the age of 90 and retain either the mind or body of a 30-year-old for the last 60 years of your life, which would you want?",
-	"Do you have a secret hunch about how you will die?",
+	{text: "Given the choice of anyone in the world, whom would you want as a dinner guest?"},
+	{text: "Would you like to be famous? In what way?"},
+	{text: "Before making a telephone call, do you ever rehearse what you are going to say? Why?"},
+	{text: "What would constitute a “perfect” day for you?"},
+	{text: "When did you last sing to yourself? To someone else?"},
+	{text: "If you were able to live to the age of 90 and retain either the mind or body of a 30-year-old for the last 60 years of your life, which would you want?"},
+	{text: "Do you have a secret hunch about how you will die?"},
 ]
 
 var comments = [ 
@@ -131,7 +129,7 @@ var Homepage = React.createClass({
 				<View style={styles.tagsList}>
 					{this.data.tags.map(
 						(tag, i) => 
-						<EachTag key={i} tag={{text: tag.text}} large={true} toRoute={this.props.toRoute}/>)
+						<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
 					}
 				</View>
 
@@ -152,7 +150,7 @@ var Homepage = React.createClass({
 				<View style={globalStyles.flexRow}>
 					{topQuestions.slice(0,5).map(
 						(question,i) => 
-							<MiniItem key={i} question={question}/>
+							<MiniItem key={i} data={question}/>
 						)
 					}
 				</View>

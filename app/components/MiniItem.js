@@ -8,23 +8,37 @@ var {
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
+var SinglePageView = require('../SinglePage/view.js');
+
 var globalStyles = require("../globalStyles.js");
 
 var MiniItem = React.createClass({
+	_goToSinglePage: function() {
+	    this.props.toRoute({
+		      name: "A Heart Question",
+			  component: SinglePageView,
+			  data: {
+				  question: this.props.data,
+				  toRoute: this.props.toRoute
+			  },
+		    });
+  	},
 	render: function (){
 		return (
-			<View style={styles.container}>
-				<View style={styles.background}>
-					<Text 
-					numberOfLines={6}
-					style={[
-						globalStyles.text.heading, 
-						styles.text
-					]}>
-						{this.props.question}
-					</Text>	
+			<TouchableOpacity onPress={this._goToSinglePage}>
+				<View style={styles.container}>
+					<View style={styles.background}>
+						<Text 
+						numberOfLines={6}
+						style={[
+							globalStyles.text.heading, 
+							styles.text
+						]}>
+							{this.props.data.text}
+						</Text>	
+					</View>
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 });

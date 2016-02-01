@@ -17,6 +17,7 @@ var moment = require('moment');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var LinearGradient = require('react-native-linear-gradient');
+var SinglePage = require('../SinglePage/new.js');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 
@@ -25,7 +26,6 @@ var LargeItem = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function (){
 
-		console.log('observe')
 		var question = new Parse.Object('Question');
 		question.id = this.props.data.objectId;
 
@@ -85,6 +85,15 @@ var LargeItem = React.createClass({
 			this._markAsLiked();	
 
 	},
+	_goToSinglePage: function (){
+		this.props.toRoute({
+			name: 'Respond',
+			component: SinglePage,
+			data: {
+				question: this.props.data,
+			}
+		})	
+	},
 	render: function() {
 
 		//TODO: programmatically add tags
@@ -96,6 +105,8 @@ var LargeItem = React.createClass({
 		}
 
 		var createdAt = moment(this.props.data.createdAt);
+
+		console.log(this);
 		
 		return (
 			<View style={styles.insideContainer}>
@@ -108,7 +119,7 @@ var LargeItem = React.createClass({
 					</LinearGradient>
 
 					<View style={styles.mainContainer}>
-						<TouchableOpacity onPress={this._toggleLike}>
+						<TouchableOpacity onPress={this._goToSinglePage}>
 							<Text style={[styles.heroText, globalStyles.text.heading]}>
 								{this.props.data.text}	
 							</Text>
@@ -170,7 +181,7 @@ var Loader = React.createClass({
 			</View>
 		);
 
-		var dataLoadedView = <LargeItem data={this.props.data} />;
+		var dataLoadedView = <LargeItem data={this.props.data} toRoute={this.props.toRoute} />;
 
 		return this.props.data ? dataLoadedView : dataLoadingView; 
 	

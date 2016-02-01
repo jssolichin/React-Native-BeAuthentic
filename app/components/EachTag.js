@@ -16,11 +16,15 @@ var EachTag = React.createClass({
 			this.props.callback(this.props.tag);
 
 		if(this.props.toRoute){
-			var ListView = require("./ListView.js");
+			var GridView = require("./GridView.js");
 
 			this.props.toRoute({
-				  name: 'Hearts On "' + this.props.tag + '"',
-				  component: ListView
+				  name: '#' + this.props.tag.text,
+				  component: GridView,
+				  data: {
+					  tag: this.props.tag, 
+					  toRoute: this.props.toRoute,
+				  }
 				});
 		}
 	},
