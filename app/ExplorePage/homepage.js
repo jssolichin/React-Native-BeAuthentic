@@ -19,8 +19,8 @@ var Swiper = require('react-native-swiper')
 var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
 var EachTag = require('../components/EachTag.js');
-var MiniItem = require('../components/MiniItem.js');
 var CollectionItem = require('../components/CollectionItem.js');
+var GridView = require("../components/GridView.js");
 
 var globalStyles = require("../globalStyles.js");
 
@@ -124,7 +124,7 @@ var Homepage = React.createClass({
 				</Swiper>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.roman}>Explore Trending tags</Text>
+					<Text style={globalStyles.text.roman}>Explore Trending Tags</Text>
 				</EachDetail>
 				<View style={styles.tagsList}>
 					{this.data.tags.map(
@@ -134,7 +134,7 @@ var Homepage = React.createClass({
 				</View>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.roman}>What are you doing?</Text>
+					<Text style={globalStyles.text.roman}>What are You Doing?</Text>
 				</EachDetail>
 				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
 					{this.data.collection.map(
@@ -145,15 +145,9 @@ var Homepage = React.createClass({
 				</ScrollView>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.roman}>Explore trending questions</Text>
+					<Text style={globalStyles.text.roman}>Explore Latest Questions</Text>
 				</EachDetail>
-				<View style={globalStyles.flexRow}>
-					{topQuestions.slice(0,5).map(
-						(question,i) => 
-							<MiniItem key={i} data={question}/>
-						)
-					}
-				</View>
+				<GridView type="latestQuestions" toRoute={this.props.toRoute}/>
 
 				{/*
 				<EachDetail heading={true}>

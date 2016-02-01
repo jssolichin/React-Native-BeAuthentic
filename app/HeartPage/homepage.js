@@ -19,7 +19,7 @@ var imagePicker = require('react-native-imagepicker');
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
 var Button = require('../components/Button.js');
-var MiniItem = require('../components/MiniItem.js');
+var GridView = require("../components/GridView.js");
 var globalStyles = require('../globalStyles.js');
 
 var topQuestions = [
@@ -246,14 +246,8 @@ var HeartPage = React.createClass({
 					<Text style={globalStyles.text.roman}>Questions hearted</Text>
 					<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
 				</EachDetail>
+				<GridView type="myFavoriteQuestions" toRoute={this.props.toRoute}/>
 
-				<View style={globalStyles.flexRow}>
-					{topQuestions.slice(0,5).map(
-						(question,i) => 
-						<MiniItem key={i} question={question} />
-						)
-					}
-				</View>
 			</ScrollView>
 		);
 	}

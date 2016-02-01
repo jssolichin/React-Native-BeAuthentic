@@ -63,23 +63,53 @@ var GridViewLoader = React.createClass({
 		var queryByTag3 = new Parse.Query('Question')
 			.equalTo('tag_3', tag);
 		
-		var questionQuery = Parse.Query.or(queryByTag1, queryByTag2, queryByTag3)
+		var questionsQuery = Parse.Query.or(queryByTag1, queryByTag2, queryByTag3)
 			.descending("createdAt");
 
-		  return { question: questionQuery };
+		  return { questions: questionsQuery };
+	},
+	_queryLatestQuestions: function (){
+
+		var questionsQuery = new Parse.Query('Question')
+			.descending("createdAt").limit(6);
+
+		  return { questions: questionsQuery };
+	},
+	_queryMyFavoriteQuestions: function (){
+
+		var query = new Parse.Query('Activity');
+		var questionsQuery = query
+			.equalTo('type', 'liked')
+			.equalTo('fromUser', Parse.User.current())
+			.descending("createdAt")
+			.limit(6)
+			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
+
+		  return { questions: questionsQuery };
 	},
 	mixins: [ParseReact.Mixin],
 	observe: function(props, state) {
-		if(this.props.data.tag)
+		if(this.props.data && this.props.data.tag)
 			return this._queryByTag();
-		else 
-			return {}
+		else if(this.props.type == 'latestQuestions')
+			return this._queryLatestQuestions();
+		else if(this.props.type == 'myFavoriteQuestions')
+			return this._queryMyFavoriteQuestions();
+		else
+			return {'error': 'no type selected'}
 
 	},
 	render: function (){
 
-		if(this.data && this.data.question)	
-			return <GridView data={this.data.question} toRoute={this.props.data.toRoute}/>;
+		if(this.data && this.data.questions) {
+			var data = this.data.questions;
+
+			if(data[0] && data[0].className == 'Activity')	
+				data = data.map((activity) => activity.question)
+
+			return <GridView data={data} toRoute={this.props.toRoute || this.props.data.toRoute}/>;
+
+		}
 
 	}
 });
