@@ -9,17 +9,22 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
 var SinglePageView = require('../SinglePage/view.js');
+var AddButton = require('./AddButton.js');
 
 var globalStyles = require("../globalStyles.js");
 
 var MiniItem = React.createClass({
+	_addToCollection: function () {
+		return 	<AddButton data={this.props.data}/>;
+	},
 	_goToSinglePage: function() {
 	    this.props.toRoute({
 		      name: "A Heart Question",
 			  component: SinglePageView,
+			  rightCorner: this._addToCollection,
 			  data: {
 				  question: this.props.data,
-				  toRoute: this.props.toRoute
+				  toRoute: this.props.toRoute,
 			  },
 		    });
   	},

@@ -1,3 +1,5 @@
+//TODO: add loading state, add empty state
+
 var React = require('react-native');
 var {
 	AppRegistry,
@@ -11,6 +13,7 @@ var ParseReact = require('parse-react/react-native');
 var SinglePage = require('../SinglePage/index.js');
 var EachDetail = require('../components/EachDetail.js');
 var MiniItem = require('../components/MiniItem.js');
+var Banner = require('../components/Banner.js');
 
 var globalStyles = require("../globalStyles.js");
 
@@ -21,15 +24,12 @@ var GridView = React.createClass({
 			dataSource: ds.cloneWithRows(this.props.data),
 		};
 	},
-	_goToSinglePage: function(rowData) {
-	    this.props.toRoute({
-		      name: "A Heart Question",
-			  component: SinglePage,
-			  data: rowData,
-		    });
-  	},
 	render: function() {
+
 		return (
+			<View style={styles.container}>
+			{this.props.source.description ? <Banner body={this.props.source.description} /> : null}
+			{this.props.data.length > 0 ? 
 			<ListView
 				automaticallyAdjustContentInsets={false}
 				contentInset={{bottom: 50}}
@@ -46,11 +46,25 @@ var GridView = React.createClass({
 					);
 				}}
 			/>
+			: <Text>There are no questions in this collection </Text>}
+		</View>
 		);
 	}
 });
 
 var GridViewLoader = React.createClass({
+	_queryByCollection: function (){
+
+		var collection = new Parse.Object('Collection')
+		collection.id = this.props.data.collection.objectId;
+
+		var questionsQuery = collection.relation('questions').query();
+
+		console.log(questionsQuery);
+
+		return { questions: questionsQuery };
+
+	},
 	_queryByTag: function (){
 		var Tag = new Parse.Object.extend('Tag');
 		var tag = new Tag();
@@ -91,6 +105,8 @@ var GridViewLoader = React.createClass({
 	observe: function(props, state) {
 		if(this.props.data && this.props.data.tag)
 			return this._queryByTag();
+		else if(this.props.data && this.props.data.collection)
+			return this._queryByCollection();
 		else if(this.props.type == 'latestQuestions')
 			return this._queryLatestQuestions();
 		else if(this.props.type == 'myFavoriteQuestions')
@@ -107,9 +123,11 @@ var GridViewLoader = React.createClass({
 			if(data[0] && data[0].className == 'Activity')	
 				data = data.map((activity) => activity.question)
 
-			return <GridView data={data} toRoute={this.props.toRoute || this.props.data.toRoute}/>;
+			return <GridView data={data} source={this.props.data || this.props.type} toRoute={this.props.toRoute || this.props.data.toRoute}/>;
 
 		}
+		else 
+			return <Text> Loading... </Text>;
 
 	}
 });
@@ -117,6 +135,7 @@ var GridViewLoader = React.createClass({
 var styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
+		flex: 1,
 	},
 });
 

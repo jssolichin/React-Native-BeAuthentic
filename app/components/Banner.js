@@ -14,11 +14,13 @@ var globalStyles = require("../globalStyles.js");
 var Banner = React.createClass({
 	render: function (){
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, this.props.style]}>
 				<View style={{ width: width-100 }}>
+					{this.props.title == undefined ? null : 
 					<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
 						{this.props.title}
 					</Text>
+					}
 					{this.props.body == undefined ? null : 
 						<Text style={[globalStyles.text.roman]}>
 						{this.props.body}

@@ -127,10 +127,11 @@ var ProfilePage = React.createClass({
 				<Text style={globalStyles.text.roman}>Questions I have asked</Text>
 			</EachDetail>
 			<View style={[globalStyles.flexRow]}>
-			{topQuestions.slice(0,5).map(
+			{/*
+					topQuestions.slice(0,5).map(
 				(question, i) => 
-					<MiniItem key={i} question={question}/>
-				)
+					.<MiniItem key={i} question={question}/>
+				) */
 			}
 			</View>
 

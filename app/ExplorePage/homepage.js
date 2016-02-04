@@ -1,3 +1,9 @@
+//TODO: 
+// - create sample collection
+// - Link hero to collection
+// - Link collection to list of questions
+// - big view
+
 'use strict';
 
 var React = require('react-native');
@@ -14,7 +20,6 @@ var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 
-var Carousel = require('react-native-carousel');
 var Swiper = require('react-native-swiper')
 var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
@@ -24,7 +29,6 @@ var GridView = require("../components/GridView.js");
 
 var globalStyles = require("../globalStyles.js");
 
-var collectionName = ['DATE NIGHT', 'GROUP KICK BACK', 'FIRST DATE' ];;
 var heroItems = [
 	{
 		title: "Love Everlasting",
@@ -40,39 +44,6 @@ var heroItems = [
 		title: "New Kids, Cool Kids",
 		subtitle: "Easy ice-breakers when meeting new people.",
 		tag: "friendship"
-	}
-];
-
-var topQuestions = [
-	{text: "Given the choice of anyone in the world, whom would you want as a dinner guest?"},
-	{text: "Would you like to be famous? In what way?"},
-	{text: "Before making a telephone call, do you ever rehearse what you are going to say? Why?"},
-	{text: "What would constitute a “perfect” day for you?"},
-	{text: "When did you last sing to yourself? To someone else?"},
-	{text: "If you were able to live to the age of 90 and retain either the mind or body of a 30-year-old for the last 60 years of your life, which would you want?"},
-	{text: "Do you have a secret hunch about how you will die?"},
-]
-
-var comments = [ 
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	},
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	},
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	},
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-},
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
 	}
 ];
 
@@ -139,7 +110,7 @@ var Homepage = React.createClass({
 				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
 					{this.data.collection.map(
 						(collection,i) => 
-							<CollectionItem key={i} data={collection} style={{marginRight: 10,}}/>
+							<CollectionItem key={i} data={collection} toRoute={this.props.toRoute} style={{marginRight: 10,}}/>
 						)
 					}
 				</ScrollView>
