@@ -10,7 +10,7 @@ var {
 	TouchableOpacity,
 } = React;
 var { Icon, } = require('react-native-icons');
-var Router = require('react-native-router');
+var Router = require('gb-native-router');
 var Parse = require('parse/react-native');
 
 var globalStyles = require("../globalStyles.js");

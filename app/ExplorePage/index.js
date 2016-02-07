@@ -8,7 +8,7 @@ var {
 	View,
 	StatusBarIOS,
 } = React;
-var Router = require('react-native-router');
+var Router = require('gb-native-router');
 var globalStyles = require("../globalStyles.js");
 
 StatusBarIOS.setStyle('default');

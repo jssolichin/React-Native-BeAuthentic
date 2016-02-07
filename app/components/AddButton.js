@@ -53,12 +53,10 @@ var AddButton = React.createClass({
 			name: this.state.newCollectionTitle,
 		})
 		.dispatch()
-		/*
 		.then(function(newRow) {
-		  ParseReact.Mutation.AddRelation(newRow, 'questions', this.props.data);
+		 	ParseReact.Mutation.AddRelation(newRow, 'questions', this.props.data);
 		})
 		.dispatch();
-		*/
 	},
 	_createCollectionPromptTitle: function (){
 		AlertIOS.prompt(
@@ -82,6 +80,7 @@ var AddButton = React.createClass({
 		mutator.dispatch()
 			.then((a,b,c) => {
 				console.log(a,b,c)	
+				Alert.alert('Added to Collection!')
 			})
 
 	},

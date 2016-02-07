@@ -9,9 +9,14 @@ var {
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
+var CollectionSettingsButton = require('./CollectionSettingsButton.js');
+
 var globalStyles = require("../globalStyles.js");
 
 var MiniItem = React.createClass({
+	_collectionSettings: function () {
+		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
+	},
 	_goToCollectionView: function (){
 			
 		if(this.props.toRoute){
@@ -20,6 +25,7 @@ var MiniItem = React.createClass({
 			this.props.toRoute({
 				  name: this.props.data.name,
 				  component: GridView,
+				  rightCorner: this._collectionSettings,
 				  data: {
 					  collection: this.props.data, 
 					  toRoute: this.props.toRoute,
