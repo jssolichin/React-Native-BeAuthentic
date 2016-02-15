@@ -28,9 +28,15 @@ var MiniItem = React.createClass({
 			  },
 		    });
   	},
+	_handlePress: function (){
+		if(this.props.secondaryMode)
+			this.props.secondary(this.props.source.collection.objectId, this.props.data.objectId);
+		else
+			this._goToSinglePage();
+	},
 	render: function (){
 		return (
-			<TouchableOpacity onPress={this._goToSinglePage}>
+			<TouchableOpacity onPress={this._handlePress}>
 				<View style={styles.container}>
 					<View style={styles.background}>
 						<Text 
@@ -43,6 +49,11 @@ var MiniItem = React.createClass({
 						</Text>	
 					</View>
 				</View>
+				{this.props.secondaryMode ?
+					<View style={styles.deleteContainer}>
+						<Text style={[globalStyles.text.color.white, globalStyles.text.size.large]}>&times;</Text>
+					</View>
+				: null}
 			</TouchableOpacity>
 		);
 	}
@@ -70,6 +81,15 @@ var styles = {
 		margin: -5,	
 		fontSize: 17,
 		backgroundColor: 'transparent'
+	},
+	deleteContainer: {
+		backgroundColor: '#000',
+		padding: 7,
+		paddingVertical: 1,
+		position: 'absolute',
+		top: eachItemHeight/2 ,
+		left: eachItemWidth/2 +5,
+		borderRadius: 20,
 	}
 }
 
