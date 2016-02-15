@@ -7,6 +7,8 @@ var {
 	Image,
 } = React;
 var Dimensions = require('Dimensions');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 var {width, height} = Dimensions.get('window');
 
 var CollectionSettingsButton = require('./CollectionSettingsButton.js');
@@ -14,6 +16,11 @@ var CollectionSettingsButton = require('./CollectionSettingsButton.js');
 var globalStyles = require("../globalStyles.js");
 
 var MiniItem = React.createClass({
+	mixins: [ParseReact.Mixin],
+	observe: function() {
+	  return {
+	  };
+	},
 	_collectionSettings: function () {
 		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
 	},
@@ -22,10 +29,14 @@ var MiniItem = React.createClass({
 		if(this.props.toRoute){
 			var GridView = require("./GridView.js");
 
+			var rightCorner;
+			if(this.props.data.createdBy.objectId == Parse.User.current().id)
+				rightCorner = this._collectionSettings;
+
 			this.props.toRoute({
 				  name: this.props.data.name,
 				  component: GridView,
-				  rightCorner: this._collectionSettings,
+				  rightCorner: rightCorner,
 				  data: {
 					  collection: this.props.data, 
 					  toRoute: this.props.toRoute,

@@ -1,6 +1,5 @@
-//TODO: Add remove from collection
+//TODO: 
 // - Add cover image
-// - refresh after changing properties
 
 'use strict';
 

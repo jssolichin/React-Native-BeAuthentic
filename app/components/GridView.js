@@ -39,6 +39,7 @@ var GridView = React.createClass({
 				style={[styles.container]}
 				contentContainerStyle={globalStyles.flexRow}
 				dataSource={this.state.dataSource.cloneWithRows(this.props.data)}
+				bounces={false}
 				renderRow={(rowData) => {
 					return (
 						<MiniItem 
@@ -122,9 +123,9 @@ var GridViewLoader = React.createClass({
 	},
 	secondaryModeHandler: function (){
 		if(this.props.data && this.props.data.collection)
-			return this.removeFromCollection;
+			return this.props.data.collection.createdBy.objectId == Parse.User.current().id ? this.removeFromCollection : undefined;
 		else
-			return undefined
+			return undefined;
 	},
 	removeFromCollection: function (data){
 		var collection = new Parse.Object.extend('Collection');

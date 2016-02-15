@@ -41,7 +41,8 @@ var MiniItem = React.createClass({
 		});
 	},
 	_toggleSecondaryMode: function(){
-		this.setState({secondaryMode: !this.state.secondaryMode})	
+		if(this.props.secondary)
+			this.setState({secondaryMode: !this.state.secondaryMode});
 	},
 	render: function (){
 		return (

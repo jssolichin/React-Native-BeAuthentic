@@ -1,8 +1,5 @@
 //TODO: 
-// - create sample collection
 // - Link hero to collection
-// - Link collection to list of questions
-// - big view
 
 'use strict';
 
