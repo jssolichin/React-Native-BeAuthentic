@@ -24,11 +24,7 @@ var GridView = React.createClass({
 		var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 		return {
 			dataSource: ds.cloneWithRows(this.props.data),
-			secondaryMode: false,
 		};
-	},
-	_toggleSecondayMode: function (){
-		this.setState({secondaryMode: !this.state.secondaryMode})	
 	},
 	render: function() {
 
@@ -49,18 +45,12 @@ var GridView = React.createClass({
 							key={rowData.objectId} 
 							data={rowData}
 							toRoute={this.props.toRoute}
-							secondaryMode={this.state.secondaryMode}
 							secondary={this.props.secondary}
 							source={this.props.source}
 						/>
 					);
 				}}
 			/>
-			{this.props.secondary ?
-			<TouchableOpacity onPress={this._toggleSecondayMode}>
-				<Text>Toggle Secondary Mode</Text>
-			</TouchableOpacity>
-			: null }
 		</View>
 			: <Text>There are no questions in this collection </Text>}
 		</View>
@@ -136,12 +126,12 @@ var GridViewLoader = React.createClass({
 		else
 			return undefined
 	},
-	removeFromCollection: function (collectionId, objectId){
+	removeFromCollection: function (data){
 		var collection = new Parse.Object.extend('Collection');
-		collection.objectId = collectionId;
+		collection.objectId = data.collectionId;
 
 		var question = new Parse.Object.extend('Question');
-		question.objectId = objectId;
+		question.objectId = data.objectId;
 
 		var promise = ParseReact.Mutation.RemoveRelation(collection, 'questions', question)
 		.dispatch();

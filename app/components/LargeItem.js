@@ -138,7 +138,7 @@ var LargeItem = React.createClass({
 							<Icon
 								name={this.data.likeCount.length > 0 ? 'ion|ios-heart' : 'ion|ios-heart-outline'}
 								size={35}
-								color={this.data.likeCount.length > 0 ? 'red' : '#000'}
+								color={this.data.likeCount.length > 0 ? globalStyles.color.red.color : '#000'}
 								style={styles.icon}
 							/>
 						</TouchableOpacity>

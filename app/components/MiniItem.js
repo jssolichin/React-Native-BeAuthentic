@@ -14,9 +14,15 @@ var AddButton = require('./AddButton.js');
 var globalStyles = require("../globalStyles.js");
 
 var MiniItem = React.createClass({
+	getInitialState: function (){
+		return {
+			secondaryMode: false,
+		}	
+	},
 	_addToCollection: function () {
 		return 	<AddButton data={this.props.data}/>;
 	},
+	//TODO: delete question funct
 	_goToSinglePage: function() {
 	    this.props.toRoute({
 		      name: "A Heart Question",
@@ -28,15 +34,19 @@ var MiniItem = React.createClass({
 			  },
 		    });
   	},
-	_handlePress: function (){
-		if(this.props.secondaryMode)
-			this.props.secondary(this.props.source.collection.objectId, this.props.data.objectId);
-		else
-			this._goToSinglePage();
+	_callSecondaryMode: function (){
+		this.props.secondary({
+			collectionId: this.props.source.collection.objectId, 
+			objectId: this.props.data.objectId,
+		});
+	},
+	_toggleSecondaryMode: function(){
+		this.setState({secondaryMode: !this.state.secondaryMode})	
 	},
 	render: function (){
 		return (
-			<TouchableOpacity onPress={this._handlePress}>
+			<View>
+			<TouchableOpacity onPress={this._goToSinglePage} onLongPress={this._toggleSecondaryMode}>
 				<View style={styles.container}>
 					<View style={styles.background}>
 						<Text 
@@ -49,12 +59,22 @@ var MiniItem = React.createClass({
 						</Text>	
 					</View>
 				</View>
-				{this.props.secondaryMode ?
-					<View style={styles.deleteContainer}>
-						<Text style={[globalStyles.text.color.white, globalStyles.text.size.large]}>&times;</Text>
-					</View>
-				: null}
 			</TouchableOpacity>
+				{this.state.secondaryMode ?
+					<TouchableOpacity style={styles.secondaryContainer} onPress={this._toggleSecondaryMode}>
+						<View style={globalStyles.centerContent}>
+							<TouchableOpacity onPress={this._callSecondaryMode} >
+								<View style={styles.deleteContainer} >
+									<Text style={[globalStyles.text.color.white, globalStyles.text.size.large]}>&times;</Text>
+								</View>
+							</TouchableOpacity>
+							<View style={[styles.deleteContainer, styles.cancelContainer]}>
+								<Text style={[]}>Cancel</Text>
+							</View>
+						</View>
+					</TouchableOpacity>
+				: null}
+			</View>
 		);
 	}
 });
@@ -82,15 +102,26 @@ var styles = {
 		fontSize: 17,
 		backgroundColor: 'transparent'
 	},
+	secondaryContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		width: eachItemWidth + eachItemPadding*2,
+		height: eachItemHeight + eachItemPadding*2,
+		alignItems: 'center',
+		justifyContent: 'center',
+		backgroundColor: 'rgba(255,255,255, .6)',
+	},
 	deleteContainer: {
-		backgroundColor: '#000',
+		borderRadius: 20,
 		padding: 7,
 		paddingVertical: 1,
-		position: 'absolute',
-		top: eachItemHeight/2 ,
-		left: eachItemWidth/2 +5,
-		borderRadius: 20,
-	}
+		backgroundColor: globalStyles.color.red.color,
+	},
+	cancelContainer: {
+		marginTop: 15,
+		backgroundColor: 'transparent',
+	},
 }
 
 module.exports = MiniItem

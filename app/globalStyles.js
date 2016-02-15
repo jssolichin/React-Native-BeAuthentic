@@ -8,6 +8,11 @@ var styles = {
 			color: '#fff',
 		},
 	},
+	color: {
+		red: {
+			color: 'red',
+		},
+	},
 	centerContent: {
 		flex: 1, alignItems: 'center', justifyContent: 'center',
 	},
