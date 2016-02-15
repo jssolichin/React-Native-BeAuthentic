@@ -46,17 +46,18 @@ var heroItems = [
 
 var Hero = React.createClass({
 	render: function() {
+		var uri = this.props.data.coverImage.url();
 		return (
 				<Image
 					style={styles.heroContainer}
-					source={{uri: 'http://i.imgur.com/h4L179U.png'}}
+					source={{uri: uri}}
 					>
 				<View style={styles.heroBorder}>
 					<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
-						{this.props.main.toUpperCase()}
+						{this.props.data.name.toUpperCase()}
 					</Text>
 					<Text style={[globalStyles.text.roman, {marginTop: -5}]}>
-						{this.props.subtitle}
+						{this.props.data.description}
 					</Text>
 				</View>
 			</Image>
@@ -75,9 +76,15 @@ var Homepage = React.createClass({
 			.ascending("text")
 			.limit(5);
 
+		var heroCollectionQuery = new Parse.Query('Collection')
+			.exists('heroItem')
+			.ascending('createdAt')
+			.limit(3);
+
 		return { 
 			tags: tagQuery,
 			collection: collectionQuery,
+			heroCollection: heroCollectionQuery,
 		};
 	},
 	render: function() {
@@ -88,18 +95,18 @@ var Homepage = React.createClass({
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
 				<Swiper dot={passiveDot} activeDot={activeDot} height={145} showPagination={true} autoplay={true}>
-					{heroItems.map((tag, i) => <Hero key={i} main={tag.title} subtitle={tag.subtitle}/> )}
+					{this.data.heroCollection.map((collection, i) => <Hero key={i} data={collection}/> )}
 				</Swiper>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Trending Tags</Text>
 				</EachDetail>
-				<View style={styles.tagsList}>
+				<ScrollView horizontal={true} style={styles.tagsList}>
 					{this.data.tags.map(
 						(tag, i) => 
 						<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
 					}
-				</View>
+				</ScrollView>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>What are You Doing?</Text>
@@ -167,7 +174,7 @@ var styles = StyleSheet.create({
 	tagsList: {
 		paddingHorizontal: 20,
 		flexDirection: 'row',
-		flexWrap: 'wrap',
+		//flexWrap: 'wrap',
 		width: width ,
 		marginTop: 10,
 	},
