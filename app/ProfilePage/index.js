@@ -12,37 +12,30 @@ var {
 var { Icon, } = require('react-native-icons');
 var Router = require('gb-native-router');
 var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 
 var globalStyles = require("../globalStyles.js");
 
 StatusBarIOS.setStyle('default');
 
 var BackButton = require('../components/BackButton.js');
+var ProfileSettingsButton = require('../components/ProfileSettingsButton.js');
 var HomePage = require('./homepage.js');
-
-var firstRoute = {
-	name: 'My Heart',
-	component: HomePage
-};
-
-var LogoutButton = React.createClass({
-	_onPress () {
-		Parse.User.logOut();	
-	},
-	render() {
-		return (
-			<TouchableOpacity onPress={this._onPress}>
-				<Text style={styles.rightButton}>LOG OUT</Text>
-			</TouchableOpacity>
-		)
-	}
-}); 
 
 var Navigator = React.createClass({
 	render: function() {
+
+		var firstRoute = {
+			name: Parse.User.current().getUsername(),
+			component: HomePage,
+			data: {
+				userId: Parse.User.current().id,
+			}
+		};
+
 		return (
 			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={globalStyles.router.header} titleStyle={[globalStyles.router.title, globalStyles.text.heading]} 
-				//rightCorner={LogoutButton}
+				rightCorner={ProfileSettingsButton}
 			/>
 		);
 	},
@@ -50,15 +43,6 @@ var Navigator = React.createClass({
 });
 
 var styles = {
-	rightButton: {
-		marginTop: -32,	
-		marginRight: 7,
-		color: '#000',
-		borderWidth: 0,
-		padding: 5,
-		paddingHorizontal: 7,
-		borderColor: '#000'
-	}
 }
 
 module.exports = Navigator;
