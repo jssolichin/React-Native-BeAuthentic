@@ -16,7 +16,8 @@ var globalStyles = require("../globalStyles.js");
 
 var CommentItem = React.createClass({
 	render: function() {
-		var username = null;
+		var username = null,
+			question = null;
 
 		if(!this.props.hideUsername)
 			username = (
@@ -25,12 +26,22 @@ var CommentItem = React.createClass({
 				</Text>
 			)
 
+		if(!this.props.hideQuestion)
+			question = (
+				<Text style={[globalStyles.text.heading]}>
+					{this.props.data.question.text}
+				</Text>
+			)
+
 		return (
 			<EachDetail>
 				{username}
+				<View>
+				{question}
 				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-40}]} numberOfLines={2}>
 					{globalHelpers.censorship(this.props.data.text, this.props.visibleComment)}
-				</Text>
+					</Text>
+				</View>
 			</EachDetail>
 		);
 	}

@@ -246,7 +246,7 @@ var HeartPage = React.createClass({
 					<Text style={globalStyles.text.roman}>Questions hearted</Text>
 					<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
 				</EachDetail>
-				<GridView type="myFavoriteQuestions" toRoute={this.props.toRoute}/>
+				<GridView query={{favoritesByUserId: Parse.User.current().id}} toRoute={this.props.toRoute}/>
 
 			</ScrollView>
 		);

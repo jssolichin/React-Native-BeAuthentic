@@ -30,12 +30,11 @@ var GridView = React.createClass({
 
 		return (
 			<View style={styles.container}>
-			{this.props.source.description ? <Banner body={this.props.source.description} /> : null}
+			{this.props.source && this.props.source.description ? <Banner body={this.props.source.description} /> : null}
 			{this.props.data.length > 0 ? 
 				<View>
 			<ListView
 				automaticallyAdjustContentInsets={false}
-				contentInset={{bottom: 50}}
 				style={[styles.container]}
 				contentContainerStyle={globalStyles.flexRow}
 				dataSource={this.state.dataSource.cloneWithRows(this.props.data)}
@@ -93,14 +92,24 @@ var GridViewLoader = React.createClass({
 		var questionsQuery = new Parse.Query('Question')
 			.descending("createdAt").limit(6);
 
+		if(this.props.query && this.props.query.questionsByUserId){
+			var user = new Parse.User();
+			user.id = this.props.query.questionsByUserId;
+
+			questionsQuery.equalTo('createdBy', user);
+		}
+
 		  return { questions: questionsQuery };
 	},
-	_queryMyFavoriteQuestions: function (){
+	_queryFavoriteQuestions: function (){
+
+		var user = new Parse.User();
+		user.id = this.props.query.favoritesByUserId;
 
 		var query = new Parse.Query('Activity');
 		var questionsQuery = query
 			.equalTo('type', 'liked')
-			.equalTo('fromUser', Parse.User.current())
+			.equalTo('fromUser', user)
 			.descending("createdAt")
 			.limit(6)
 			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
@@ -113,10 +122,10 @@ var GridViewLoader = React.createClass({
 			return this._queryByTag();
 		else if(this.props.data && this.props.data.collection)
 			return this._queryByCollection();
-		else if(this.props.type == 'latestQuestions')
+		else if(this.props.type == 'latestQuestions' || (this.props.query && this.props.query.questionsByUserId))
 			return this._queryLatestQuestions();
-		else if(this.props.type == 'myFavoriteQuestions')
-			return this._queryMyFavoriteQuestions();
+		else if(this.props.query && this.props.query.favoritesByUserId)
+			return this._queryFavoriteQuestions();
 		else
 			return {'error': 'no type selected'}
 
@@ -143,6 +152,7 @@ var GridViewLoader = React.createClass({
 	},
 	render: function (){
 
+		console.log(this.data)
 		if(this.data && this.data.questions) {
 			var data = this.data.questions;
 

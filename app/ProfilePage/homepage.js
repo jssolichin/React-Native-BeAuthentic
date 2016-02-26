@@ -9,13 +9,16 @@ var {
   ScrollView,
 } = React;
 var Dimensions = require('Dimensions');
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
 
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
-var CommentItem = require('../components/CommentItem.js');
-var MiniItem = require('../components/MiniItem.js');
+var CommentList = require('../components/CommentList.js');
+var GridView = require('../components/GridView.js');
+
 var globalStyles = require("../globalStyles.js");
 var globalHelpers = require("../globalHelpers.js");
 
@@ -24,16 +27,6 @@ var stats = [
 	{name: 'Hearts Shared', value: 120},
 	{name: 'Heart to Heart', value: 150},
 	{name: 'Heart Cares', value: 140},
-]
-
-var topQuestions = [
-	"Given the choice of anyone in the world, whom would you want as a dinner guest?",
-	"Would you like to be famous? In what way?",
-	"Before making a telephone call, do you ever rehearse what you are going to say? Why?",
-	"What would constitute a “perfect” day for you?",
-	"When did you last sing to yourself? To someone else?",
-	"If you were able to live to the age of 90 and retain either the mind or body of a 30-year-old for the last 60 years of your life, which would you want?",
-	"Do you have a secret hunch about how you will die?",
 ]
 
 var comments = [ 
@@ -72,16 +65,19 @@ var ProfilePage = React.createClass({
 	_addFriend: function (){
 		this.setState({visible: true});
 	},
-  render: function() {
+	render: function() {
+
 	  var profileImage;
-	  if(this.state.visible)
+	  if(this.state.visible){
+		  var uri = this.props.data.img_url.url();
 		  profileImage = (
 				<Image
 					style={styles.profileImage}
-					source={require('image!profileImage')}
+					source={{uri: uri}}
 					resizeMode='contain'
 				/>
-	  )
+		  )
+	  }
 	  else 
 		  profileImage = (
 			<Icon
@@ -91,6 +87,8 @@ var ProfilePage = React.createClass({
 			  style={styles.profileImage}
 			/>
 		  )
+
+		  var currentUserId = Parse.User.current().id;
 
     return (
 		<ScrollView 
@@ -103,12 +101,11 @@ var ProfilePage = React.createClass({
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
 					<Text style={[globalStyles.text.heading, globalStyles.text.size.large, globalStyles.text.weight.bold]}>
-						{globalHelpers.censorship('Jonathan Solichin', this.state.visible)}
+						{globalHelpers.censorship(this.props.data.name, this.state.visible)}
 					</Text>
 					<Text style={[globalStyles.text.roman, {marginTop: -5,}]}>
-						{globalHelpers.censorship('Something about myself here. #LiveLoveLaugh', this.state.visible)}
+						{globalHelpers.censorship(this.props.data.description, this.state.visible)}
 					</Text>
-					{this.state.visible ? <Button text="Edit Profile" style={{marginVertical: 10,}}/> : null}
 				</View>
 			</View>
 
@@ -116,24 +113,21 @@ var ProfilePage = React.createClass({
 				{stats.map((stat,i) => <Stat key={i} data={stat} />)}
 			</View>
 
+			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
+				<Text style={globalStyles.text.roman}>Questions hearted</Text>
+				<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
+			</EachDetail>
+			<GridView query={{questionsByUserId: currentUserId}} toRoute={this.props.toRoute}/>
+
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions I have answered</Text>
 			</EachDetail>
-				{this.state.comments.map((comment, i) =>
-					 <CommentItem key={i} hideUsername={true} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
-					 )}
+			<CommentList query={{answersByUserId: currentUserId}} hideUsername={true} />
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions I have asked</Text>
 			</EachDetail>
-			<View style={[globalStyles.flexRow]}>
-			{/*
-					topQuestions.slice(0,5).map(
-				(question, i) => 
-					.<MiniItem key={i} question={question}/>
-				) */
-			}
-			</View>
+			<GridView query={{favoritesByUserId: currentUserId}} toRoute={this.props.toRoute}/>
 
 			<View style={styles.hintsContainer}>
 			<Text style={[globalStyles.text.color.gray, styles.hint]}>
@@ -161,6 +155,29 @@ var ProfilePage = React.createClass({
   }
 });
 
+var ProfilePageLoader = React.createClass({
+	mixins: [ParseReact.Mixin],
+	observe: function(props, state) {
+		var query = new Parse.Query(Parse.User)
+			.equalTo('objectId', this.props.data.userId);
+
+		return {
+			users: query,
+		};
+	},
+	getInitialState: function (){
+		return {
+			visible: true,
+			comments: comments
+		};
+	},
+	render: function (){
+		if(this.data.users && this.data.users[0])	
+			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute}/>
+		else
+			return <Text>Loading...</Text>
+	}
+});
 
 var styles = StyleSheet.create({
   container: {
@@ -205,4 +222,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = ProfilePage;
+module.exports = ProfilePageLoader;

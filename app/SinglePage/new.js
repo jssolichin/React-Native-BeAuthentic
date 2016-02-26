@@ -18,7 +18,7 @@ var ParseReact = require('parse-react/react-native');
 var ListItem = require('../components/ListItem.js');
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
-var CommentItem = require('../components/CommentItem.js');
+var CommentList = require('../components/CommentList.js');
 var globalStyles = require('../globalStyles.js');
 
 var rowData = {
@@ -207,9 +207,7 @@ var SinglePage = React.createClass({
 					<Text style={globalStyles.text.eachDetailSubheading}>To see other's hearts, you must share yours</Text>
 				</EachDetail>
 
-				{this.data.answer.map((answer, i) =>
-					 <CommentItem key={i} visibleUser={publicallyShared} visibleComment={publicallyShared} data={answer} />
-				 )}
+				<CommentList query={{answersByQuestionId: this.props.data.question.objectId}} hideQuestion={true} visibleUser={publicallyShared} visibleComment={publicallyShared} />
 
 			 </ScrollView>
 		);
