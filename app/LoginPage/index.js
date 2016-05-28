@@ -20,6 +20,7 @@ var LoginPage = React.createClass({
 	getInitialState: function (){
 		return {
 			signupMode: false,
+			passwordRecoveryMode: true,
 		};
 	},
 
@@ -29,6 +30,7 @@ var LoginPage = React.createClass({
 			var user = new Parse.User();
 			user.set("username", this.state.username);
 			user.set("password", this.state.password);
+			user.set("email", this.state.email);
 
 			user.signUp(null, {
 			  success: function(user) {
@@ -60,6 +62,23 @@ var LoginPage = React.createClass({
 		this.setState({'signupMode': !this.state.signupMode});
 	},
 	
+	_togglePasswordReset: function (){
+		this.setState({'passwordRecoveryMode': !this.state.passwordRecoveryMode});
+	},
+
+	_passwordReset: function (){
+		Parse.User.requestPasswordReset(this.state.email.toLowerCase(), {
+		  success: function() {
+			AlertIOS.alert('Your password reset instruction has been sent to your email');
+		  },
+		  error: function(error) {
+			  console.log(error)
+			// Show the error message somewhere
+			AlertIOS.alert("Error: " + error.message);
+		  }
+		});
+	},
+
 	render: function() {
 
 		return (
@@ -68,6 +87,8 @@ var LoginPage = React.createClass({
 					Hello!
 				</Text>
 
+				{!this.state.passwordRecoveryMode ? 
+					<View>
 				<View style={styles.inputContainer}>
 					<TextInput
 						style={styles.inputText}
@@ -91,6 +112,8 @@ var LoginPage = React.createClass({
 					secureTextEntry={true}
 				/>
 			</View>
+		</View>
+				: null}
 
 			{this.state.signupMode ? 
 				<View style={styles.inputContainer}>
@@ -105,6 +128,20 @@ var LoginPage = React.createClass({
 			</View> 
 			:null }
 
+			{this.state.signupMode || this.state.passwordRecoveryMode ? 
+				<View style={styles.inputContainer}>
+				<TextInput
+					style={styles.inputText}
+					onChangeText={(email) => this.setState({email})}
+					value={this.state.email}
+					placeholder={"Email" + (this.state.passwordRecoveryMode ? "" : " (for Password Reset Only)")}
+					placeholderTextColor='#aaa'
+				/>
+			</View> 
+			:null }
+
+			{!this.state.passwordRecoveryMode ? 
+				<View>
 					<View style={styles.button}>
 			<TouchableOpacity style={styles.formSwitcher} onPress={this._switchForm}>
 				<Text style={globalStyles.text.color.gray}>
@@ -114,7 +151,26 @@ var LoginPage = React.createClass({
 				<TouchableOpacity onPress={this.state.signupMode ? this._signupSubmit : this._loginSubmit}>
 					<Button text={this.state.signupMode ? 'Sign Up' : 'Log In'} />
 				</TouchableOpacity>
-					</View>
+
+			</View>
+				<TouchableOpacity style={{marginTop: 30}} onPress={this._togglePasswordReset}>
+					<Text style={globalStyles.text.color.gray}>
+						Forgot Password
+					</Text>
+				</TouchableOpacity>
+			</View>
+			: 
+			<View style={styles.button}>
+			<TouchableOpacity style={styles.formSwitcher} onPress={this._togglePasswordReset}>
+				<Text style={globalStyles.text.color.gray}>
+					Back
+				</Text>
+			</TouchableOpacity>
+				<TouchableOpacity onPress={this._passwordReset}>
+					<Button text="Reset Password" />
+				</TouchableOpacity>
+			</View>
+			}
 
 			</View>
 		);
