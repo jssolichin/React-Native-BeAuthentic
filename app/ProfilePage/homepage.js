@@ -7,12 +7,14 @@ var {
   Image,
   TouchableOpacity,
   ScrollView,
+  NativeModules,
 } = React;
 var Dimensions = require('Dimensions');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
+var imagePicker = require('react-native-imagepicker');
 
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
@@ -23,7 +25,7 @@ var globalStyles = require("../globalStyles.js");
 var globalHelpers = require("../globalHelpers.js");
 
 var stats = [
-	{name: 'Questions', value: 100},
+	{name: 'Questions Asked', value: 100},
 	{name: 'Hearts Shared', value: 120},
 	{name: 'Heart to Heart', value: 150},
 	{name: 'Heart Cares', value: 140},
@@ -65,10 +67,52 @@ var ProfilePage = React.createClass({
 	_addFriend: function (){
 		this.setState({visible: true});
 	},
+	_setImage: function (imageUri){
+		var that = this;
+
+		NativeModules.ReadImageData.readImage(imageUri, (imageFile) => {
+			var filename = imageUri.match(/(\w+)(\.\w+)+(?!.*(\w+)(\.\w+)+)/);
+			var parseImageFile = new Parse.File(filename[0], {base64: imageFile})
+
+			parseImageFile.save().then(function (img){
+				saveToServer(img);
+			})
+		});
+
+		function saveToServer(coverImage) {
+			console.log(coverImage)
+			
+			var changes = {img_url: coverImage};
+
+			var object = new Parse.User
+			object.objectId = that.props.data.objectId;
+
+			var mutator = ParseReact.Mutation.Set(object, changes);
+
+			mutator.dispatch()
+				.then((error,data) => {
+					console.log(error, data)
+				})
+
+		}
+	},
+	_pickImage: function(){
+		var that = this;
+		var image = imagePicker.open({
+		    takePhoto: true,
+		    useLastPhoto: true,
+		    chooseFromLibrary: true
+		}).then(function(imageUri) {
+			console.log('direct',imageUri);
+			that._setImage(imageUri);
+		}, function() {
+		    console.log('user cancel');
+		});
+	},
 	render: function() {
 
 	  var profileImage;
-	  if(this.state.visible){
+	  if(this.state.visible && this.props.data.img_url){
 		  var uri = this.props.data.img_url.url();
 		  profileImage = (
 				<Image
@@ -96,7 +140,7 @@ var ProfilePage = React.createClass({
 			contentInset={{bottom: 70,}} 
 			style={styles.container}>
 			<View style={styles.heroContainer}>
-				<TouchableOpacity onPress={this._addFriend}>
+				<TouchableOpacity onPress={this._pickImage}>
 					{profileImage}
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
@@ -104,7 +148,7 @@ var ProfilePage = React.createClass({
 						{globalHelpers.censorship(this.props.data.name, this.state.visible)}
 					</Text>
 					<Text style={[globalStyles.text.roman, {marginTop: -5,}]}>
-						{globalHelpers.censorship(this.props.data.description, this.state.visible)}
+						{globalHelpers.censorship(this.props.data.bio, this.state.visible)}
 					</Text>
 				</View>
 			</View>
@@ -128,27 +172,6 @@ var ProfilePage = React.createClass({
 				<Text style={globalStyles.text.roman}>Questions I have asked</Text>
 			</EachDetail>
 			<GridView query={{favoritesByUserId: currentUserId}} toRoute={this.props.toRoute}/>
-
-			<View style={styles.hintsContainer}>
-			<Text style={[globalStyles.text.color.gray, styles.hint]}>
-				<Text style={globalStyles.text.weight.bold}>
-					Hearts are shared&nbsp;
-				</Text> 
-				when a user answers a question, their own or other's.&nbsp;    
-			</Text>
-			<Text style={[globalStyles.text.color.gray, styles.hint]}>
-				<Text style={globalStyles.text.weight.bold}>
-					Heart to heart&nbsp;
-				</Text>
-				happens when two people add each other as friends, allowing them to see each other's answer.&nbsp;
-			</Text>
-			<Text style={[globalStyles.text.color.gray, styles.hint]}>
-				<Text style={globalStyles.text.weight.bold}>
-					Heart Cares&nbsp;
-				</Text>
-				is the number of people a person is added by, BUT not vice-versa. 
-			</Text>
-		</View>
 
       </ScrollView>
     );

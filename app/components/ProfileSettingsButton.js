@@ -22,7 +22,7 @@ var globalStyles = require("../globalStyles.js");
 var standardButtons = [
   'Cancel',
   'Edit Name',
-  'Edit Information',
+  'Edit Bio',
   'Log Out',
 ];
 var cancelIndex = 0;
@@ -31,72 +31,59 @@ var destructiveIndex = 3;
 var CollectionSettingsButton = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function() {
-	  return {
-	  };
+	  var query = new Parse.Query(Parse.User)
+			.equalTo('objectId', this.props.data.userId);
+
+		return {
+			users: query,
+		};
+	},
+	componentDidUpdate(){
+		if(this.data.users[0]){
+			if(this.data.users[0].name == undefined || this.data.users[0].name.length < 1)
+				this._createPrompt('name', 'Add');
+			if(this.data.users[0].bio == undefined || this.data.users[0].bio.length < 1)
+				this._createPrompt('bio', 'Add');
+		}
 	},
 	_logOut () {
 		Parse.User.logOut();	
 	},
-	_createPrompt: function (type){
+	_createPrompt: function (type, verb){
+
+		var currentInfo = this.props.data ? this.data.users[0][type] : '';
 
 		AlertIOS.prompt(
-		  'Change Collection ' + type,
-		  "Enter a new " + type + " for the collection ",
+		  verb + ' your ' + type,
+		  "",
 		  [
 		      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			  {text: 'Change', onPress: desc => {
+			  {text: verb, onPress: desc => {
 				  this._handleModifyType(type, desc);
 			  }},
 		  ],
 		  'plain-text',
-		  this.props.data[type]
+		  currentInfo
 		);
-	},
-	_collectionSettings: function () {
-		return <CollectionSettingsButton data={this.state.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
-	},
-	_handleRefreshPage: function (changes){
-	
-		var newData = {
-			objectId: this.props.data.objectId,
-			name: changes.name || this.props.data.name,
-			description: changes.description || this.props.data.description,
-		};
-
-		this.setState({data: newData});
-
-		//reload with new information
-		var GridView = require("./GridView.js");
-
-		this.props.replaceRoute({
-		  name: newData.name,
-		  component: GridView,
-		  rightCorner: this._collectionSettings,
-		  data: {
-			  collection: this.props.data, 
-			  toRoute: this.props.toRoute,
-			  description: newData.description,
-		  }
-		});
-
 	},
 	_handleModifyType: function (type, description){
 
 		var changes = {};
 		changes[type] = description;
 
-		var object = new Parse.Object('Collection')
-		object.objectId = this.props.data.objectId;
+		var object = new Parse.User
+		object.objectId = this.props.data.userId;
 
 		var mutator = ParseReact.Mutation.Set(object, changes);
 
+		console.log(mutator, object, changes)
 		mutator.dispatch()
 			.then((error,data) => {
-				this._handleRefreshPage(changes);
+				console.log(error, data)
 			})
 
 	},
-	_handleAdd: function (){
+	_handleClick: function (){
 		var options = standardButtons;
 
 		ActionSheetIOS.showActionSheetWithOptions({
@@ -109,10 +96,10 @@ var CollectionSettingsButton = React.createClass({
 				 case 0: 
 					 break;
 				 case 1:
-					this._createPrompt('name');
+					this._createPrompt('name', 'Change');
 					 break;
 				 case 2:
-					this._createPrompt('information');
+					this._createPrompt('bio', 'Change');
 					 break;
 				 case 3:
 					this._logOut();
@@ -123,7 +110,7 @@ var CollectionSettingsButton = React.createClass({
 	render() {
 		return (
 			<View style={[globalStyles.flexRow, styles.container]}>
-				<TouchableOpacity onPress={this._handleAdd}>
+				<TouchableOpacity onPress={this._handleClick}>
 					<Icon
 						name='ion|ios-gear-outline'
 						size={35}

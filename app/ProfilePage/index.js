@@ -23,6 +23,7 @@ var ProfileSettingsButton = require('../components/ProfileSettingsButton.js');
 var HomePage = require('./homepage.js');
 
 var Navigator = React.createClass({
+	
 	render: function() {
 
 		var firstRoute = {
@@ -33,9 +34,13 @@ var Navigator = React.createClass({
 			}
 		};
 
+		var profileSettingsButtonGenerator = function (){
+			return <ProfileSettingsButton data={firstRoute.data} />
+		}
+
 		return (
 			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={globalStyles.router.header} titleStyle={[globalStyles.router.title, globalStyles.text.heading]} 
-				rightCorner={ProfileSettingsButton}
+				rightCorner={profileSettingsButtonGenerator}
 			/>
 		);
 	},

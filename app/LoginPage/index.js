@@ -20,7 +20,7 @@ var LoginPage = React.createClass({
 	getInitialState: function (){
 		return {
 			signupMode: false,
-			passwordRecoveryMode: true,
+			passwordRecoveryMode: false,
 		};
 	},
 

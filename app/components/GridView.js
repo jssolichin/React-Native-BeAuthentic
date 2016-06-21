@@ -52,7 +52,11 @@ var GridView = React.createClass({
 				}}
 			/>
 		</View>
-			: <Text>There are no questions in this collection </Text>}
+		: 
+			<View style={{padding: 20, paddingBottom: 0}}>
+				<Text style={globalStyles.text.color.gray}>Looks like there's nothing here! You should change that :)</Text>
+			</View>
+		}
 		</View>
 		);
 	}
@@ -152,7 +156,6 @@ var GridViewLoader = React.createClass({
 	},
 	render: function (){
 
-		console.log(this.data)
 		if(this.data && this.data.questions) {
 			var data = this.data.questions;
 
