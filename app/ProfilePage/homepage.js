@@ -24,13 +24,6 @@ var GridView = require('../components/GridView.js');
 var globalStyles = require("../globalStyles.js");
 var globalHelpers = require("../globalHelpers.js");
 
-var stats = [
-	{name: 'Questions Asked', value: 100},
-	{name: 'Hearts Shared', value: 120},
-	{name: 'Heart to Heart', value: 150},
-	{name: 'Heart Cares', value: 140},
-]
-
 var comments = [ 
 	{
 					name: "Jonathan",
@@ -43,17 +36,43 @@ var comments = [
 			];
 
 var Stat = React.createClass({
+	getInitialState: function(){
+		return {
+		
+		}	
+	},
+	componentDidMount: function(){
+		var that = this;
+
+		this.props.query.count({
+			success: function(count) {
+				that.setState({value: count});
+				return count;
+		  },
+		  error: function(error) {
+			  console.log(error); return null;
+		  }
+		});
+		
+	},
 	render: function (){
+		if(this.state.value){
 		return (
 			<View style={[styles.stat]}>
 				<Text style={[globalStyles.text.heading, globalStyles.text.weight.bold, {fontSize: 40,}]}>
-					{this.props.data.value}
+					{this.state.value}
 				</Text>
 				<Text style={[globalStyles.text.roman, {marginTop: -10, fontSize: 11,}]}>
-					{this.props.data.name}
+					{this.props.name}
 				</Text>
 			</View>
 		)	
+		}
+		else {
+			return <Text>Loading...</Text>
+		}
+		
+
 	}
 });
 	
@@ -61,7 +80,14 @@ var ProfilePage = React.createClass({
 	getInitialState: function (){
 		return {
 			visible: true,
-			comments: comments
+			comments: comments,
+			stats: [
+						{name: 'Questions Asked', query: new Parse.Query(Parse.Object.extend("Question")).equalTo('createdBy', this.props.data)},
+						{name: 'Questions Liked', query: new Parse.Query(Parse.Object.extend("Activity")).equalTo('fromUser', this.props.data).equalTo('type', 'liked')},
+						{name: 'Questions Answered', query: new Parse.Query(Parse.Object.extend("Answer")).equalTo('createdBy', this.props.data)},
+						{name: 'Answers Shared', query: new Parse.Query(Parse.Object.extend("Answer")).equalTo('createdBy', this.props.data).equalTo('publicallyShared', true)},
+					]
+
 		};
 	},
 	_addFriend: function (){
@@ -154,7 +180,9 @@ var ProfilePage = React.createClass({
 			</View>
 
 			<View style={styles.statsContainer}>
-				{stats.map((stat,i) => <Stat key={i} data={stat} />)}
+				{this.state.stats.map((stat,i) => {
+					return <Stat key={i} name={stat.name} query={stat.query} />;
+				})}
 			</View>
 
 			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
