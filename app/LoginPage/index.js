@@ -31,6 +31,7 @@ var LoginPage = React.createClass({
 			user.set("username", this.state.username);
 			user.set("password", this.state.password);
 			user.set("email", this.state.email);
+			user.set("showNotifHelp", true);
 
 			user.signUp(null, {
 			  success: function(user) {

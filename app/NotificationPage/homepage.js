@@ -8,6 +8,9 @@ var {
 	TextInput,
 	TouchableHighlight,
 } = React;
+var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
+var moment = require('moment');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
@@ -19,40 +22,36 @@ var Banner = require('../components/Banner.js');
 var SinglePage = require('../SinglePage/index.js');
 var globalStyles = require('../globalStyles.js');
 
-var notifications = [ 
-	{type: 'comment', user: 'Jonathan', text: ' wrote a comment on ', to: 'Given the choice of anyone in the world, whom would you want as a dinner guest?', time: '18h'},
-	{type: 'question', user: 'Jonathan', text: ' asked the question: ', to: 'Before making a telephone call, do you ever rehearse what you are going to say? Why?',  time: '18h'},
-	{type: 'heart', user: 'Jonathan', text: ' hearted the question: ', to: 'Would you like to be famous? In what way?',  time: '18h'},
-	{type: 'follow', user: 'Jonathan', text: ' started following ', to: 'you',  time: '18h'},
-	{type: 'comment', user: 'Jonathan', text: ' wrote a comment on ', to: 'Given the choice of anyone in the world, whom would you want as a dinner guest?', time: '18h'},
-	{type: 'question', user: 'Jonathan', text: ' asked the question: ', to: 'Before making a telephone call, do you ever rehearse what you are going to say? Why?',  time: '18h'},
-	{type: 'heart', user: 'Jonathan', text: ' hearted the question: ', to: 'Would you like to be famous? In what way?',  time: '18h'},
-	{type: 'follow', user: 'Jonathan', text: ' started following ', to: 'you.',  time: '18h'},
-];
-
 var NotificationItem = React.createClass({
 	getInitialState: function (){
-		var iconType;
+		var iconType, text;
+
 		switch(this.props.data.type){
 			case 'comment':
+				text = ' wrote a comment on ';
 				iconType='ios-chatbubble-outline'
 				break;
 			case 'question':
+				text = ' asked ';
 				iconType = 'ios-help-outline';
 				break;
-			case 'heart':
+			case 'liked':
+				text = ' liked ';
 				iconType = 'ios-heart-outline';
 				break;
 			case 'follow':
+				text = ' followed ';
 				iconType = 'ios-personadd-outline';
 				break;
 			default: 
+				text = ' ';
 				icontype = 'ios-information-outline';
 				break;
 		};
 
 		return {
 			active: false,	
+			text: text,
 			iconType: iconType,
 		}	
 	},
@@ -88,7 +87,7 @@ var NotificationItem = React.createClass({
 						{this.props.data.user}
 					</Text>
 					<Text style={[]}>
-						{this.props.data.text}
+						{this.state.text}
 					</Text>
 					<Text onPress={this._goToSinglePage} style={[globalStyles.text.romanBold]}>
 						{this.props.data.type != 'follow' ? this.props.data.to.substring(0, 39) + "..." : this.props.data.to}
@@ -107,13 +106,73 @@ var NotificationItem = React.createClass({
 
 var NotificationPage = React.createClass({
 	getInitialState: function() {
-	  var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 	  return {
-		  showHint: true,
-	      dataSource: ds.cloneWithRows(notifications),
-	    };
+	  };
+	},
+	componentDidMount: function(){
+		this._getActivity();	
+		this._getShowHint();	
+	},
+	_getShowHint: function (){
+		var User = Parse.Object.extend("User");
+		var query = new Parse.Query(User)
+		.equalTo('objectId', Parse.User.current().id);
+
+		query.first({
+			success: (user)	=> {
+				this.setState({showHint: user.get('showNotifHelp')})
+			},
+			error: (error) => {
+				console.log(error)	
+			}
+		})
+	
+	},
+	_getActivity: function (){
+
+		var Activity = Parse.Object.extend("Activity");
+		var query = new Parse.Query(Activity)
+			.limit(10)
+			.include('question')
+			.include('fromUser')
+			.equalTo('toUser', Parse.User.current());
+
+		query.find({
+			success: (activities) => {
+				var notifications = activities.map((activity)=>{
+					var username = activity.get('fromUser').get('username');
+					var questionText = activity.get('question').get('text');
+					var createdAt = moment(activity.createdAt).fromNow();
+				
+					return {
+						type: activity.get('type'), 
+						user: username, 
+						to: questionText, 
+						time: createdAt, 
+					}
+				})
+
+				var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+				this.setState({dataSource: ds.cloneWithRows(notifications) });
+		  },
+		  error: function(error) {
+			  console.log(error); return null;
+		  }
+		});
+			
 	},
 	_closeHint: function (){
+
+		var object = new Parse.User
+		object.objectId = Parse.User.current().id;
+
+		var mutator = ParseReact.Mutation.Set(object, {showNotifHelp: false});
+
+		mutator.dispatch()
+			.then((error,data) => {
+				console.log(error, data)
+			})
+
 		this.setState({'showHint': false});
 	},
 	render: function() {
@@ -124,13 +183,19 @@ var NotificationPage = React.createClass({
 			  <Banner title='Bond over experiences ' body='When you share your response, you are subscribed to the question and will get notified when others share their responses.' onPress={this._closeHint}/> 
 				  : null
 		  }
+
+		  {this.state.dataSource ?  
 	      <ListView
 			  contentInset={{bottom: 48,}} 
 			  style={{backgroundColor: 'transparent'}}
 			  automaticallyAdjustContentInsets={false}
 	        dataSource={this.state.dataSource}
 			renderRow={(rowData) => <NotificationItem data={rowData} toRoute={this.props.toRoute}/>}
-	      />
+		/>
+		 :  
+			<Text>Loading...</Text>
+		  }
+
 	  </View>
 	    );
 	},
