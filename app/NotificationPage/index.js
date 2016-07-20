@@ -6,12 +6,12 @@ var {
 	TabBarIOS,
 	Text,
 	View,
-	StatusBarIOS,
+	StatusBar,
 } = React;
 var Router = require('gb-native-router');
 var globalStyles = require("../globalStyles.js");
 
-StatusBarIOS.setStyle('default');
+StatusBar.setBarStyle('default');
 
 var BackButton = require('../components/BackButton.js');
 var Homepage = require('./homepage.js');

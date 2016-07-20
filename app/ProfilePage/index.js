@@ -6,7 +6,7 @@ var {
 	TabBarIOS,
 	Text,
 	View,
-	StatusBarIOS,
+	StatusBar,
 	TouchableOpacity,
 } = React;
 var { Icon, } = require('react-native-icons');
@@ -16,7 +16,7 @@ var ParseReact = require('parse-react/react-native');
 
 var globalStyles = require("../globalStyles.js");
 
-StatusBarIOS.setStyle('default');
+StatusBar.setBarStyle('default');
 
 var BackButton = require('../components/BackButton.js');
 var ProfileSettingsButton = require('../components/ProfileSettingsButton.js');
