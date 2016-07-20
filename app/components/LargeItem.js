@@ -16,7 +16,7 @@ var Button = require('../components/Button.js');
 var moment = require('moment');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-var LinearGradient = require('react-native-linear-gradient');
+import LinearGradient from 'react-native-linear-gradient'
 var SinglePage = require('../SinglePage/new.js');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');

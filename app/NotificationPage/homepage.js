@@ -19,7 +19,6 @@ var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
 var Button = require('../components/Button.js');
 var Banner = require('../components/Banner.js');
-var SinglePage = require('../SinglePage/index.js');
 var globalStyles = require('../globalStyles.js');
 
 var NotificationItem = React.createClass({
@@ -60,10 +59,32 @@ var NotificationItem = React.createClass({
 		if(this.props.data.type == 'follow')
 			this.setState({active: !this.state.active})	
 	},
+	_addToCollection: function () {
+		var AddButton = require('../components/AddButton.js');
+		return 	<AddButton data={this.props.data.question}/>;
+	},
 	_goToSinglePage: function() {
+		var SinglePageView = require('../SinglePage/view.js');
 	    this.props.toRoute({
 		      name: "A Heart Question",
-		      component: SinglePage
+		      component: SinglePageView,
+			  rightCorner: this._addToCollection,
+			  data: {
+				  question: {objectId: this.props.data.question.id}, 
+				  toRoute: this.props.toRoute,
+			  },
+		    });
+  	},
+	_goToProfilePage: function() {
+		var ProfilePage = require('../ProfilePage/homepage.js');
+		console.log(this.props.data.user)
+	    this.props.toRoute({
+		      name: this.props.data.user.get('username'), 
+		      component: ProfilePage,
+			  data: {
+				  userId: this.props.data.user.id,
+				  toRoute: this.props.toRoute,
+			  },
 		    });
   	},
 	render: function (){
@@ -83,14 +104,14 @@ var NotificationItem = React.createClass({
 					</View>
 				</TouchableHighlight>
 				<Text style={[globalStyles.text.roman, styles.notificationText]}>
-					<Text style={[globalStyles.text.romanBold]}>
-						{this.props.data.user}
+					<Text onPress={this._goToProfilePage} style={[globalStyles.text.romanBold]}>
+						{this.props.data.user.get('username')} 
 					</Text>
 					<Text style={[]}>
 						{this.state.text}
 					</Text>
 					<Text onPress={this._goToSinglePage} style={[globalStyles.text.romanBold]}>
-						{this.props.data.type != 'follow' ? this.props.data.to.substring(0, 39) + "..." : this.props.data.to}
+						{this.props.data.type != 'follow' ? this.props.data.question.get('text').substring(0, 39) + "..." : this.props.data.question.text}
 					</Text>
 					<Text style={[]}>
 						&nbsp;
@@ -139,16 +160,12 @@ var NotificationPage = React.createClass({
 
 		query.find({
 			success: (activities) => {
-				var notifications = activities.map((activity)=>{
-					var username = activity.get('fromUser').get('username');
-					var questionText = activity.get('question').get('text');
-					var createdAt = moment(activity.createdAt).fromNow();
-				
+				var notifications = activities.map((activity)=> {
 					return {
 						type: activity.get('type'), 
-						user: username, 
-						to: questionText, 
-						time: createdAt, 
+						user: activity.get('fromUser'), 
+						question: activity.get('question'), 
+						time: moment(activity.createdAt).fromNow(), 
 					}
 				})
 

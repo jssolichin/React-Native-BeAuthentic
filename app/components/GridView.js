@@ -12,7 +12,6 @@ var {
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 
-var SinglePage = require('../SinglePage/index.js');
 var EachDetail = require('../components/EachDetail.js');
 var MiniItem = require('../components/MiniItem.js');
 var Banner = require('../components/Banner.js');

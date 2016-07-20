@@ -24,17 +24,6 @@ var GridView = require('../components/GridView.js');
 var globalStyles = require("../globalStyles.js");
 var globalHelpers = require("../globalHelpers.js");
 
-var comments = [ 
-	{
-					name: "Jonathan",
-					comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-				},
-				{
-					name: "Jonathan",
-					comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-				}
-			];
-
 var Stat = React.createClass({
 	getInitialState: function(){
 		return {
@@ -46,6 +35,7 @@ var Stat = React.createClass({
 
 		this.props.query.count({
 			success: function(count) {
+				console.log(count)
 				that.setState({value: count});
 				return count;
 		  },
@@ -56,7 +46,7 @@ var Stat = React.createClass({
 		
 	},
 	render: function (){
-		if(this.state.value){
+		if(this.state.value != undefined){
 		return (
 			<View style={[styles.stat]}>
 				<Text style={[globalStyles.text.heading, globalStyles.text.weight.bold, {fontSize: 40,}]}>
@@ -80,7 +70,6 @@ var ProfilePage = React.createClass({
 	getInitialState: function (){
 		return {
 			visible: true,
-			comments: comments,
 			stats: [
 						{name: 'Questions Asked', query: new Parse.Query(Parse.Object.extend("Question")).equalTo('createdBy', this.props.data)},
 						{name: 'Questions Liked', query: new Parse.Query(Parse.Object.extend("Activity")).equalTo('fromUser', this.props.data).equalTo('type', 'liked')},
@@ -137,6 +126,8 @@ var ProfilePage = React.createClass({
 	},
 	render: function() {
 
+		var currentUserProfilePage = this.props.data.id == Parse.User.current().id ;
+
 	  var profileImage;
 	  if(this.state.visible && this.props.data.img_url){
 		  var uri = this.props.data.img_url.url();
@@ -148,7 +139,7 @@ var ProfilePage = React.createClass({
 				/>
 		  )
 	  }
-	  else 
+	  else if (currentUserProfilePage)
 		  profileImage = (
 			<Icon
 				name={'ion|ios-personadd-outline'}
@@ -157,8 +148,14 @@ var ProfilePage = React.createClass({
 			  style={styles.profileImage}
 			/>
 		  )
-
-		  var currentUserId = Parse.User.current().id;
+	else 
+		profileImage = (
+			<View style={styles.profileImage}>
+				<Text style={[{marginTop: 25, marginHorizontal: 10, textAlign: 'center', fontSize: 40, backgroundColor: 'transparent'}, globalStyles.text.heading, globalStyles.text.weight.bold, globalStyles.text.color.white]}>
+					{this.props.data.username.substring(0,1).toUpperCase()}
+				</Text>
+			</View>
+		);
 
     return (
 		<ScrollView 
@@ -166,15 +163,15 @@ var ProfilePage = React.createClass({
 			contentInset={{bottom: 70,}} 
 			style={styles.container}>
 			<View style={styles.heroContainer}>
-				<TouchableOpacity onPress={this._pickImage}>
+				<TouchableOpacity onPress={currentUserProfilePage? this._pickImage : null}>
 					{profileImage}
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
 					<Text style={[globalStyles.text.heading, globalStyles.text.size.large, globalStyles.text.weight.bold]}>
-						{globalHelpers.censorship(this.props.data.name, this.state.visible)}
+						{this.props.data.name ? globalHelpers.censorship(this.props.data.name, this.state.visible) : '-'}
 					</Text>
 					<Text style={[globalStyles.text.roman, {marginTop: -5,}]}>
-						{globalHelpers.censorship(this.props.data.bio, this.state.visible)}
+						{this.props.data.bio ? globalHelpers.censorship(this.props.data.bio, this.state.visible) : null}
 					</Text>
 				</View>
 			</View>
@@ -187,19 +184,18 @@ var ProfilePage = React.createClass({
 
 			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
 				<Text style={globalStyles.text.roman}>Questions hearted</Text>
-				<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
 			</EachDetail>
-			<GridView query={{questionsByUserId: currentUserId}} toRoute={this.props.toRoute}/>
+			<GridView query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
 
 			<EachDetail heading={true}>
-				<Text style={globalStyles.text.roman}>Questions I have answered</Text>
+				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList query={{answersByUserId: currentUserId}} hideUsername={true} />
+			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} />
 
 			<EachDetail heading={true}>
-				<Text style={globalStyles.text.roman}>Questions I have asked</Text>
+				<Text style={globalStyles.text.roman}>Questions asked</Text>
 			</EachDetail>
-			<GridView query={{favoritesByUserId: currentUserId}} toRoute={this.props.toRoute}/>
+			<GridView query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
 
       </ScrollView>
     );
@@ -219,7 +215,6 @@ var ProfilePageLoader = React.createClass({
 	getInitialState: function (){
 		return {
 			visible: true,
-			comments: comments
 		};
 	},
 	render: function (){

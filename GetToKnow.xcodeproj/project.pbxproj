@@ -23,11 +23,12 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		B5B1A0B01D3C88F400E5027B /* GetToKnow in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B1A0AF1D3C88F200E5027B /* GetToKnow */; };
+		B5B1A0B21D3C93F200E5027B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FE62C51C0984160008ABBC /* libBVLinearGradient.a */; };
 		B5F5630E1B67649B00E12C10 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5630D1B67648300E12C10 /* libReactNativeIcons.a */; };
 		B5F563101B6764ED00E12C10 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5F5630F1B6764ED00E12C10 /* ionicons.ttf */; };
-		B5FE62D11C09842C0008ABBC /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FE62C51C0984160008ABBC /* libBVLinearGradient.a */; };
 		F35B97271C34A7F1005B718D /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F35B97261C34A77B005B718D /* libRCTCameraRoll.a */; };
-		F35B97291C35DBC9005B718D /* RCTCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = F35B97281C35DBC9005B718D /* RCTCustom.m */; settings = {ASSET_TAGS = (); }; };
+		F35B97291C35DBC9005B718D /* RCTCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = F35B97281C35DBC9005B718D /* RCTCustom.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -153,6 +154,7 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		B5B1A0AF1D3C88F200E5027B /* GetToKnow */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GetToKnow; sourceTree = "<group>"; };
 		B5F562FE1B67648300E12C10 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
 		B5F5630F1B6764ED00E12C10 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
 		B5FE62C01C0984160008ABBC /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
@@ -174,8 +176,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5B1A0B21D3C93F200E5027B /* libBVLinearGradient.a in Frameworks */,
+				B5B1A0B01D3C88F400E5027B /* GetToKnow in Frameworks */,
 				F35B97271C34A7F1005B718D /* libRCTCameraRoll.a in Frameworks */,
-				B5FE62D11C09842C0008ABBC /* libBVLinearGradient.a in Frameworks */,
 				B5F5630E1B67649B00E12C10 /* libReactNativeIcons.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -327,6 +330,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B5B1A0AF1D3C88F200E5027B /* GetToKnow */,
 				F35B97211C34A779005B718D /* RCTCameraRoll.xcodeproj */,
 				F35B971F1C349558005B718D /* Libraries */,
 				F35B97111C349535005B718D /* node_modules */,
@@ -700,7 +704,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/../../React/**",
+					"$(SRCROOT)/../react-native/React",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -716,7 +721,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/../../React/**",
+					"$(SRCROOT)/../react-native/React",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
