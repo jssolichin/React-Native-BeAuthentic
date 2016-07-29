@@ -17,7 +17,7 @@ var BackButton = require('../components/BackButton.js');
 var Homepage = require('./homepage.js');
 
 var firstRoute = {
-	name: 'Activity',
+	name: 'Notifications',
 	component: Homepage
 };
 var Navigator = React.createClass({

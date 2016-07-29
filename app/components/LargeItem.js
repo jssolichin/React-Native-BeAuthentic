@@ -166,6 +166,12 @@ var LargeItem = React.createClass({
 						
 					</View>
 
+				<View style={styles.actionContainer}>
+					<TouchableOpacity onPress={this._goToSinglePage} style={styles.actionItem}>
+						<Button text="Respond" />
+					</TouchableOpacity>
+				</View>
+
 		</View>
 		);
 
@@ -247,8 +253,16 @@ var styles = {
 		right: -imageWidth/2 - 40,
 		width: imageHeight,
 		height: 20,
-	}
-
+	},
+	actionContainer: {
+		width: width - 50,
+		margin: 25,
+		marginLeft: 20,
+		marginTop: 10,
+	},
+	actionItem: {
+		marginTop: 5,	
+	},
 }
 
 module.exports = Loader;

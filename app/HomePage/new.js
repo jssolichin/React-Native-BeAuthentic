@@ -41,14 +41,8 @@ var NewHome = React.createClass({
 		return {
 		}
 	},
-	_goToSinglePage: function (){
-		this.props.toRoute({
-			name: 'Respond',
-			component: SinglePage,
-			data: {
-				question: this.data.lastQuotd[0].question,
-			}
-		})	
+	_addNewQuestion: function (){
+		this.props.changeTab('heart');
 	},
 	render: function() {
 		var lastQuotdData;
@@ -65,13 +59,7 @@ var NewHome = React.createClass({
 				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute}/>
 
 				<View style={styles.actionContainer}>
-					<TouchableOpacity onPress={this._goToSinglePage} style={styles.actionItem}>
-						<Button text="Respond" />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
-						<Button text="See Responses From Others" noBorder={true}/>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={this.props.href} style={styles.actionItem}>
+					<TouchableOpacity onPress={this._addNewQuestion} style={styles.actionItem}>
 						<Button text="Ask a Question" noBorder={true}/>
 					</TouchableOpacity>
 				</View>
@@ -91,7 +79,7 @@ var styles = {
 		width: width - 50,
 		margin: 25,
 		marginLeft: 20,
-		marginTop: 10,
+		marginTop: -20,
 	},
 	actionItem: {
 		marginTop: 5,	

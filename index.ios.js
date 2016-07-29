@@ -35,10 +35,15 @@ var GetToKnow = React.createClass({
 	},
 	getInitialState: function() {
 		return {
-			selectedTab: 'notification',
+			selectedTab: 'heart',
 			notifCount: 0,
 			presses: 0,
 		};
+	},
+	changeTab: function (tabName){
+		this.setState({
+			selectedTab: tabName,
+		});
 	},
 	render: function() {
 
@@ -63,7 +68,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'home',
 							});
 						}}>
-						<HomePage />
+						<HomePage changeTab={this.changeTab}/>
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="explore"
@@ -81,7 +86,7 @@ var GetToKnow = React.createClass({
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="heart"
-						iconName={'ion|ios-heart'}
+						iconName={'ion|help'}
 						title={''}
 						iconSize={32}
 						accessibilityLabel="My Heart Tab"
