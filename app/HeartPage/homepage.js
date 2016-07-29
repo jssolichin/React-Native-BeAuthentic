@@ -14,12 +14,13 @@ var {
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
+var ParseReact = require('parse-react/react-native');
 var imagePicker = require('react-native-imagepicker');
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
 var Button = require('../components/Button.js');
-var GridView = require("../components/GridView.js");
+var LargeItem = require('../components/LargeItem.js');
 var globalStyles = require('../globalStyles.js');
 
 var PostSuccess = React.createClass({
@@ -43,12 +44,9 @@ var WritePrompt = React.createClass({
 	render: function (){
 		return (
 			<View style={globalStyles.centerContent} style={{paddingVertical: 20, alignItems: 'center'}}>
-				<Text style={[globalStyles.text.center, styles.hintText]}>
-					Want a heart to heart?	
-				</Text>
 				<TouchableHighlight onPress={this.props.callback} underlayColor='#fff'>
 					<View>
-						<Button text="Ask a Question" invert={true} />
+						<Button text="Submit a Question"  invert={true}/>
 					</View>
 				</TouchableHighlight>
 			</View>
@@ -158,7 +156,7 @@ var WriteBox = React.createClass({
 				<Image
 					style={[styles.writeBoxImageContainer]}
 					source={{uri: this.state.imageUri}}>
-			<View style={[globalStyles.centerContent,styles.writeBoxContainer,
+			<View style={[globalStyles.centerContent,styles.writeBoxContainer, {backgroundColor: '#000'},
 				this.state.imageUri && {backgroundColor: 'rgba(255,255,255,.3)'}
 			]}>
 				<TextInput
@@ -191,6 +189,42 @@ var WriteBox = React.createClass({
 	}
 });
 var HeartPage = React.createClass({
+	mixins: [ParseReact.Mixin],
+	observe: function(props, state) {
+		var skipNo = Math.floor(Math.random() * (state.numQuestions-1));
+		var sub = {};
+		var randomQ;
+
+		if(skipNo){
+			var Question = Parse.Object.extend("Question");
+			var query = new Parse.Query(Question);
+
+			randomQ = query
+				.skip(skipNo)
+				.limit(1);
+
+			sub = {
+				randomQ: randomQ 
+			}
+		}
+
+		return sub;
+
+	},
+	componentDidMount: function (){
+		var that = this;
+		var qNumQuestions = new Parse.Query(Parse.Object.extend("Question"))
+
+		qNumQuestions.count({
+			success: (count)=>{
+				that.setState({'numQuestions': count});
+			},
+			error: (error) => {
+				console.log(error)	
+			}
+		});
+
+	},
 	getInitialState: function (){
 		return {
 			writingQuestion: false,
@@ -228,15 +262,26 @@ var HeartPage = React.createClass({
 
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
-				<EachDetail column={true} style={{margin: 0, padding: 0}} invert={true}>
+
+				{/* Ask in App */}
+
+				<EachDetail heading={true} hideBorder={true} style={[globalStyles.centerContent,{flexDirection: 'column', marginTop: 0, paddingTop: 20}]} invert={true}>
+					<Text style={[globalStyles.text.roman,globalStyles.centerContent, globalStyles.text.color.white] }>Ask the World</Text>
+					<Text style={globalStyles.text.eachDetailSubheading}>(Add to the app's library of questions)</Text>
+				</EachDetail>
+
+				<EachDetail column={true} style={{margin: 0, padding: 0, paddingBottom: 10}} invert={true}>
 					{response}
 				</EachDetail>
 
-				<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
-					<Text style={globalStyles.text.roman}>Questions hearted</Text>
-					<Text style={globalStyles.text.eachDetailSubheading}>You should ask IRL, or share your heart and answer!</Text>
+				{/* Ask IRL*/}
+
+				<EachDetail heading={true} hideBorder={true} style={[globalStyles.centerContent,{marginTop: 20,flexDirection: 'column'}]}>
+					<Text style={globalStyles.text.roman}>Or ask a question in real life!</Text>
+					<Text style={globalStyles.text.eachDetailSubheading}>(Randomly chosen question)</Text>
 				</EachDetail>
-				<GridView query={{favoritesByUserId: Parse.User.current().id}} toRoute={this.props.toRoute}/>
+
+				{this.data.randomQ ? <LargeItem data={this.data.randomQ[0]} toRoute={this.props.toRoute}/> : null}
 
 			</ScrollView>
 		);
