@@ -48,8 +48,13 @@ var CommentList = React.createClass({
 	},
 	render: function() {
 
+		var existingAnswer;
+
 		if(this.data.answer){
-			var existingAnswer = this.data.answer.filter(function(d){return d.createdBy ? d.createdBy.id.objectId !== Parse.User.current().id : false;});
+			if(this.props.query.answersByQuestionId)
+				existingAnswer = this.data.answer.filter(function(d){return d.createdBy ? d.createdBy.id.objectId !== Parse.User.current().id : false;});
+			else 
+				existingAnswer = this.data.answer;
 		}
 
 		return (
@@ -60,7 +65,7 @@ var CommentList = React.createClass({
 
 				{existingAnswer && existingAnswer.length > 0 ? 
 					existingAnswer.map((answer, i) =>
-									  //TODO: make sure visibility is right
+									  //TODO: override visibleComment if comment is know 
 										 <CommentItem 
 											 key={i} 
 											 data={answer} 
@@ -68,6 +73,7 @@ var CommentList = React.createClass({
 											 visibleComment={this.props.visibleComment} 
 											 hideQuestion={this.props.hideQuestion} 
 											 hideUsername={this.props.hideUsername}
+											 toRoute={this.props.toRoute}
 										 />
 										 ) 
 				 : <Text>Loading...</Text>}

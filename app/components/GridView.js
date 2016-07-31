@@ -53,7 +53,7 @@ var GridView = React.createClass({
 		</View>
 		: 
 			<View style={{padding: 20, paddingBottom: 0}}>
-				<Text style={globalStyles.text.color.gray}>Looks like there's nothing here! You should change that :)</Text>
+				<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
 			</View>
 		}
 		</View>

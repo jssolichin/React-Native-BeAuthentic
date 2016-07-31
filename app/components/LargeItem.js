@@ -91,9 +91,21 @@ var LargeItem = React.createClass({
 			component: SinglePage,
 			data: {
 				question: this.props.data,
+				toRoute: this.props.toRoute,
 			}
 		})	
 	},
+	_goToProfilePage: function() {
+		var ProfilePage = require('../ProfilePage/homepage.js');
+		this.props.toRoute({
+			  name: this.props.data.createdBy.username, 
+			  component: ProfilePage,
+			  data: {
+				  userId: this.props.data.createdBy.objectId,
+				  toRoute: this.props.toRoute,
+			  },
+			});
+  	},
 	render: function() {
 
 		//TODO: programmatically add tags
@@ -154,7 +166,9 @@ var LargeItem = React.createClass({
 
 						<Text style={globalStyles.text.roman}>
 							Asked by&nbsp; 
-							<Text style={globalStyles.text.romanBold}>{this.props.data.createdBy.username}</Text>
+							<Text style={globalStyles.text.romanBold} onPress={this._goToProfilePage}>
+								{this.props.data.createdBy.username}
+							</Text>
 						</Text>
 
 						<Text>

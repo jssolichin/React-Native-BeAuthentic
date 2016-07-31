@@ -35,7 +35,6 @@ var Stat = React.createClass({
 
 		this.props.query.count({
 			success: function(count) {
-				console.log(count)
 				that.setState({value: count});
 				return count;
 		  },
@@ -70,6 +69,7 @@ var ProfilePage = React.createClass({
 	getInitialState: function (){
 		return {
 			visible: true,
+			currentUserProfilePage: this.props.data.objectId == Parse.User.current().id,
 			stats: [
 						{name: 'Questions Asked', query: new Parse.Query(Parse.Object.extend("Question")).equalTo('createdBy', this.props.data)},
 						{name: 'Questions Liked', query: new Parse.Query(Parse.Object.extend("Activity")).equalTo('fromUser', this.props.data).equalTo('type', 'liked')},
@@ -126,8 +126,6 @@ var ProfilePage = React.createClass({
 	},
 	render: function() {
 
-		var currentUserProfilePage = this.props.data.id == Parse.User.current().id ;
-
 	  var profileImage;
 	  if(this.state.visible && this.props.data.img_url){
 		  var uri = this.props.data.img_url.url();
@@ -139,7 +137,7 @@ var ProfilePage = React.createClass({
 				/>
 		  )
 	  }
-	  else if (currentUserProfilePage)
+	  else if (this.state.currentUserProfilePage)
 		  profileImage = (
 			<Icon
 				name={'ion|ios-personadd-outline'}
@@ -163,7 +161,7 @@ var ProfilePage = React.createClass({
 			contentInset={{bottom: 70,}} 
 			style={styles.container}>
 			<View style={styles.heroContainer}>
-				<TouchableOpacity onPress={currentUserProfilePage? this._pickImage : null}>
+				<TouchableOpacity onPress={this.state.currentUserProfilePage? this._pickImage : null}>
 					{profileImage}
 				</TouchableOpacity>
 				<View style={styles.userInfo}>
@@ -183,14 +181,14 @@ var ProfilePage = React.createClass({
 			</View>
 
 			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
-				<Text style={globalStyles.text.roman}>Questions hearted</Text>
+				<Text style={globalStyles.text.roman}>Questions liked</Text>
 			</EachDetail>
 			<GridView query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} />
+			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} />
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
@@ -210,11 +208,6 @@ var ProfilePageLoader = React.createClass({
 
 		return {
 			users: query,
-		};
-	},
-	getInitialState: function (){
-		return {
-			visible: true,
 		};
 	},
 	render: function (){
