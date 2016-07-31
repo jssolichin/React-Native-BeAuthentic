@@ -58,11 +58,13 @@ var NewHome = React.createClass({
 
 				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute}/>
 
+				{lastQuotdData ?
 				<View style={styles.actionContainer}>
 					<TouchableOpacity onPress={this._addNewQuestion} style={styles.actionItem}>
 						<Button text="Ask a Question" noBorder={true}/>
 					</TouchableOpacity>
 				</View>
+				: null }
 
 	</ScrollView>
 		);

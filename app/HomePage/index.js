@@ -21,7 +21,7 @@ var Navigator = React.createClass({
 	render: function() {
 
 		var firstRoute = {
-			name: 'Be Authentic Today',
+			name: 'Question of the Day',
 			component: NewHome,
 			passProps: {
 				changeTab: this.props.changeTab		

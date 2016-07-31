@@ -106,8 +106,6 @@ var LargeItem = React.createClass({
 
 		var createdAt = moment(this.props.data.createdAt);
 
-		console.log(this);
-		
 		return (
 			<View style={styles.insideContainer}>
 				<Image

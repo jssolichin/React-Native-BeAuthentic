@@ -40,13 +40,17 @@ var comments = [
 var WriteBox = React.createClass({
 	getInitialState: function (){
 		return {
-
+			publicallyShared: this.props.publicallyShared,
 		};
+	},
+	componentDidUpdate(prevProps, prevState){
+		if(this.props.publicallyShared != prevProps.publicallyShared)
+		this.setState({publicallyShared: this.props.publicallyShared})	
 	},
 	_onSubmitResponse: function (){
 		this.props.onSubmit({
 			text: this.state.text,
-			publicallyShared: true, //make sure we're turning private to public only
+			publicallyShared: this.state.publicallyShared,
 		});
 	},
 	_confirmMakePublic: function (value){
@@ -83,17 +87,23 @@ var WriteBox = React.createClass({
 
 			<View style={styles.submitSettings}>
 				
-				<View style={[styles.submitSettings, styles.privacyToggle]} >
-					<Text style={[globalStyles.text.color.white]}>
-						Share Publically
-					</Text>
-					<SwitchIOS
-						disabled={this.props.publicallyShared}
-						onValueChange={(value) => {
-							this._confirmMakePublic(value);
-						}}
-						style={{marginLeft: 10}}
-						value={this.props.publicallyShared} />
+				<View style={styles.privacyToggle} >
+
+					{(this.state.text && this.state.text.length > 0) || (this.props.defaultValue && this.props.defaultValue.length > 0) ?  
+						<View style={[styles.submitSettings, styles.privacyToggle]}>
+							<Text style={[globalStyles.text.color.white]}>
+								Share Publically
+							</Text>
+							<SwitchIOS
+								disabled={this.state.publicallyShared}
+								onValueChange={(value) => {
+									this._confirmMakePublic(value);
+								}}
+								style={{marginLeft: 10}}
+								value={this.state.publicallyShared} />
+						</View>
+					: null}
+
 				</View>
 
 				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
@@ -138,13 +148,22 @@ var SinglePage = React.createClass({
 
 		var batch = new ParseReact.Mutation.Batch();
 
-		var activityCreator = ParseReact.Mutation.Create('Activity', {
-			ACL: postACL,
-			fromUser: Parse.User.current(),
-			toUser: this.props.data.question.createdBy,
-			question: this.props.data.question,
-			type: 'comment',
-		});
+		var whoToNotify = [this.props.data.question.createdBy];
+		whoToNotify = whoToNotify.concat(this.data.answer.map(function(answer){return answer.createdBy}))
+
+		whoToNotify.forEach((user) => {
+			if(Parse.User.current().id != user.objectId) {
+				var activityCreator = ParseReact.Mutation.Create('Activity', {
+					ACL: postACL,
+					fromUser: Parse.User.current(),
+					toUser: user,
+					question: this.props.data.question,
+					type: 'comment',
+				});
+
+				activityCreator.dispatch({batch: batch});
+			}
+		})
 
 		var answerCreator;
 		var existingAnswer = this.data.answer.filter(function(d){return d.createdBy.objectId == Parse.User.current().id});
@@ -165,7 +184,6 @@ var SinglePage = React.createClass({
 			});
 		}
 
-		activityCreator.dispatch({batch: batch});
 		answerCreator.dispatch({batch: batch});
 
 		batch.dispatch()
@@ -178,10 +196,10 @@ var SinglePage = React.createClass({
 
 		var defaultValue, publicallyShared;
 		if(this.data.answer){
-			var existingAnswer = this.data.answer.filter(function(d){return d.createdBy.objectId == Parse.User.current().id});
-			if(existingAnswer.length >0){
-				defaultValue = existingAnswer[0].text;
-				publicallyShared = existingAnswer[0].publicallyShared;
+			var currentUserExistingAnswer = this.data.answer.filter(function(d){return d.createdBy.objectId == Parse.User.current().id});
+			if(currentUserExistingAnswer.length >0){
+				defaultValue = currentUserExistingAnswer[0].text;
+				publicallyShared = currentUserExistingAnswer[0].publicallyShared;
 			}
 		}
 

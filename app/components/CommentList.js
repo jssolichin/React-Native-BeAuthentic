@@ -36,7 +36,9 @@ var CommentList = React.createClass({
 			var question = new Question();
 			question.id = this.props.query.answersByQuestionId;
 
-			query.equalTo('question', question);
+			query.equalTo('question', question)
+				.notEqualTo('createdBy', Parse.User.current())
+				.include('createdBy');
 		}
 				
 		return {
@@ -46,13 +48,8 @@ var CommentList = React.createClass({
 	},
 	render: function() {
 
-		var defaultValue, publicallyShared;
 		if(this.data.answer){
-			var existingAnswer = this.data.answer.filter(function(d){return d.createdBy.objectId == Parse.User.current().id});
-			if(existingAnswer.length >0){
-				defaultValue = existingAnswer[0].text;
-				publicallyShared = existingAnswer[0].publicallyShared;
-			}
+			var existingAnswer = this.data.answer.filter(function(d){return d.createdBy ? d.createdBy.id.objectId !== Parse.User.current().id : false;});
 		}
 
 		return (
@@ -61,11 +58,19 @@ var CommentList = React.createClass({
 				style={styles.container}
 				>
 
-				{this.data.answer.map((answer, i) =>
+				{existingAnswer && existingAnswer.length > 0 ? 
+					existingAnswer.map((answer, i) =>
 									  //TODO: make sure visibility is right
-					 <CommentItem key={i} visibleUser={publicallyShared} visibleComment={publicallyShared} data={answer} hideUsername={this.props.hideUsername}/>
-					 //<CommentItem key={i} hideUsername={true} visibleUser={this.state.visible} visibleComment={this.state.visible} data={comment} />
-				 )}
+										 <CommentItem 
+											 key={i} 
+											 data={answer} 
+											 visibleUser={this.props.visibleUser} 
+											 visibleComment={this.props.visibleComment} 
+											 hideQuestion={this.props.hideQuestion} 
+											 hideUsername={this.props.hideUsername}
+										 />
+										 ) 
+				 : <Text>Loading...</Text>}
 
 			 </ScrollView>
 		);
