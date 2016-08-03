@@ -51,6 +51,37 @@ var GetToKnow = React.createClass({
 				this.setState({showOnboarding: false})
 		})
 		.done();
+
+	},
+	componentDidUpdate: function(){
+		if(this.data.currentUser && this.state.notificationBadge == undefined)
+			this.getNotificationReadStatus();
+	},
+	getNotificationReadStatus: function (value){
+
+		console.log('getNotificationReadStatus')
+		if(value)
+			this.setState({notificationBadge: value.toString()});
+		else {
+			var Activity = Parse.Object.extend("Activity");
+			var query = new Parse.Query(Activity)
+				.limit(10)
+				.equalTo('toUser', this.data.currentUser)
+				.notEqualTo('readStatus', true);
+
+			query.count({
+				success: (value) => {
+
+					console.log('notificationBadge', value)
+
+					this.setState({notificationBadge: value.toString()})
+				},
+				error: function(error){
+					console.log(error)
+				}
+			});
+		}
+
 	},
 	changeTab: function (tabName){
 		this.setState({
@@ -126,13 +157,14 @@ var GetToKnow = React.createClass({
 						title={''}
 						iconSize={32}
 						accessibilityLabel="Notification Tab"
+						badgeValue={this.state.notificationBadge > 0 ? this.state.notificationBadge : null}
 						selected={this.state.selectedTab === 'notification'}
 						onPress={() => {
 							this.setState({
 								selectedTab: 'notification',
 							});
 						}}>
-						<NotificationPage />
+						<NotificationPage updateBadge={this.getNotificationReadStatus}/>
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="profile"

@@ -77,7 +77,6 @@ var NotificationItem = React.createClass({
   	},
 	_goToProfilePage: function() {
 		var ProfilePage = require('../ProfilePage/homepage.js');
-		console.log(this.props.data.user)
 	    this.props.toRoute({
 		      name: this.props.data.user.get('username'), 
 		      component: ProfilePage,
@@ -150,6 +149,7 @@ var NotificationPage = React.createClass({
 	
 	},
 	_getActivity: function (){
+		var that = this;
 
 		var Activity = Parse.Object.extend("Activity");
 		var query = new Parse.Query(Activity)
@@ -161,6 +161,14 @@ var NotificationPage = React.createClass({
 		query.find({
 			success: (activities) => {
 				var notifications = activities.map((activity)=> {
+					
+					activity.set('readStatus', true).save(null, {
+						success: 	
+							function (){
+								that.props.updateBadge(0);
+						}
+					});
+
 					return {
 						type: activity.get('type'), 
 						user: activity.get('fromUser'), 

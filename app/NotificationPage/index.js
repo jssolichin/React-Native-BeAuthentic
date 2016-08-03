@@ -16,13 +16,18 @@ StatusBar.setBarStyle('default');
 var BackButton = require('../components/BackButton.js');
 var Homepage = require('./homepage.js');
 
-var firstRoute = {
-	name: 'Notifications',
-	component: Homepage
-};
 var Navigator = React.createClass({
 
 	render: function() {
+		var firstRoute = {
+			name: 'Notifications',
+			component: Homepage,
+			passProps: {
+				updateBadge: this.props.updateBadge,
+			}
+
+		};
+
 		return (
 			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={globalStyles.router.header} titleStyle={[globalStyles.router.title, globalStyles.text.heading]} />
 		);
