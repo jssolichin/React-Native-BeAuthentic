@@ -10,6 +10,7 @@ var {
 	StyleSheet,
 	Text,
 	View,
+	AsyncStorage,
 } = React;
 var { TabBarIOS, } = require('react-native-icons');
 var TabBarItemIOS = TabBarIOS.Item;
@@ -38,16 +39,37 @@ var GetToKnow = React.createClass({
 			selectedTab: 'heart',
 			notifCount: 0,
 			presses: 0,
+			showOnboarding: false,
 		};
+	},
+	componentDidMount: function(){
+		const value = AsyncStorage.getItem('@GlobalData:showOnboarding')
+		.then((value) => {
+			if (value == undefined || value == null || value == 'true')
+				this.setState({showOnboarding: true})
+			else if (value == 'false')
+				this.setState({showOnboarding: false})
+		})
+		.done();
 	},
 	changeTab: function (tabName){
 		this.setState({
 			selectedTab: tabName,
 		});
 	},
+	disableOnboarding: function (value){
+		AsyncStorage.setItem('@GlobalData:showOnboarding', 'false');
+		this.setState({
+			showOnboarding: false,
+		});
+	},
 	render: function() {
 
-		if(this.data.currentUser) {
+		if(this.state.showOnboarding) {
+			var TutorialPage = require('./app/TutorialPage/index.js');
+			return <TutorialPage disableOnboarding={this.disableOnboarding}/> 
+		}
+		else if(this.data.currentUser) {
 
 			return (
 				<TabBarIOS
