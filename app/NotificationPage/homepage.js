@@ -205,7 +205,7 @@ var NotificationPage = React.createClass({
 	  return (
 	  <View style={styles.container} >
 		  {this.state.showHint ? 
-			  <Banner title='Bond over experiences ' body='When you share your response, you are subscribed to the question and will get notified when others share their responses.' onPress={this._closeHint}/> 
+			  <Banner title='Bond Over Experiences ' body='When you share your response, you are subscribed to the question and will get notified when others share their responses.' onPress={this._closeHint}/> 
 				  : null
 		  }
 

@@ -19,23 +19,8 @@ var ListItem = require('../components/ListItem.js');
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
 var CommentList = require('../components/CommentList.js');
+var Banner = require('../components/Banner.js');
 var globalStyles = require('../globalStyles.js');
-
-var rowData = {
-	authorName: 'Jonathan',
-	question: "What are three verbs that describes your life? Why?",
-	tags: ["Ice Breaker", "Love", "Adventurous"],
-};
-var comments = [ 
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	},
-	{
-		name: "Jonathan",
-		comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-	}
-];
 
 var WriteBox = React.createClass({
 	getInitialState: function (){
@@ -133,11 +118,10 @@ var SinglePage = React.createClass({
 	},
 	getInitialState: function (){
 		return {
-			comments: comments
 		};
 	},
-	componentDidUpdate: function(){
-
+	componentDidMount: function(){
+		this._getShowHint();	
 	},
 	_saveCommentToServer: function (comment){
 		var that = this;
@@ -192,6 +176,35 @@ var SinglePage = React.createClass({
 				that.refreshQueries('answer');
 			})
 	},
+	_getShowHint: function (){
+		var User = Parse.Object.extend("User");
+		var query = new Parse.Query(User)
+		.equalTo('objectId', Parse.User.current().id);
+
+		query.first({
+			success: (user)	=> {
+				this.setState({showHint: user.get('showCommentsHelp')})
+			},
+			error: (error) => {
+				console.log(error)	
+			}
+		})
+	
+	},
+	_closeHint: function (){
+
+		var object = new Parse.User
+		object.objectId = Parse.User.current().id;
+
+		var mutator = ParseReact.Mutation.Set(object, {showCommentsHelp: false});
+
+		mutator.dispatch()
+			.then((error,data) => {
+				console.log(error, data)
+			})
+
+		this.setState({'showHint': false});
+	},
 	render: function() {
 
 		var defaultValue, publicallyShared;
@@ -209,6 +222,11 @@ var SinglePage = React.createClass({
 				contentInset={{bottom: 50}}
 				style={styles.container}
 				>
+
+		  {this.state.showHint ? 
+			  <Banner title='A Two Way Street' body='Authentic conversations can only occur in spaces where all parties are mutually invested. With that in mind, BeAuthentic only allows public answers to be read by those who too have shared.' onPress={this._closeHint}/> 
+				  : null
+		  }
 
 				<View style={{padding: 20, paddingBottom: 0, backgroundColor: '#000'}} >
 					<Text style={[globalStyles.text.color.white, ]}>

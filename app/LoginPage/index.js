@@ -32,6 +32,7 @@ var LoginPage = React.createClass({
 			user.set("password", this.state.password);
 			user.set("email", this.state.email);
 			user.set("showNotifHelp", true);
+			user.set("showCommentsHelp", true);
 
 			user.signUp(null, {
 			  success: function(user) {
