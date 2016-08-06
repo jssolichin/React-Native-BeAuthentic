@@ -17,6 +17,7 @@ var EachDetail = React.createClass({
 				this.props.heading && {marginTop: 30, paddingBottom: 5,},
 				this.props.invert && styles.invert,
 				this.props.hideBorder && {borderBottomWidth: 0},
+				this.props.subItem && {marginLeft: 20},
 				this.props.style,
 			]}>
 				{this.props.children}

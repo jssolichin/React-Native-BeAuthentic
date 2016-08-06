@@ -11,7 +11,6 @@ var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 var {width, height} = Dimensions.get('window');
 
-var CollectionSettingsButton = require('./CollectionSettingsButton.js');
 
 var globalStyles = require("../globalStyles.js");
 
@@ -22,6 +21,7 @@ var MiniItem = React.createClass({
 	  };
 	},
 	_collectionSettings: function () {
+		var CollectionSettingsButton = require('./CollectionSettingsButton.js');
 		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
 	},
 	_goToCollectionView: function (){

@@ -6,6 +6,7 @@ var {
 	View,
 	ScrollView,
 	Image,
+	TouchableOpacity,
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -44,7 +45,11 @@ var CommentItem = React.createClass({
 				  toRoute: this.props.toRoute,
 			  },
 		    });
-  	},
+	},
+	_navigateEverything: function (){
+		if(this.props.hideUsername)	
+			this._goToSinglePage();
+	},
 	render: function() {
 		var username = null,
 			question = null;
@@ -64,6 +69,7 @@ var CommentItem = React.createClass({
 			)
 
 		return (
+			<TouchableOpacity onPress={this._navigateEverything}>
 			<EachDetail>
 				{username}
 				<View>
@@ -72,7 +78,13 @@ var CommentItem = React.createClass({
 					{globalHelpers.censorship(this.props.data.text, this.props.visibleComment)}
 					</Text>
 				</View>
-			</EachDetail>
+
+				{this.props.showArrow ?
+					<Text style={styles.buttonText}>›</Text>
+					: null}
+
+				</EachDetail>
+			</TouchableOpacity>
 		);
 	}
 });
@@ -86,6 +98,12 @@ var styles = StyleSheet.create({
 	eachDetailText: {
 		width: width*.7 - 20, 
 	},
+	buttonText: {
+		fontSize: 20,
+		marginTop: 5,
+		lineHeight: 15,
+	    color: '#000',
+	  },
 });
 
 module.exports = CommentItem;

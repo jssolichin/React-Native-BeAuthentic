@@ -19,6 +19,7 @@ var imagePicker = require('react-native-imagepicker');
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
 var CommentList = require('../components/CommentList.js');
+var CollectionList = require('../components/CollectionList.js');
 var GridView = require('../components/GridView.js');
 
 var globalStyles = require("../globalStyles.js");
@@ -188,12 +189,17 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} />
+			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
 			</EachDetail>
 			<GridView query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
+
+			<EachDetail heading={true}>
+				<Text style={globalStyles.text.roman}>My Collections</Text>
+			</EachDetail>
+			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} />
 
       </ScrollView>
     );

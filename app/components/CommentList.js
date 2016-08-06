@@ -5,10 +5,7 @@ var {
 	Text,
 	View,
 	ScrollView,
-	TextInput,
 	TouchableHighlight,
-	SwitchIOS,
-	AlertIOS,
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -74,6 +71,7 @@ var CommentList = React.createClass({
 											 hideQuestion={this.props.hideQuestion} 
 											 hideUsername={this.props.hideUsername}
 											 toRoute={this.props.toRoute}
+											 showArrow={this.props.showArrow}
 										 />
 										 ) 
 				 : <Text>Loading...</Text>}
@@ -90,36 +88,6 @@ var styles = StyleSheet.create({
 		marginBottom: -1, 
 		backgroundColor: '#fff',
 	},
-	oneLine: {
-	},
-	hintText: {
-		margin: 20,
-		marginTop: 0,
-	},
-	thanksText: {
-		margin: 10,
-	},
-	submitSettings: {
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		flexDirection: 'row',
-		width: width - 40,
-	},
-	privacyToggle: {
-		width: 100,	
-	},
-	inputText: {
-		width: width - 40,
-		height: height*.3, 
-		padding: 10,
-		fontSize: 15,
-		marginBottom: 20,
-		borderWidth: 1,
-		backgroundColor: '#fff',
-	},
-	writeHint: {
-		marginTop: 10,	
-	}
 });
 
 module.exports = CommentList;
