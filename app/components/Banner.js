@@ -25,6 +25,7 @@ var Banner = React.createClass({
 						<Text style={[globalStyles.text.roman]}>
 						{this.props.body}
 					</Text>}
+					{this.props.children}
 				</View>
 				{this.props.onPress == undefined ? null : 
 				<TouchableOpacity onPress={this.props.onPress} style={styles.iconPosition }>

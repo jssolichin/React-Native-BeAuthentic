@@ -29,7 +29,20 @@ var GridView = React.createClass({
 
 		return (
 			<View style={styles.container}>
-			{this.props.source && this.props.source.description ? <Banner body={this.props.source.description} /> : null}
+				{this.props.source && (this.props.source.description || this.props.source.source) ? 
+					<Banner>
+						{this.props.source.description ? 
+							<Text style={[globalStyles.text.roman]}>{this.props.source.description}</Text>
+							: null}
+
+						{this.props.source.description && this.props.source.source ? <View style={{height: 20}} /> : null}
+						
+						{this.props.source.source ? 
+							<Text style={[globalStyles.text.eachDetailSubheading]}>Source: {this.props.source.source}</Text>
+							: null}
+
+					</Banner> 
+				: null}
 			{this.props.data.length > 0 ? 
 				<View>
 			<ListView

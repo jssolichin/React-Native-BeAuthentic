@@ -36,6 +36,9 @@ var styles = {
 		romanBold: {
 			'fontFamily': 'BodoniSvtyTwoITCTT-Bold' 
 		},
+		romanItalic: {
+			'fontFamily': 'BodoniSvtyTwoITCTT-BookIta'
+		},
 		center: {
 			'textAlign': 'center',
 		},

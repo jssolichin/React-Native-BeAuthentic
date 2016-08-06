@@ -41,6 +41,7 @@ var MiniItem = React.createClass({
 					  collection: this.props.data, 
 					  toRoute: this.props.toRoute,
 					  description: this.props.data.description,
+					  source: this.props.data.source,
 				  }
 				});
 		}
