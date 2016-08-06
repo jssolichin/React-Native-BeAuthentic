@@ -199,7 +199,7 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>My Collections</Text>
 			</EachDetail>
-			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} />
+			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} toBack={this.props.toBack}/>
 
       </ScrollView>
     );
@@ -218,7 +218,7 @@ var ProfilePageLoader = React.createClass({
 	},
 	render: function (){
 		if(this.data.users && this.data.users[0])	
-			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute}/>
+			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute} toBack={this.props.toBack}/>
 		else
 			return <Text>Loading...</Text>
 	}

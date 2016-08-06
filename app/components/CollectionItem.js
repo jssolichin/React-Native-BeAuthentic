@@ -22,7 +22,7 @@ var MiniItem = React.createClass({
 	},
 	_collectionSettings: function () {
 		var CollectionSettingsButton = require('./CollectionSettingsButton.js');
-		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
+		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
 	},
 	_goToCollectionView: function (){
 			

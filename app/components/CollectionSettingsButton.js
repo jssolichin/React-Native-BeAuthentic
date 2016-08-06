@@ -23,8 +23,10 @@ var standardButtons = [
   'Cancel',
   'Change Name',
   'Change Description',
+  'Delete Collection',
 ];
 var cancelIndex = 0;
+var destructiveButtonIndex = 3; 
 
 var CollectionSettingsButton = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -91,12 +93,34 @@ var CollectionSettingsButton = React.createClass({
 			})
 
 	},
+	_deleteCollection: function(){
+		var object = new Parse.Object('Collection')
+		object.objectId = this.props.data.objectId;
+
+		var mutator = ParseReact.Mutation.Destroy(object);
+
+		mutator.dispatch()
+			.then((error,data) => {
+				this.props.toBack();	
+			})
+	},
+	_handleDelete: function (){
+		AlertIOS.alert(
+		 'Confirm Delete',
+		 'Are you sure you want to delete this collection? This will NOT delete the questions within it. ',
+		 [
+		    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		    {text: 'Delete', onPress: () => this._deleteCollection()},
+		  ],
+		);
+	},
 	_handleAdd: function (){
 		var options = standardButtons;
 
 		ActionSheetIOS.showActionSheetWithOptions({
 		      options: options,
 		      cancelButtonIndex: cancelIndex,
+		      destructiveButtonIndex: destructiveButtonIndex,
 		    },
 		 (buttonIndex) => {
 			 switch (buttonIndex){
@@ -104,6 +128,9 @@ var CollectionSettingsButton = React.createClass({
 					 break;
 				 case 1:
 					this._createPrompt('name');
+					 break;
+				 case 3:
+					this._handleDelete();
 					 break;
 				 default:
 					 this._createPrompt('description')

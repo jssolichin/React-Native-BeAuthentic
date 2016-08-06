@@ -114,7 +114,7 @@ var Homepage = React.createClass({
 				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
 					{this.data.collection.map(
 						(collection,i) => 
-							<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}}/>
+							<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack}/>
 						)
 					}
 				</ScrollView>
