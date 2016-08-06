@@ -53,10 +53,9 @@ var AddButton = React.createClass({
 			name: this.state.newCollectionTitle,
 		})
 		.dispatch()
-		.then(function(newRow) {
+		.then((newRow) => {
 		 	ParseReact.Mutation.AddRelation(newRow, 'questions', this.props.data);
-		})
-		.dispatch();
+		});
 	},
 	_createCollectionPromptTitle: function (){
 		AlertIOS.prompt(
@@ -78,9 +77,8 @@ var AddButton = React.createClass({
 		var mutator = ParseReact.Mutation.AddRelation(object, 'questions', this.props.data);
 
 		mutator.dispatch()
-			.then((a,b,c) => {
-				console.log(a,b,c)	
-				Alert.alert('Added to Collection!')
+			.then((question) => {
+				AlertIOS.alert('Added to Collection!')
 			})
 
 	},
@@ -106,21 +104,17 @@ var AddButton = React.createClass({
 	},
 	_handleShare: function (){
 		ActionSheetIOS.showShareActionSheetWithOptions({
-		  url: 'https://code.facebook.com',
-		  message: 'message to go with the shared url',
-		  subject: 'a subject to go in the email heading',
+		  subject: 'A great question from BeAuthentic',
+		  message: this.props.data.text,
 		},
 		(error) => {
 		  console.error(error);
 		},
 		(success, method) => {
-		  var text;
-		  if (success) {
-			text = `Shared via ${method}`;
-		  } else {
-			text = 'You didn\'t share';
-		  }
-		  this.setState({text});
+		  if (success)
+			  AlertIOS.alert(`Shared via ${method}`);
+		  else
+			  console.log('Not Shared');
 		});	
 	},
 	render() {
