@@ -60,11 +60,20 @@ var CollectionList = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function (){
 
-		var user = new Parse.User();
-		user.id = this.props.query.userId;
-
 		var query = new Parse.Query('Collection')
-			.equalTo('createdBy', user);
+		
+		if(this.props.query && this.props.query.userId){
+			var user = new Parse.User();
+			user.id = this.props.query.userId;
+
+			query.equalTo('createdBy', user);
+		}
+
+		if(this.props.query && this.props.query.limit)
+			query.limit(this.props.query.limit)
+
+		if(this.props.query && this.props.query.descending)
+			query.descending(this.props.query.descending)
 				
 		return {
 			collections: query,

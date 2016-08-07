@@ -22,27 +22,10 @@ var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
 var EachTag = require('../components/EachTag.js');
 var CollectionItem = require('../components/CollectionItem.js');
+var CollectionList = require('../components/CollectionList.js');
 var GridView = require("../components/GridView.js");
 
 var globalStyles = require("../globalStyles.js");
-
-var heroItems = [
-	{
-		title: "Love Everlasting",
-		subtitle: "Get to know your significant other better.",
-		tag: "love"
-	},
-	{
-		title: "Friends Five-ever",
-		subtitle: "How well do you know your friends?",
-		tag: "friendship"
-	},
-	{
-		title: "New Kids, Cool Kids",
-		subtitle: "Easy ice-breakers when meeting new people.",
-		tag: "friendship"
-	}
-];
 
 var Hero = React.createClass({
 	render: function() {
@@ -81,10 +64,16 @@ var Homepage = React.createClass({
 			.ascending('createdAt')
 			.limit(3);
 
+		var featuredCollectionQuery = new Parse.Query('Collection')
+			.exists('featuredItem')
+			.ascending('createdAt')
+			.limit(5);
+
 		return { 
 			tags: tagQuery,
 			collection: collectionQuery,
 			heroCollection: heroCollectionQuery,
+			featuredCollection: featuredCollectionQuery
 		};
 	},
 	render: function() {
@@ -109,10 +98,10 @@ var Homepage = React.createClass({
 				</ScrollView>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.roman}>What are You Doing?</Text>
+					<Text style={globalStyles.text.roman}>Featured Collections</Text>
 				</EachDetail>
 				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
-					{this.data.collection.map(
+					{this.data.featuredCollection.map(
 						(collection,i) => 
 							<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack}/>
 						)
@@ -123,6 +112,11 @@ var Homepage = React.createClass({
 					<Text style={globalStyles.text.roman}>Explore Latest Questions</Text>
 				</EachDetail>
 				<GridView type="latestQuestions" toRoute={this.props.toRoute}/>
+
+				<EachDetail heading={true}>
+					<Text style={globalStyles.text.roman}>Explore Latest Collections</Text>
+				</EachDetail>
+				<CollectionList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} toBack={this.props.toBack}/>
 
 				{/*
 				<EachDetail heading={true}>
