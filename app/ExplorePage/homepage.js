@@ -21,9 +21,9 @@ var Spinner = require('react-native-spinkit');
 var Swiper = require('react-native-swiper')
 var EachDetail = require('../components/EachDetail.js');
 var CommentItem = require('../components/CommentItem.js');
-var EachTag = require('../components/EachTag.js');
 var CollectionItem = require('../components/CollectionItem.js');
 var CollectionList = require('../components/CollectionList.js');
+var TagList = require('../components/TagList.js');
 var GridView = require("../components/GridView.js");
 
 
@@ -53,10 +53,6 @@ var Hero = React.createClass({
 var Homepage = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function(props, state) {
-		var tagQuery = new Parse.Query('Tag')
-			.ascending("text")
-			.limit(10);
-
 		var collectionQuery = new Parse.Query('Collection')
 			.ascending("text")
 			.limit(5);
@@ -72,7 +68,6 @@ var Homepage = React.createClass({
 			.limit(5);
 
 		return { 
-			tags: tagQuery,
 			collection: collectionQuery,
 			heroCollection: heroCollectionQuery,
 			featuredCollection: featuredCollectionQuery
@@ -96,24 +91,14 @@ var Homepage = React.createClass({
 				</Swiper>
 
 				<EachDetail heading={true}>
-					<Text style={globalStyles.text.roman}>Explore Trending Tags</Text>
+					<Text style={globalStyles.text.roman}>Explore Latest Tags</Text>
 				</EachDetail>
-				<ScrollView horizontal={true} style={styles.tagsList}>
-					{this.data.tags && this.data.tags.length > 0 ? 
-						this.data.tags.map(
-							(tag, i) => 
-							<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
-						:
-						<View style={[globalStyles.loadingSpinner]}>
-							<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
-						</View>
-					}
-				</ScrollView>
+				<TagList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} />
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Featured Collections</Text>
 				</EachDetail>
-				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
+				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true}>
 					{this.data.featuredCollection && this.data.featuredCollection.length > 0 ? 
 						this.data.featuredCollection.map(
 							(collection,i) => 
@@ -126,6 +111,14 @@ var Homepage = React.createClass({
 						
 					}
 				</ScrollView>
+
+				<EachDetail heading={true} style={{marginBottom: 10,}}>
+					<Text style={globalStyles.text.roman}>Explore by Context</Text>
+				</EachDetail>
+				<TagList collapsible={true} title="By Situation" query={{ascending: 'text', context: 'situation'}} toRoute={this.props.toRoute} />
+				<TagList collapsible={true} title="By Topic" query={{ascending: 'text', context: 'topic'}} toRoute={this.props.toRoute} />
+				<TagList collapsible={true} title="By Participants" query={{ascending: 'text', context: 'participants'}} toRoute={this.props.toRoute} />
+
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Questions</Text>
@@ -184,15 +177,8 @@ var styles = StyleSheet.create({
 		marginHorizontal: 3, 
 		marginBottom: -75,
 	},
-	tagsList: {
-		paddingHorizontal: 20,
-		flexDirection: 'row',
-		//flexWrap: 'wrap',
-		width: width ,
-		marginTop: 10,
-	},
 	collectionList: {
-		marginTop: 20,
+		marginTop: 10,
 		marginLeft: 20,
 		height: (width/3 *.65) * 2.1,
 	},
