@@ -11,7 +11,9 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
+var Spinner = require('react-native-spinkit');
 
+var globalStyles = require("../globalStyles.js");
 var CommentItem = require('../components/CommentItem.js');
 
 var CommentList = React.createClass({
@@ -74,7 +76,11 @@ var CommentList = React.createClass({
 											 showArrow={this.props.showArrow}
 										 />
 										 ) 
-				 : <Text>Loading...</Text>}
+				 : 
+				<View style={[globalStyles.loadingSpinner]}>
+					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+				</View>
+			}
 
 			 </ScrollView>
 		);

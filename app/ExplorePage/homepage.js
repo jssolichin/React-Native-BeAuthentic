@@ -16,6 +16,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
+var Spinner = require('react-native-spinkit');
 
 var Swiper = require('react-native-swiper')
 var EachDetail = require('../components/EachDetail.js');
@@ -24,6 +25,7 @@ var EachTag = require('../components/EachTag.js');
 var CollectionItem = require('../components/CollectionItem.js');
 var CollectionList = require('../components/CollectionList.js');
 var GridView = require("../components/GridView.js");
+
 
 var globalStyles = require("../globalStyles.js");
 
@@ -81,19 +83,30 @@ var Homepage = React.createClass({
 		var passiveDot = <View style={[styles.dot, {borderWidth: 1}]} />;
 		var activeDot = <View style={[styles.dot, {backgroundColor: 'rgba(0,0,0,1)'}]} />;
 
+		console.log(this.data.heroCollection)
 		return (
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
 				<Swiper dot={passiveDot} activeDot={activeDot} height={145} showPagination={true} autoplay={true}>
-					{this.data.heroCollection.map((collection, i) => <Hero key={i} data={collection}/> )}
+					{this.data.heroCollection && this.data.heroCollection.length > 0 ?
+						this.data.heroCollection.map((collection, i) => <Hero key={i} data={collection}/>) :
+						<View style={[globalStyles.loadingSpinner]}>
+							<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+						</View>
+					}
 				</Swiper>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Trending Tags</Text>
 				</EachDetail>
 				<ScrollView horizontal={true} style={styles.tagsList}>
-					{this.data.tags.map(
-						(tag, i) => 
-						<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
+					{this.data.tags && this.data.tags.length > 0 ? 
+						this.data.tags.map(
+							(tag, i) => 
+							<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
+						:
+						<View style={[globalStyles.loadingSpinner]}>
+							<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+						</View>
 					}
 				</ScrollView>
 
@@ -101,10 +114,16 @@ var Homepage = React.createClass({
 					<Text style={globalStyles.text.roman}>Featured Collections</Text>
 				</EachDetail>
 				<ScrollView directionalLockEnabled={true} style={styles.collectionList} horizontal={true} >
-					{this.data.featuredCollection.map(
-						(collection,i) => 
-							<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack}/>
-						)
+					{this.data.featuredCollection && this.data.featuredCollection.length > 0 ? 
+						this.data.featuredCollection.map(
+							(collection,i) => 
+								<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack}/>
+							)
+						: 
+						<View style={[globalStyles.loadingSpinner]}>
+							<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+						</View>
+						
 					}
 				</ScrollView>
 

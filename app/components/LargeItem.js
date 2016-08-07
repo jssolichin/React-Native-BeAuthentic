@@ -20,6 +20,7 @@ import LinearGradient from 'react-native-linear-gradient'
 var SinglePage = require('../SinglePage/new.js');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
+var Spinner = require('react-native-spinkit');
 
 var LargeItem = React.createClass({
 	//source={require('image!profileImage')}
@@ -194,8 +195,8 @@ var LargeItem = React.createClass({
 var Loader = React.createClass({
 	render: function (){
 		var dataLoadingView = (
-			<View>
-				<Text> Loading... </Text>
+			<View style={[globalStyles.loadingSpinner]}>
+				<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
 			</View>
 		);
 

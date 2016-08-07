@@ -11,6 +11,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
+var Spinner = require('react-native-spinkit');
 
 var EachDetail = require('./EachDetail.js');
 var globalStyles = require("../globalStyles.js");
@@ -90,7 +91,11 @@ var CollectionList = React.createClass({
 
 				{this.data.collections && this.data.collections.length > 0 ? 
 					this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack}/>) 
-				 : <Text>Loading...</Text>}
+						: 
+					<View style={[globalStyles.loadingSpinner]}>
+						<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+					</View>
+				}
 
 			 </ScrollView>
 		);

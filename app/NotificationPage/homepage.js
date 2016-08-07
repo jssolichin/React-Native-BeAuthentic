@@ -14,6 +14,7 @@ var moment = require('moment');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
+var Spinner = require('react-native-spinkit');
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
@@ -218,7 +219,9 @@ var NotificationPage = React.createClass({
 			renderRow={(rowData) => <NotificationItem data={rowData} toRoute={this.props.toRoute}/>}
 		/>
 		 :  
-			<Text>Loading...</Text>
+			<View style={[globalStyles.loadingSpinner]}>
+				<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+			</View>
 		  }
 
 	  </View>

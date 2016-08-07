@@ -91,11 +91,17 @@ var WriteBox = React.createClass({
 
 				</View>
 
+				{!this.props.uploadingComment ?
 				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
 					<View>
-						<Button text="Save" invert={true}/>
+						<Button text={this.props.defaultValue || this.state.text ? 'Update' : 'Save' } invert={true}/>
 					</View>
 				</TouchableHighlight>
+				: 
+					<View>
+						<Button loading={true} invert={true}/>
+					</View>
+				}
 
 			</View>
 
@@ -118,14 +124,15 @@ var SinglePage = React.createClass({
 	},
 	getInitialState: function (){
 		return {
+			uploadingComment: false,
 		};
 	},
 	componentDidMount: function(){
 		this._getShowHint();	
 	},
 	_saveCommentToServer: function (comment){
+		this.setState({uploadingComment: true})
 		var that = this;
-
 
 		var postACL = new Parse.ACL(Parse.User.current());
 		postACL.setPublicReadAccess(true);
@@ -173,6 +180,7 @@ var SinglePage = React.createClass({
 		batch.dispatch()
 			.then((a,b,c)=>{
 				AlertIOS.alert( "Answer Saved!");
+				that.setState({uploadingComment: false})
 				that.refreshQueries('answer');
 			})
 	},
@@ -235,7 +243,7 @@ var SinglePage = React.createClass({
 				</View>
 
 				<EachDetail style={{paddingBottom: 20,}} invert={true}>
-					<WriteBox defaultValue={defaultValue} publicallyShared={publicallyShared} onSubmit={this._saveCommentToServer}/>
+					<WriteBox defaultValue={defaultValue} publicallyShared={publicallyShared} onSubmit={this._saveCommentToServer} uploadingComment={this.state.uploadingComment}/>
 				</EachDetail>
 
 				<EachDetail heading={true} style={[{flexDirection: 'column'}]}>

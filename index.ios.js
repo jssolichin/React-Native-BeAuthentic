@@ -36,7 +36,7 @@ var GetToKnow = React.createClass({
 	},
 	getInitialState: function() {
 		return {
-			selectedTab: 'heart',
+			selectedTab: 'home',
 			notifCount: 0,
 			presses: 0,
 			showOnboarding: false,

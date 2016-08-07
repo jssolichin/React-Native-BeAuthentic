@@ -15,6 +15,7 @@ var ParseReact = require('parse-react/react-native');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
 var imagePicker = require('react-native-imagepicker');
+var Spinner = require('react-native-spinkit');
 
 var EachDetail = require('../components/EachDetail.js');
 var Button = require('../components/Button.js');
@@ -59,7 +60,11 @@ var Stat = React.createClass({
 		)	
 		}
 		else {
-			return <Text>Loading...</Text>
+			return (
+				<View style={[globalStyles.loadingSpinner]}>
+					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+				</View>
+			)
 		}
 		
 
@@ -220,7 +225,11 @@ var ProfilePageLoader = React.createClass({
 		if(this.data.users && this.data.users[0])	
 			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute} toBack={this.props.toBack}/>
 		else
-			return <Text>Loading...</Text>
+			return (
+				<View style={[globalStyles.loadingSpinner]}>
+					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+				</View>
+			)
 	}
 });
 

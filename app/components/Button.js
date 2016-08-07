@@ -5,17 +5,26 @@ var {
 	Text,
 	View,
 } = React;
+var Spinner = require('react-native-spinkit');
 
 var globalStyles = require("../globalStyles.js");
 
 var EachDetail = React.createClass({
 	render: function() {
+		var spinnerColor = '#000000';
+
+		if(this.props.invert)
+			spinnerColor = '#ffffff';
+
 		return (
 			<View style={[styles.button, 
 				this.props.style, 
 				this.props.invert && styles.invertButton,
 				this.props.noBorder && styles.noBorder,
 			]}>
+				{this.props.loading ?
+					<Spinner isVisible={true} size={15} type='Arc' color={spinnerColor} />
+					: 
 				<Text style={[
 					globalStyles.text.roman,
 					globalStyles.text.size.medium,
@@ -23,6 +32,7 @@ var EachDetail = React.createClass({
 				]}>
 					{this.props.text}
 				</Text>
+				}
 			</View>
 		);
 	}

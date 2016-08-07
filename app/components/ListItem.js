@@ -18,6 +18,7 @@ var EachDetail = require('./EachDetail.js');
 var EachTag = require('./EachTag.js');
 var globalHelpers = require("../globalHelpers.js");
 var globalStyles = require("../globalStyles.js");
+var Spinner = require('react-native-spinkit');
 
 var ListItem = React.createClass({
 	getInitialState: function () {
@@ -66,7 +67,11 @@ var ListItem = React.createClass({
 										globalStyles.text.weight.bold, 
 										{transform: [{rotateZ: '90deg'}]}
 									]}>
-										{this.props.data.createdBy ? this.props.data.createdBy.username : "loading..."}
+										{this.props.data.createdBy ? this.props.data.createdBy.username : 
+											<View style={[globalStyles.loadingSpinner]}>
+												<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+											</View>
+										}
 									</Text>
 									<Text style={styles.profileBlurb}>
 										{this.props.data.createdBy ? globalHelpers.shorten(this.props.data.createdBy.description, 25) : "loading..."}

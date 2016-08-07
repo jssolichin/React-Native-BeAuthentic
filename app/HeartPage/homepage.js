@@ -65,6 +65,8 @@ var WriteBox = React.createClass({
 		this.setState({tags: tags});
 	},
 	_onSubmitResponse: function (){
+		this.setState({uploadingQuestion: true});
+
 		var that = this;
 
 		var Tag = new Parse.Object.extend('Tag');
@@ -132,8 +134,12 @@ var WriteBox = React.createClass({
 			question.save({
 				success: (question) => {
 					that.props.callback(true);
+					that.setState({uploadingQuestion: false});
 				},
-				error: (error) => console.log(error)
+				error: (error) => {
+					AlertIOS.alert(error);
+					that.setState({uploadingQuestion: false});
+				}
 			});
 		})
 
@@ -177,11 +183,18 @@ var WriteBox = React.createClass({
 					</TouchableHighlight>
 				</View>
 
+				{!this.state.uploadingQuestion ? 
 				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
 					<View>
 						<Button text="Ask this Question" invert={true} />
 					</View>
 				</TouchableHighlight>
+				: 
+					<View>
+						<Button invert={true} loading={true} />
+					</View>
+				}
+
 
 			</View>
 			</Image>

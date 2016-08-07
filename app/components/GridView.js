@@ -1,5 +1,3 @@
-//TODO: add loading state, add empty state
-
 var React = require('react-native');
 var {
 	AppRegistry,
@@ -15,6 +13,7 @@ var ParseReact = require('parse-react/react-native');
 var EachDetail = require('../components/EachDetail.js');
 var MiniItem = require('../components/MiniItem.js');
 var Banner = require('../components/Banner.js');
+var Spinner = require('react-native-spinkit');
 
 var globalStyles = require("../globalStyles.js");
 
@@ -178,7 +177,11 @@ var GridViewLoader = React.createClass({
 
 		}
 		else 
-			return <Text> Loading... </Text>;
+			return (
+				<View style={[globalStyles.loadingSpinner]}>
+					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+				</View>
+			);
 
 	}
 });
