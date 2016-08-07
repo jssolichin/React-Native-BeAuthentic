@@ -117,14 +117,17 @@ var LargeItem = React.createClass({
 				tags.push(eachTag);
 		}
 
+		var imageUri;
+		if(this.props.data.coverImage)
+			imageUri= this.props.data.coverImage.url();
+
 		var createdAt = moment(this.props.data.createdAt);
 
 		return (
 			<View style={styles.insideContainer}>
 				<Image
 					style={styles.heroImage}
-					source={{uri: this.props.data.coverImage.url()}}
-					//source={{uri: 'http://i.imgur.com/h4L179U.png'}}
+					source={{uri: imageUri}}
 					>
 					<LinearGradient colors={['rgba(255,255,255,.3)', 'rgba(255,255,255,1)']} style={styles.linearGradient}>
 					</LinearGradient>
@@ -221,6 +224,7 @@ var styles = {
 		resizeMode: 'stretch',
 		marginTop: 51,
 		overflow: 'visible',
+		backgroundColor: '#ccc',
 	},
 	linearGradient: {
 		flex: 1,

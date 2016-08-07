@@ -62,8 +62,9 @@ var CommentList = React.createClass({
 				style={styles.container}
 				>
 
-				{existingAnswer && existingAnswer.length > 0 ? 
-					existingAnswer.map((answer, i) =>
+				{existingAnswer ? 
+					existingAnswer.length > 0 ?
+						existingAnswer.map((answer, i) =>
 									  //TODO: override visibleComment if comment is know 
 										 <CommentItem 
 											 key={i} 
@@ -76,6 +77,10 @@ var CommentList = React.createClass({
 											 showArrow={this.props.showArrow}
 										 />
 										 ) 
+						 :
+						<View style={{padding: 20, paddingBottom: 0}}>
+							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
+						</View>
 				 : 
 				<View style={[globalStyles.loadingSpinner]}>
 					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>

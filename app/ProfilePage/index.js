@@ -26,21 +26,21 @@ var Navigator = React.createClass({
 	
 	render: function() {
 
+		var profileSettingsButtonGenerator = function (){
+			return <ProfileSettingsButton data={firstRoute.data} />
+		}
+
 		var firstRoute = {
 			name: Parse.User.current().getUsername(),
 			component: HomePage,
+			rightCorner: profileSettingsButtonGenerator,
 			data: {
 				userId: Parse.User.current().id,
 			}
 		};
 
-		var profileSettingsButtonGenerator = function (){
-			return <ProfileSettingsButton data={firstRoute.data} />
-		}
-
 		return (
 			<Router firstRoute={firstRoute} backButtonComponent={BackButton} headerStyle={globalStyles.router.header} titleStyle={[globalStyles.router.title, globalStyles.text.heading]} 
-				rightCorner={profileSettingsButtonGenerator}
 			/>
 		);
 	},

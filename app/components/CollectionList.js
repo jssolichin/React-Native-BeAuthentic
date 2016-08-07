@@ -89,8 +89,13 @@ var CollectionList = React.createClass({
 				style={styles.container}
 				>
 
-				{this.data.collections && this.data.collections.length > 0 ? 
-					this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack}/>) 
+				{this.data.collections ? 
+					this.data.collections.length > 0 ? 
+						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack}/>) 
+						: 
+						<View style={{padding: 20, paddingBottom: 0}}>
+							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
+						</View>
 						: 
 					<View style={[globalStyles.loadingSpinner]}>
 						<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
