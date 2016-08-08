@@ -23,10 +23,11 @@ var standardButtons = [
   'Cancel',
   'Change Name',
   'Change Description',
+  'Change Source',
   'Delete Collection',
 ];
 var cancelIndex = 0;
-var destructiveButtonIndex = 3; 
+var destructiveButtonIndex = 4; 
 
 var CollectionSettingsButton = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -58,6 +59,7 @@ var CollectionSettingsButton = React.createClass({
 			objectId: this.props.data.objectId,
 			name: changes.name || this.props.data.name,
 			description: changes.description || this.props.data.description,
+			source: changes.source || this.props.data.source,
 		};
 
 		this.setState({data: newData});
@@ -73,6 +75,7 @@ var CollectionSettingsButton = React.createClass({
 			  collection: this.props.data, 
 			  toRoute: this.props.toRoute,
 			  description: newData.description,
+			  source: newData.source,
 		  }
 		});
 
@@ -130,6 +133,9 @@ var CollectionSettingsButton = React.createClass({
 					this._createPrompt('name');
 					 break;
 				 case 3:
+					this._createPrompt('source');
+					 break;
+				 case 4:
 					this._handleDelete();
 					 break;
 				 default:

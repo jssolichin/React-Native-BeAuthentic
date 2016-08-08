@@ -91,7 +91,7 @@ var CollectionList = React.createClass({
 
 				{this.data.collections ? 
 					this.data.collections.length > 0 ? 
-						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack}/>) 
+						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute}/>) 
 						: 
 						<View style={{padding: 20, paddingBottom: 0}}>
 							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>

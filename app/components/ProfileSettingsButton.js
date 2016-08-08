@@ -38,15 +38,24 @@ var CollectionSettingsButton = React.createClass({
 			users: query,
 		};
 	},
-	componentDidUpdate(){
+	getInitialState: function (){
+		return {
+		
+		}	
+	},
+	componentDidUpdate: function(){
 		if(this.data.users[0]){
-			if(this.data.users[0].name == undefined || this.data.users[0].name.length < 1)
+			if(!this.state.ranOnceName && (this.data.users[0].name == undefined || this.data.users[0].name.length < 1)) {
+				this.setState({ranOnceName: true})
 				this._createPrompt('name', 'Add');
-			if(this.data.users[0].bio == undefined || this.data.users[0].bio.length < 1)
+			}
+			if(!this.state.ranOnceBio && (this.data.users[0].bio == undefined || this.data.users[0].bio.length < 1)) {
+				this.setState({ranOnceBio: true})
 				this._createPrompt('bio', 'Add');
+			}
 		}
 	},
-	_logOut () {
+	_logOut: function () {
 		Parse.User.logOut();	
 	},
 	_createPrompt: function (type, verb){
