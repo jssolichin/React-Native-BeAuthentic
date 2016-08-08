@@ -42,6 +42,7 @@ var CollectionListItem = React.createClass({
 					  toRoute: this.props.toRoute,
 					  description: this.props.data.description,
 					  source: this.props.data.source,
+					  createdBy: this.props.data.createdBy,
 				  }
 				});
 		}
@@ -65,6 +66,7 @@ var CollectionList = React.createClass({
 	observe: function (){
 
 		var query = new Parse.Query('Collection')
+			.include('createdBy')
 		
 		if(this.props.query && this.props.query.userId){
 			var user = new Parse.User();

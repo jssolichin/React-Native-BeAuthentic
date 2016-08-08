@@ -5,7 +5,7 @@ var {
 	Text,
 	View,
 	ScrollView,
-	TouchableHighlight,
+	TouchableOpacity,
 } = React;
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
@@ -39,6 +39,9 @@ var CommentList = React.createClass({
 				.notEqualTo('createdBy', Parse.User.current())
 				.include('createdBy');
 		}
+
+		if(this.props.showMoreName != undefined)
+			query.limit(3)
 				
 		return {
 			answer: query,
@@ -49,6 +52,23 @@ var CommentList = React.createClass({
 		if(prevProps.dirty != this.props.dirty)	{
 			this.refreshQueries('answer');
 		}
+	},
+	_goToFullView: function (){
+
+		this.props.toRoute({
+			  name: this.props.showMoreName,
+			  component: CommentList,
+			  passProps: {
+				  query: this.props.query,
+				  toRoute: this.props.toRoute,
+				  visibleUser: this.props.visibleUser,
+				  visibleComment: this.props.visibleComment,
+				  hideQuestion: false,
+				  hideUsername: true,
+				  showArrow: true,
+			  },
+			});
+
 	},
 	render: function() {
 
@@ -69,7 +89,8 @@ var CommentList = React.createClass({
 
 				{existingAnswer ? 
 					existingAnswer.length > 0 ?
-						existingAnswer.map((answer, i) =>
+				<View>
+					{existingAnswer.map((answer, i) =>
 									  //TODO: override visibleComment if comment is know 
 										 <CommentItem 
 											 key={i} 
@@ -81,7 +102,15 @@ var CommentList = React.createClass({
 											 toRoute={this.props.toRoute}
 											 showArrow={this.props.showArrow}
 										 />
-										 ) 
+										 ) }
+
+					{this.props.showMoreName && existingAnswer.length >= 3 ? 
+					<TouchableOpacity onPress={this._goToFullView} style={{flex: 1, alignItems: 'flex-end', marginHorizontal: 20, marginTop: 5}}>
+						<Text style={globalStyles.text.color.gray}>Show More</Text>
+					</TouchableOpacity>
+					: null}
+
+				</View>
 						 :
 						<View style={{padding: 20, paddingBottom: 0}}>
 							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>

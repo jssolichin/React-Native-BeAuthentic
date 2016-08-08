@@ -236,7 +236,7 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true} dirty={this.state.questionsAnsweredDirty}/>
+			<CommentList showMoreName="My Answers" query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true} dirty={this.state.questionsAnsweredDirty}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
