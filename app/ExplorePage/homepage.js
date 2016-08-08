@@ -106,7 +106,7 @@ var Homepage = React.createClass({
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Questions</Text>
 				</EachDetail>
-				<GridView type="latestQuestions" toRoute={this.props.toRoute} emitter={this.props.emitter}/>
+				<GridView showMoreName="Latest Questions" type="latestQuestions" toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Collections</Text>

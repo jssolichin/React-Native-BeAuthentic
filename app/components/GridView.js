@@ -4,6 +4,7 @@ var {
 	StyleSheet,
 	Text,
 	View,
+	ScrollView,
 	ListView,
 	TouchableOpacity,
 } = React;
@@ -42,7 +43,7 @@ var GridView = React.createClass({
 	render: function() {
 
 		return (
-			<View style={styles.container}>
+			<ScrollView style={styles.container}>
 				{this.props.source && (this.props.source.description || this.props.source.source) ? 
 					<Banner>
 						{this.props.source.description ? 
@@ -96,7 +97,7 @@ var GridView = React.createClass({
 				<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
 			</View>
 		}
-		</View>
+		</ScrollView>
 		);
 	}
 });
@@ -133,7 +134,11 @@ var GridViewLoader = React.createClass({
 	_queryLatestQuestions: function (){
 
 		var questionsQuery = new Parse.Query('Question')
-			.descending("createdAt").limit(6);
+			.descending("createdAt")
+
+			console.log(this.props.showMoreName)
+		if(this.props.showMoreName != undefined)
+			questionsQuery.limit(6)
 
 		if(this.props.query && this.props.query.questionsByUserId){
 			var user = new Parse.User();
@@ -154,8 +159,10 @@ var GridViewLoader = React.createClass({
 			.equalTo('type', 'liked')
 			.equalTo('fromUser', user)
 			.descending("createdAt")
-			.limit(6)
 			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
+
+		if(this.props.showMoreName != undefined)
+			questionsQuery.limit(6)
 
 		  return { questions: questionsQuery };
 	},
@@ -198,6 +205,23 @@ var GridViewLoader = React.createClass({
 			this.refreshQueries('questions');
 		}
 	},
+	_goToFullView: function (){
+
+		this.props.toRoute({
+			  name: this.props.showMoreName,
+			  component: GridViewLoader,
+			  passProps: {
+				  emitter: this.props.emitter,
+				  data: this.props.data,
+				  type: this.props.type,
+				  query: this.props.query,
+			  },
+			  data: {
+				  toRoute: this.props.toRoute,
+			  }
+			});
+
+	},
 	render: function (){
 
 		if(this.data && this.data.questions) {
@@ -206,7 +230,17 @@ var GridViewLoader = React.createClass({
 			if(data[0] && data[0].className == 'Activity')	
 				data = data.map((activity) => activity.question)
 
-			return <GridView data={data} source={this.props.data || this.props.type} secondary={this.secondaryModeHandler()} toRoute={this.props.toRoute || this.props.data.toRoute} emitter={this.props.emitter}/>;
+			return (
+				<View>
+					<GridView data={data} source={this.props.data || this.props.type} secondary={this.secondaryModeHandler()} toRoute={this.props.toRoute || this.props.data.toRoute} emitter={this.props.emitter}/>
+
+					{this.props.showMoreName && data.length >= 6 ? 
+					<TouchableOpacity onPress={this._goToFullView} style={{flex: 1, alignItems: 'flex-end', marginHorizontal: 20, marginTop: 5}}>
+						<Text style={globalStyles.text.color.gray}>Show More</Text>
+					</TouchableOpacity>
+					: null}
+
+				</View>);
 
 		}
 		else 

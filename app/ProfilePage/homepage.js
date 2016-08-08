@@ -231,7 +231,7 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
 				<Text style={globalStyles.text.roman}>Questions liked</Text>
 			</EachDetail>
-			<GridView query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsLikedDirty} emitter={this.props.emitter}/>
+			<GridView showMoreName="Questions Liked" query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsLikedDirty} emitter={this.props.emitter}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
@@ -241,7 +241,7 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
 			</EachDetail>
-			<GridView query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsAskedDirty} emitter={this.props.emitter}/>
+			<GridView showMoreName="Questions Asked" query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsAskedDirty} emitter={this.props.emitter}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>My Collections</Text>
