@@ -295,7 +295,7 @@ var HeartPage = React.createClass({
 					<Text style={globalStyles.text.eachDetailSubheading}>(Randomly chosen question)</Text>
 				</EachDetail>
 
-				{this.data.randomQ ? <LargeItem data={this.data.randomQ[0]} toRoute={this.props.toRoute}/> : null}
+				{this.data.randomQ ? <LargeItem emitter={this.props.emitter} data={this.data.randomQ[0]} toRoute={this.props.toRoute}/> : null}
 
 			</ScrollView>
 		);

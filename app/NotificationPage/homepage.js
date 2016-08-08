@@ -219,7 +219,8 @@ var NotificationPage = React.createClass({
 			  contentInset={{bottom: 48,}} 
 			  style={{backgroundColor: 'transparent'}}
 			  automaticallyAdjustContentInsets={false}
-	        dataSource={this.state.dataSource}
+			  dataSource={this.state.dataSource}
+			  enableEmptySections={true}
 			renderRow={(rowData) => <NotificationItem data={rowData} toRoute={this.props.toRoute}/>}
 		/>
 		 :  

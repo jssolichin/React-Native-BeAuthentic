@@ -31,7 +31,7 @@ RCT_EXPORT_METHOD(readImage:(NSString *)input callback:(RCTResponseSenderBlock)c
     
     CGSize size = [[asset defaultRepresentation] dimensions];
     
-    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, CGRectMake(size.width/2, size.height/2, 570, 862));
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, CGRectMake(size.width/2, size.height/2, 862, 862)); //572x862
     UIImage *croppedImage = [UIImage imageWithCGImage:subImageRef];
     
     // Create UIImageJPEGRepresentation from CGImageRef
