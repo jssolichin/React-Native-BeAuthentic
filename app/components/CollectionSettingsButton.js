@@ -51,7 +51,7 @@ var CollectionSettingsButton = React.createClass({
 		);
 	},
 	_collectionSettings: function () {
-		return <CollectionSettingsButton data={this.state.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
+		return <CollectionSettingsButton emitter={this.props.emitter} data={this.state.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute}/>;
 	},
 	_handleRefreshPage: function (changes){
 	
@@ -93,6 +93,7 @@ var CollectionSettingsButton = React.createClass({
 		mutator.dispatch()
 			.then((error,data) => {
 				this._handleRefreshPage(changes);
+				this.props.emitter.emit('collectionsModified');
 			})
 
 	},
@@ -104,6 +105,7 @@ var CollectionSettingsButton = React.createClass({
 
 		mutator.dispatch()
 			.then((error,data) => {
+				this.props.emitter.emit('collectionsModified');
 				this.props.toBack();	
 			})
 	},

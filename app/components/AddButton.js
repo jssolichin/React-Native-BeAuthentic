@@ -54,7 +54,8 @@ var AddButton = React.createClass({
 		})
 		.dispatch()
 		.then((newRow) => {
-		 	ParseReact.Mutation.AddRelation(newRow, 'questions', this.props.data);
+			//ParseReact.Mutation.AddRelation(newRow, 'questions', this.props.data);
+			this._handleAddToCollection(newRow);
 		});
 	},
 	_createCollectionPromptTitle: function (){
@@ -70,14 +71,18 @@ var AddButton = React.createClass({
 		    ],
 		);
 	},
-	_handleAddToCollection: function (index){
+	_handleAddToCollection: function (collection){
 
-		var object = this.data.collections[index - 2];
+		var object = collection;
+
+		if(!isNaN(collection))
+			var object = this.data.collections[collection - 2];
 
 		var mutator = ParseReact.Mutation.AddRelation(object, 'questions', this.props.data);
 
 		mutator.dispatch()
 			.then((question) => {
+				this.props.emitter.emit('collectionsModified');
 				AlertIOS.alert('Added to Collection!')
 			})
 

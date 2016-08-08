@@ -22,7 +22,7 @@ var MiniItem = React.createClass({
 	},
 	_collectionSettings: function () {
 		var CollectionSettingsButton = require('./CollectionSettingsButton.js');
-		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
+		return 	<CollectionSettingsButton emitter={this.props.emitter} data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
 	},
 	_goToCollectionView: function (){
 			
@@ -37,10 +37,14 @@ var MiniItem = React.createClass({
 				  name: this.props.data.name,
 				  component: GridView,
 				  rightCorner: rightCorner,
+				  passProps: {
+					  emitter: this.props.emitter,
+				  },
 				  data: {
 					  collection: this.props.data, 
 					  toRoute: this.props.toRoute,
 					  description: this.props.data.description,
+					  createdBy: this.props.data.createdBy,
 					  source: this.props.data.source,
 				  }
 				});
@@ -85,7 +89,7 @@ var styles = {
 		backgroundColor: '#ccc',
 	},
 	background: {
-		backgroundColor: 'rgba(255,255,255, .4)', 
+		backgroundColor: 'rgba(255,255,255, .6)', 
 		margin: eachItemPadding, 
 		width: eachItemWidth,
 		height: eachItemHeight,

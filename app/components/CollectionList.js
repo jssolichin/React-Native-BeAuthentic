@@ -19,7 +19,7 @@ var globalStyles = require("../globalStyles.js");
 var CollectionListItem = React.createClass({
 	_collectionSettings: function () {
 		var CollectionSettingsButton = require('./CollectionSettingsButton.js');
-		return 	<CollectionSettingsButton data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
+		return 	<CollectionSettingsButton emitter={this.props.emitter} data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
 	},
 	_goToCollectionView: function (){
 			
@@ -34,6 +34,9 @@ var CollectionListItem = React.createClass({
 				  name: this.props.data.name,
 				  component: GridView,
 				  rightCorner: rightCorner,
+				  passProps: {
+				 	emitter: this.props.emitter 
+				  },
 				  data: {
 					  collection: this.props.data, 
 					  toRoute: this.props.toRoute,
@@ -81,6 +84,11 @@ var CollectionList = React.createClass({
 		}	
 
 	},
+	componentDidUpdate: function (nextProps) {
+		if(nextProps.dirty != this.props.dirty)	{
+			this.refreshQueries('collections');
+		}
+	},
 	render: function() {
 
 		return (
@@ -91,7 +99,7 @@ var CollectionList = React.createClass({
 
 				{this.data.collections ? 
 					this.data.collections.length > 0 ? 
-						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute}/>) 
+						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} emitter={this.props.emitter}/>) 
 						: 
 						<View style={{padding: 20, paddingBottom: 0}}>
 							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>

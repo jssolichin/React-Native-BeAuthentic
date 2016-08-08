@@ -34,8 +34,12 @@ var Navigator = React.createClass({
 			name: Parse.User.current().getUsername(),
 			component: HomePage,
 			rightCorner: profileSettingsButtonGenerator,
+			passProps: {
+				emitter: this.props.emitter,
+			},
 			data: {
 				userId: Parse.User.current().id,
+				emitter: this.props.emitter,
 			}
 		};
 

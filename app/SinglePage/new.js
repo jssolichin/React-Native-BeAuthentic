@@ -94,7 +94,7 @@ var WriteBox = React.createClass({
 				{!this.props.uploadingComment ?
 				<TouchableHighlight onPress={this._onSubmitResponse} underlayColor='#fff'>
 					<View>
-						<Button text={this.props.defaultValue || this.state.text ? 'Update' : 'Save' } invert={true}/>
+						<Button text={this.props.defaultValue ? 'Update' : 'Save' } invert={true}/>
 					</View>
 				</TouchableHighlight>
 				: 
@@ -111,6 +111,9 @@ var WriteBox = React.createClass({
 });
 
 var SinglePage = React.createClass({
+	propTypes: {
+		emitter: React.PropTypes.object.isRequired,
+	},
 	mixins: [ParseReact.Mixin],
 	observe: function (){
 
@@ -182,6 +185,7 @@ var SinglePage = React.createClass({
 				AlertIOS.alert( "Answer Saved!");
 				that.setState({uploadingComment: false})
 				that.refreshQueries('answer');
+				that.props.emitter.emit('newComment', a);
 			})
 	},
 	_getShowHint: function (){

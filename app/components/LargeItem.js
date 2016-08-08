@@ -56,12 +56,14 @@ var LargeItem = React.createClass({
 			fromUser: Parse.User.current(),
 			toUser: this.props.data.createdBy,
 			question: this.props.data,
+			readStatus: Parse.User.current().id == this.props.data.createdBy.objectId,
 			type: 'liked',
 		});
 
 		creator.dispatch()
 			.then((a,b,c)=>{
 				that.refreshQueries('likeCount');
+				that.props.emitter.emit('newLiked', a);
 			})
 	},
 	_markAsUnliked: function (){
@@ -90,6 +92,9 @@ var LargeItem = React.createClass({
 		this.props.toRoute({
 			name: 'Respond',
 			component: SinglePage,
+			passProps: {
+				emitter: this.props.emitter,
+			},
 			data: {
 				question: this.props.data,
 				toRoute: this.props.toRoute,
@@ -196,6 +201,9 @@ var LargeItem = React.createClass({
 });
 
 var Loader = React.createClass({
+	propTypes: {
+		emitter: React.PropTypes.object.isRequired,
+	},
 	render: function (){
 		var dataLoadingView = (
 			<View style={[globalStyles.loadingSpinner]}>
@@ -203,7 +211,7 @@ var Loader = React.createClass({
 			</View>
 		);
 
-		var dataLoadedView = <LargeItem data={this.props.data} toRoute={this.props.toRoute} />;
+		var dataLoadedView = <LargeItem data={this.props.data} toRoute={this.props.toRoute} emitter={this.props.emitter}/>;
 
 		return this.props.data ? dataLoadedView : dataLoadingView; 
 	

@@ -62,7 +62,7 @@ var NotificationItem = React.createClass({
 	},
 	_addToCollection: function () {
 		var AddButton = require('../components/AddButton.js');
-		return 	<AddButton data={this.props.data.question}/>;
+		return 	<AddButton emitter={this.props.emitter} data={this.props.data.question}/>;
 	},
 	_goToSinglePage: function() {
 		var SinglePageView = require('../SinglePage/view.js');
@@ -70,6 +70,9 @@ var NotificationItem = React.createClass({
 		      name: "A Heart Question",
 		      component: SinglePageView,
 			  rightCorner: this._addToCollection,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
 			  data: {
 				  question: {objectId: this.props.data.question.id}, 
 				  toRoute: this.props.toRoute,
@@ -157,7 +160,8 @@ var NotificationPage = React.createClass({
 			.limit(10)
 			.include('question')
 			.include('fromUser')
-			.equalTo('toUser', Parse.User.current());
+			.equalTo('toUser', Parse.User.current())
+			.notEqualTo('fromUser', Parse.User.current());
 
 		query.find({
 			success: (activities) => {

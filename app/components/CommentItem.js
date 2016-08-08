@@ -32,7 +32,7 @@ var CommentItem = React.createClass({
   	},
 	_addToCollection: function () {
 		var AddButton = require('./AddButton.js');
-		return 	<AddButton data={this.props.data}/>;
+		return 	<AddButton emitter={this.props.emitter} data={this.props.data}/>;
 	},
 	_goToSinglePage: function() {
 		var SinglePageView = require('../SinglePage/view.js');
@@ -40,6 +40,9 @@ var CommentItem = React.createClass({
 		      name: "A Heart Question",
 			  component: SinglePageView,
 			  rightCorner: this._addToCollection,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
 			  data: {
 				  question: this.props.data.question,
 				  toRoute: this.props.toRoute,

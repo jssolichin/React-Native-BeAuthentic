@@ -21,6 +21,9 @@ var EachTag = React.createClass({
 			this.props.toRoute({
 				  name: '#' + this.props.tag.text,
 				  component: GridView,
+				  passProps: {
+				 	emitter: this.props.emitter, 
+				  },
 				  data: {
 					  tag: this.props.tag, 
 					  toRoute: this.props.toRoute,

@@ -20,7 +20,7 @@ var MiniItem = React.createClass({
 		}	
 	},
 	_addToCollection: function () {
-		return 	<AddButton data={this.props.data}/>;
+		return 	<AddButton emitter={this.props.emitter} data={this.props.data}/>;
 	},
 	//TODO: delete question funct
 	_goToSinglePage: function() {
@@ -28,6 +28,9 @@ var MiniItem = React.createClass({
 		      name: "A Heart Question",
 			  component: SinglePageView,
 			  rightCorner: this._addToCollection,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
 			  data: {
 				  question: this.props.data,
 				  toRoute: this.props.toRoute,

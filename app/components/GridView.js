@@ -24,6 +24,21 @@ var GridView = React.createClass({
 			dataSource: ds.cloneWithRows(this.props.data),
 		};
 	},
+	_goToProfilePage: function() {
+		var ProfilePage = require('../ProfilePage/homepage.js');
+
+		this.props.toRoute({
+			  name: this.props.source.createdBy.username, 
+			  component: ProfilePage,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
+			  data: {
+				  userId: this.props.source.createdBy.objectId,
+				  toRoute: this.props.toRoute,
+			  },
+			});
+  	},
 	render: function() {
 
 		return (
@@ -31,10 +46,22 @@ var GridView = React.createClass({
 				{this.props.source && (this.props.source.description || this.props.source.source) ? 
 					<Banner>
 						{this.props.source.description ? 
-							<Text style={[globalStyles.text.roman]}>{this.props.source.description}</Text>
+							<Text style={[globalStyles.text.roman]}>
+								{this.props.source.description}
+
+							</Text>
 							: null}
 
-						{this.props.source.description && this.props.source.source ? <View style={{height: 20}} /> : null}
+							{this.props.source.description && this.props.source.createdBy ? <View style={{height: 20}} /> : null}
+
+						{this.props.source.createdBy ? 
+							<TouchableOpacity onPress={this._goToProfilePage} style={{flexDirection: 'row'}}>
+								<Text style={globalStyles.text.roman}>Created by: </Text>
+								<Text style={globalStyles.text.romanBold}>{this.props.source.createdBy.username}</Text>
+							</TouchableOpacity>
+						: null}
+
+						{this.props.source.source ? <View style={{height: 20}} /> : null}
 						
 						{this.props.source.source ? 
 							<Text style={[globalStyles.text.eachDetailSubheading]}>Source: {this.props.source.source}</Text>
@@ -58,6 +85,7 @@ var GridView = React.createClass({
 							toRoute={this.props.toRoute}
 							secondary={this.props.secondary}
 							source={this.props.source}
+							emitter={this.props.emitter}
 						/>
 					);
 				}}
@@ -165,6 +193,11 @@ var GridViewLoader = React.createClass({
 
 		this.refreshQueries('questions');
 	},
+	componentDidUpdate: function (nextProps) {
+		if(nextProps.dirty != this.props.dirty)	{
+			this.refreshQueries('questions');
+		}
+	},
 	render: function (){
 
 		if(this.data && this.data.questions) {
@@ -173,7 +206,7 @@ var GridViewLoader = React.createClass({
 			if(data[0] && data[0].className == 'Activity')	
 				data = data.map((activity) => activity.question)
 
-			return <GridView data={data} source={this.props.data || this.props.type} secondary={this.secondaryModeHandler()} toRoute={this.props.toRoute || this.props.data.toRoute}/>;
+			return <GridView data={data} source={this.props.data || this.props.type} secondary={this.secondaryModeHandler()} toRoute={this.props.toRoute || this.props.data.toRoute} emitter={this.props.emitter}/>;
 
 		}
 		else 

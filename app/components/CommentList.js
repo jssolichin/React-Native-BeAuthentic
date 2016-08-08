@@ -45,6 +45,11 @@ var CommentList = React.createClass({
 		}	
 
 	},
+	componentDidUpdate: function (nextProps) {
+		if(nextProps.dirty != this.props.dirty)	{
+			this.refreshQueries('answer');
+		}
+	},
 	render: function() {
 
 		var existingAnswer;

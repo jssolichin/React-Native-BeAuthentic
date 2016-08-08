@@ -55,15 +55,18 @@ var Homepage = React.createClass({
 	observe: function(props, state) {
 		var collectionQuery = new Parse.Query('Collection')
 			.ascending("text")
+			.include('createdBy')	
 			.limit(5);
 
 		var heroCollectionQuery = new Parse.Query('Collection')
 			.exists('heroItem')
+			.include('createdBy')	
 			.ascending('createdAt')
 			.limit(3);
 
 		var featuredCollectionQuery = new Parse.Query('Collection')
 			.exists('featuredItem')
+			.include('createdBy')	
 			.ascending('createdAt')
 			.limit(5);
 
@@ -93,7 +96,7 @@ var Homepage = React.createClass({
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Tags</Text>
 				</EachDetail>
-				<TagList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} />
+				<TagList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Featured Collections</Text>
@@ -102,7 +105,7 @@ var Homepage = React.createClass({
 					{this.data.featuredCollection && this.data.featuredCollection.length > 0 ? 
 						this.data.featuredCollection.map(
 							(collection,i) => 
-								<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack}/>
+								<CollectionItem key={i} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} style={{marginRight: 10,}} toBack={this.props.toBack} emitter={this.props.emitter}/>
 							)
 						: 
 						<View style={[globalStyles.loadingSpinner]}>
@@ -115,20 +118,20 @@ var Homepage = React.createClass({
 				<EachDetail heading={true} style={{marginBottom: 10,}}>
 					<Text style={globalStyles.text.roman}>Explore by Context</Text>
 				</EachDetail>
-				<TagList collapsible={true} title="By Situation" query={{ascending: 'text', context: 'situation'}} toRoute={this.props.toRoute} />
-				<TagList collapsible={true} title="By Topic" query={{ascending: 'text', context: 'topic'}} toRoute={this.props.toRoute} />
-				<TagList collapsible={true} title="By Participants" query={{ascending: 'text', context: 'participants'}} toRoute={this.props.toRoute} />
+				<TagList collapsible={true} title="By Situation" query={{ascending: 'text', context: 'situation'}} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
+				<TagList collapsible={true} title="By Topic" query={{ascending: 'text', context: 'topic'}} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
+				<TagList collapsible={true} title="By Participants" query={{ascending: 'text', context: 'participants'}} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Questions</Text>
 				</EachDetail>
-				<GridView type="latestQuestions" toRoute={this.props.toRoute}/>
+				<GridView type="latestQuestions" toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
 				<EachDetail heading={true}>
 					<Text style={globalStyles.text.roman}>Explore Latest Collections</Text>
 				</EachDetail>
-				<CollectionList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} toBack={this.props.toBack}/>
+				<CollectionList query={{limit: 5, descending: 'updatedAt'}} toRoute={this.props.toRoute} toBack={this.props.toBack} emitter={this.props.emitter}/>
 
 				{/*
 				<EachDetail heading={true}>

@@ -20,6 +20,7 @@ Parse.initialize(
 	'TbgrWR8WAIF9vk9Cbs01Y81L43UZqt9Fb3Ykm53d'
 );
 var ParseReact = require('parse-react/react-native');
+var {EventEmitter} = require('fbemitter');
 
 var LoginPage = require('./app/LoginPage/index.js');
 var HomePage = require('./app/HomePage/index.js');
@@ -27,6 +28,8 @@ var ExplorePage = require('./app/ExplorePage/index.js');
 var ProfilePage = require('./app/ProfilePage/index.js');
 var HeartPage = require('./app/HeartPage/index.js');
 var NotificationPage = require('./app/NotificationPage/index.js');
+
+var emitter = new EventEmitter();
 
 var GetToKnow = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -121,7 +124,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'home',
 							});
 						}}>
-						<HomePage changeTab={this.changeTab}/>
+						<HomePage changeTab={this.changeTab} emitter={emitter}/>
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="explore"
@@ -135,7 +138,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'explore',
 							});
 						}}>
-						<ExplorePage />
+						<ExplorePage emitter={emitter} />
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="heart"
@@ -149,7 +152,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'heart',
 							});
 						}}>
-						<HeartPage />
+						<HeartPage emitter={emitter}/>
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="notification"
@@ -164,7 +167,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'notification',
 							});
 						}}>
-						<NotificationPage updateBadge={this.getNotificationReadStatus}/>
+						<NotificationPage updateBadge={this.getNotificationReadStatus} emitter={emitter}/>
 					</TabBarItemIOS>
 					<TabBarItemIOS
 						name="profile"
@@ -178,7 +181,7 @@ var GetToKnow = React.createClass({
 								selectedTab: 'profile',
 							});
 						}}>
-						<ProfilePage />
+						<ProfilePage emitter={emitter} />
 					</TabBarItemIOS>
 				</TabBarIOS>
 			);

@@ -130,6 +130,27 @@ var ProfilePage = React.createClass({
 		    console.log('user cancel');
 		});
 	},
+	componentDidMount: function (){
+		this.props.emitter.addListener('newQuestion', (e) => {
+			console.log('newQuestion')
+			this.setState({questionsAskedDirty: !this.state.questionsAskedDirty})
+		});
+
+		this.props.emitter.addListener('newLiked', (e) => {
+			console.log('newLiked')
+			this.setState({questionsLikedDirty: !this.state.questionsLikedDirty})
+		});
+
+		this.props.emitter.addListener('newComment', (e) => {
+			console.log('newComment')
+			this.setState({questionsAnsweredDirty: !this.state.questionsAnsweredDirty})
+		});
+
+		this.props.emitter.addListener('collectionsModified', (e) => {
+			console.log('collectionsModified')
+			this.setState({collectionsDirty: !this.state.collectionsDirty})
+		});
+	},
 	render: function() {
 
 	  var profileImage;
@@ -189,22 +210,22 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
 				<Text style={globalStyles.text.roman}>Questions liked</Text>
 			</EachDetail>
-			<GridView query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
+			<GridView query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsLikedDirty} emitter={this.props.emitter}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true}/>
+			<CommentList query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true} dirty={this.state.questionsAnsweredDirty}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
 			</EachDetail>
-			<GridView query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute}/>
+			<GridView query={{questionsByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsAskedDirty} emitter={this.props.emitter}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>My Collections</Text>
 			</EachDetail>
-			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute}/>
+			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} dirty={this.state.collectionsDirty} emitter={this.props.emitter}/>
 
       </ScrollView>
     );
@@ -222,9 +243,8 @@ var ProfilePageLoader = React.createClass({
 		};
 	},
 	render: function (){
-		console.log(this.props)
 		if(this.data.users && this.data.users[0])	
-			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute}/>
+			return <ProfilePage data={this.data.users[0]} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} emitter={this.props.emitter}/>
 		else
 			return (
 				<View style={[globalStyles.loadingSpinner]}>

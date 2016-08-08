@@ -24,7 +24,8 @@ var Navigator = React.createClass({
 			name: 'Question of the Day',
 			component: NewHome,
 			passProps: {
-				changeTab: this.props.changeTab		
+				changeTab: this.props.changeTab,	
+				emitter: this.props.emitter
 			}
 		};
 

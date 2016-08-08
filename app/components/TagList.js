@@ -68,7 +68,7 @@ var TagsList = React.createClass({
 							this.data.tags.length > 0 ? 
 								this.data.tags.map(
 									(tag, i) => 
-									<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
+									<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute} emitter={this.props.emitter}/>)
 								:
 								<View style={{padding: 20, paddingBottom: 0}}>
 									<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
@@ -90,7 +90,7 @@ var TagsList = React.createClass({
 						this.data.tags.length > 0 ? 
 							this.data.tags.map(
 								(tag, i) => 
-								<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute}/>)
+								<EachTag key={i} tag={tag} large={true} toRoute={this.props.toRoute} emitter={this.props.emitter}/>)
 							:
 							<View style={{padding: 20, paddingBottom: 0}}>
 								<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>

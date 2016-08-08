@@ -51,7 +51,7 @@ var ViewSingle = React.createClass({
 				style={styles.container}
 				>
 
-				<LargeItem data={questionData} toRoute={this.props.data.toRoute}/>
+				<LargeItem data={questionData} toRoute={this.props.data.toRoute} emitter={this.props.emitter} />
 
 			</ScrollView>
 		);

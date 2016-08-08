@@ -20,7 +20,6 @@ var globalStyles = require("../globalStyles.js");
 var EachTag = require('../components/EachTag.js');
 var Button = require('../components/Button.js');
 var LargeItem = require('../components/LargeItem.js');
-var SinglePage = require('../SinglePage/new.js');
 
 var NewHome = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -56,7 +55,7 @@ var NewHome = React.createClass({
 				style={styles.container}
 				>
 
-				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute}/>
+				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
 				{lastQuotdData ?
 				<View style={styles.actionContainer}>

@@ -28,7 +28,7 @@ var PostSuccess = React.createClass({
 		return (
 			<View style={globalStyles.centerContent} style={{paddingVertical: 20, alignItems: 'center'}}>
 				<Text style={[globalStyles.text.center, styles.hintText]}>
-					Thanks for submitting a question! We will let you know when people answer in the activity tab.
+					Thanks for submitting! We'll notify you when people answer in the activity tab.
 				</Text>
 				<TouchableHighlight onPress={this.props.callback} underlayColor='#fff'>
 					<View>
@@ -83,6 +83,7 @@ var WriteBox = React.createClass({
 			if(!this.state.imageUri)
 				AlertIOS.alert('Please add a cover image.');
 
+			that.setState({uploadingQuestion: false})
 			return false;
 		}
 
@@ -91,7 +92,6 @@ var WriteBox = React.createClass({
 		NativeModules.ReadImageData.readImage(this.state.imageUri, (imageFile) => {
 			var filename = this.state.imageUri.match(/(\w+)(\.\w+)+(?!.*(\w+)(\.\w+)+)/);
 			var parseImageFile = new Parse.File(filename[0], {base64: imageFile})
-			console.log(imageFile)
 			coverImage.resolve(parseImageFile);
 		});
 
@@ -134,11 +134,12 @@ var WriteBox = React.createClass({
 			question.save({
 				success: (question) => {
 					that.props.callback(true);
-					that.setState({uploadingQuestion: false});
+					//that.setState({uploadingQuestion: false});
+					that.props.emitter.emit('newQuestion', question);
 				},
 				error: (error) => {
 					AlertIOS.alert(error);
-					that.setState({uploadingQuestion: false});
+					//that.setState({uploadingQuestion: false});
 				}
 			});
 		})
@@ -270,7 +271,7 @@ var HeartPage = React.createClass({
 			if(this.state.writingQuestion == false)
 				response = <WritePrompt callback={this._onStartResponse}/>
 			else
-				response = <WriteBox callback={this._onPostSuccess}/>
+				response = <WriteBox callback={this._onPostSuccess} emitter={this.props.emitter}/>
 		}
 
 		return (
