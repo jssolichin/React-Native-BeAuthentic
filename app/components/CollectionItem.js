@@ -56,7 +56,27 @@ var MiniItem = React.createClass({
 		var uri;
 		if(this.props.data.coverImage)
 			uri = this.props.data.coverImage.url();
-		return (
+
+		if(this.props.hero)
+			return (
+				<TouchableOpacity onPress={this._goToCollectionView}>
+					<Image
+						style={styles.heroContainer}
+						source={{uri: uri}}
+						>
+						<View style={styles.heroBorder}>
+							<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
+								{this.props.data.name.toUpperCase()}
+							</Text>
+							<Text style={[globalStyles.text.roman, {marginTop: -5}]}>
+								{this.props.data.description}
+							</Text>
+						</View>
+					</Image>
+				</TouchableOpacity>
+			)
+		else 
+			return (
 			<TouchableOpacity onPress={this._goToCollectionView}>
 				<Image 
 					source={{uri: uri}}
@@ -99,7 +119,23 @@ var styles = {
 	text: {
 		textAlign: 'center',
 		backgroundColor: 'transparent'
-	}
+	},
+	heroContainer: {
+		width: width,
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#000',
+		height: 145,
+	},
+	heroBorder: {
+		flex: 1,
+		width: width - 40,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'rgba(255,255,255,.4)',
+		margin: 20,
+	},
 }
 
 module.exports = MiniItem

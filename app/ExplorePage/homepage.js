@@ -26,29 +26,7 @@ var CollectionList = require('../components/CollectionList.js');
 var TagList = require('../components/TagList.js');
 var GridView = require("../components/GridView.js");
 
-
 var globalStyles = require("../globalStyles.js");
-
-var Hero = React.createClass({
-	render: function() {
-		var uri = this.props.data.coverImage.url();
-		return (
-				<Image
-					style={styles.heroContainer}
-					source={{uri: uri}}
-					>
-				<View style={styles.heroBorder}>
-					<Text style={[globalStyles.text.heading, globalStyles.text.size.large]}>
-						{this.props.data.name.toUpperCase()}
-					</Text>
-					<Text style={[globalStyles.text.roman, {marginTop: -5}]}>
-						{this.props.data.description}
-					</Text>
-				</View>
-			</Image>
-		);
-	}
-});
 
 var Homepage = React.createClass({
 	mixins: [ParseReact.Mixin],
@@ -86,7 +64,9 @@ var Homepage = React.createClass({
 			<ScrollView style={styles.container} contentInset={{bottom: 80,}} automaticallyAdjustContentInsets={false}>
 				<Swiper dot={passiveDot} activeDot={activeDot} height={145} showPagination={true} autoplay={true}>
 					{this.data.heroCollection && this.data.heroCollection.length > 0 ?
-						this.data.heroCollection.map((collection, i) => <Hero key={i} data={collection}/>) :
+						this.data.heroCollection.map((collection, i) => 
+							<CollectionItem key={i} hero={true} data={collection} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack} emitter={this.props.emitter}/>
+								) :
 						<View style={[globalStyles.loadingSpinner]}>
 							<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
 						</View>
@@ -157,21 +137,6 @@ var Homepage = React.createClass({
 var styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#fff',	
-	},
-	heroContainer: {
-		width: width,
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#000',
-	},
-	heroBorder: {
-		flex: 1,
-		width: width - 40,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: 'rgba(255,255,255,.4)',
-		margin: 20,
 	},
 	dot: {
 		width: 8, 
