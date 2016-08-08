@@ -193,8 +193,8 @@ var GridViewLoader = React.createClass({
 
 		this.refreshQueries('questions');
 	},
-	componentDidUpdate: function (nextProps) {
-		if(nextProps.dirty != this.props.dirty)	{
+	componentDidUpdate: function (prevProps) {
+		if(prevProps.dirty != this.props.dirty)	{
 			this.refreshQueries('questions');
 		}
 	},

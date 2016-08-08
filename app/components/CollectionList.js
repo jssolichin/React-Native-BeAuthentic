@@ -84,8 +84,8 @@ var CollectionList = React.createClass({
 		}	
 
 	},
-	componentDidUpdate: function (nextProps) {
-		if(nextProps.dirty != this.props.dirty)	{
+	componentDidUpdate: function (prevProps) {
+		if(prevProps.dirty != this.props.dirty)	{
 			this.refreshQueries('collections');
 		}
 	},

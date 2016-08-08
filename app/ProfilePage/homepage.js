@@ -32,7 +32,7 @@ var Stat = React.createClass({
 		
 		}	
 	},
-	componentDidMount: function(){
+	_getData: function (){
 		var that = this;
 
 		this.props.query.count({
@@ -44,7 +44,14 @@ var Stat = React.createClass({
 			  console.log(error); return null;
 		  }
 		});
-		
+	},
+	componentDidMount: function(){
+		this._getData();	
+	},
+	componentDidUpdate: function (prevProps){
+		if(prevProps.dirty != this.props.dirty)	{
+			this._getData();	
+		}
 	},
 	render: function (){
 		if(this.state.value != undefined){
@@ -203,7 +210,21 @@ var ProfilePage = React.createClass({
 
 			<View style={styles.statsContainer}>
 				{this.state.stats.map((stat,i) => {
-					return <Stat key={i} name={stat.name} query={stat.query} />;
+					
+					var dirty;
+					switch(stat.name){
+						case 'Questions Asked':
+							dirty = this.state.questionsAskedDirty;
+							break;
+						case 'Questions Liked':
+							dirty = this.state.questionsLikedDirty;
+							break;
+						default:
+							dirty = this.state.questionsAnsweredDirty;
+							break;
+					}
+
+					return <Stat key={i} name={stat.name} query={stat.query} dirty={dirty} />;
 				})}
 			</View>
 
