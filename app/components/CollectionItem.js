@@ -99,10 +99,10 @@ var MiniItem = React.createClass({
 });
 
 var percentageWidth = .65;
-var thirdWidth = width/3;
+var thirdWidth = width/2.5;
 var eachItemPadding = thirdWidth * ((1-percentageWidth)/2) - .5;
-var eachItemWidth = thirdWidth * percentageWidth + 20;
-var eachItemHeight = eachItemWidth * 1.50 - 25;
+var eachItemWidth = thirdWidth * percentageWidth;
+var eachItemHeight = eachItemWidth * 1.50 ;
 
 var styles = {
 	container: {
@@ -115,7 +115,7 @@ var styles = {
 		height: eachItemHeight,
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: 10,
+		paddingHorizontal: 5,
 	},
 	text: {
 		textAlign: 'center',

@@ -48,7 +48,8 @@ var LargeItem = React.createClass({
 
 		var that = this;
 
-		var postACL = new Parse.ACL(Parse.User.current());
+		var postACL = new Parse.ACL();
+		postACL.setWriteAccess( this.props.data.createdBy.objectId, true ) ;
 		postACL.setPublicReadAccess(true);
 
 		var creator = ParseReact.Mutation.Create('Activity', {
@@ -129,7 +130,7 @@ var LargeItem = React.createClass({
 		if(this.props.data.coverImage)
 			imageUri= this.props.data.coverImage.url();
 
-		var createdAt = moment(this.props.data.createdAt);
+		var date = moment(this.props.data.updatedAt);
 
 		return (
 			<View style={styles.insideContainer}>
@@ -172,8 +173,8 @@ var LargeItem = React.createClass({
 					]}>
 						<Text style={globalStyles.text.roman}>
 							<Text style={globalStyles.text.romanBold}>{
-								createdAt.format('ddd')}. </Text>
-							{createdAt.date()}
+								date.format('ddd')}. </Text>
+							{date.date()}
 						</Text>
 
 						<Text style={globalStyles.text.roman}>

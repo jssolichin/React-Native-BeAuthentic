@@ -160,6 +160,7 @@ var NotificationPage = React.createClass({
 			.limit(10)
 			.include('question')
 			.include('fromUser')
+			.descending('updatedAt')
 			.equalTo('toUser', Parse.User.current())
 			.notEqualTo('fromUser', Parse.User.current());
 
@@ -168,9 +169,11 @@ var NotificationPage = React.createClass({
 				var notifications = activities.map((activity)=> {
 					
 					activity.set('readStatus', true).save(null, {
-						success: 	
-							function (){
-								that.props.updateBadge(0);
+						success: function (){
+							that.props.updateBadge(0);
+						},
+						error: function (obj,error) {
+							console.log(obj, error)	
 						}
 					});
 
@@ -217,7 +220,7 @@ var NotificationPage = React.createClass({
 		  {this.state.dataSource ?  
 	      <ListView
 			  contentInset={{bottom: 48,}} 
-			  style={{backgroundColor: 'transparent'}}
+			  style={{backgroundColor: 'transparent', flex: 1,}}
 			  automaticallyAdjustContentInsets={false}
 			  dataSource={this.state.dataSource}
 			  enableEmptySections={true}
@@ -238,6 +241,7 @@ var NotificationPage = React.createClass({
 var styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
+		flex: 1,
 	},
 	icon: {
 		width: 35,

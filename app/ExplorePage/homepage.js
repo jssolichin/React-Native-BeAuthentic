@@ -37,15 +37,15 @@ var Homepage = React.createClass({
 			.limit(5);
 
 		var heroCollectionQuery = new Parse.Query('Collection')
-			.exists('heroItem')
+			.equalTo('heroItem', true)
 			.include('createdBy')	
-			.ascending('createdAt')
+			.descending('updatedAt')
 			.limit(3);
 
 		var featuredCollectionQuery = new Parse.Query('Collection')
-			.exists('featuredItem')
+			.equalTo('featuredItem', true)
 			.include('createdBy')	
-			.ascending('createdAt')
+			.descending('updatedAt')
 			.limit(5);
 
 		return { 
@@ -148,7 +148,7 @@ var styles = StyleSheet.create({
 	collectionList: {
 		marginTop: 10,
 		marginLeft: 20,
-		height: (width/3 *.65) * 2.1,
+		height: (width/2.5 *.65) * 2.1,
 	},
 });
 

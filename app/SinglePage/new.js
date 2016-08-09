@@ -137,8 +137,6 @@ var SinglePage = React.createClass({
 		this.setState({uploadingComment: true})
 		var that = this;
 
-		var postACL = new Parse.ACL(Parse.User.current());
-		postACL.setPublicReadAccess(true);
 
 		var batch = new ParseReact.Mutation.Batch();
 
@@ -147,6 +145,11 @@ var SinglePage = React.createClass({
 
 		whoToNotify.forEach((user) => {
 			if(Parse.User.current().id != user.objectId) {
+
+				var postACL = new Parse.ACL();
+				postACL.setWriteAccess( user.objectId, true ) ;
+				postACL.setPublicReadAccess(true);
+
 				var activityCreator = ParseReact.Mutation.Create('Activity', {
 					ACL: postACL,
 					fromUser: Parse.User.current(),
@@ -169,6 +172,9 @@ var SinglePage = React.createClass({
 			})
 		}
 		else {
+			var postACL = new Parse.ACL(Parse.User.current());
+			postACL.setPublicReadAccess(true);
+
 			answerCreator = ParseReact.Mutation.Create('Answer', {
 				ACL: postACL,
 				question: this.props.data.question,

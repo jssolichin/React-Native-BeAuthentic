@@ -43,7 +43,7 @@ var GridView = React.createClass({
 	render: function() {
 
 		return (
-			<ScrollView style={styles.container}>
+			<View style={styles.container}>
 				{this.props.source && (this.props.source.description || this.props.source.source) ? 
 					<Banner>
 						{this.props.source.description ? 
@@ -71,13 +71,11 @@ var GridView = React.createClass({
 					</Banner> 
 				: null}
 			{this.props.data.length > 0 ? 
-				<View>
 			<ListView
 				automaticallyAdjustContentInsets={false}
 				style={[styles.container]}
 				contentContainerStyle={globalStyles.flexRow}
 				dataSource={this.state.dataSource.cloneWithRows(this.props.data)}
-				bounces={false}
 				renderRow={(rowData) => {
 					return (
 						<MiniItem 
@@ -91,13 +89,12 @@ var GridView = React.createClass({
 					);
 				}}
 			/>
-		</View>
 		: 
 			<View style={{padding: 20, paddingBottom: 0}}>
 				<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
 			</View>
 		}
-		</ScrollView>
+		</View>
 		);
 	}
 });
@@ -127,16 +124,15 @@ var GridViewLoader = React.createClass({
 			.equalTo('tag_3', tag);
 		
 		var questionsQuery = Parse.Query.or(queryByTag1, queryByTag2, queryByTag3)
-			.descending("createdAt");
+			.descending("updatedAt");
 
 		  return { questions: questionsQuery };
 	},
 	_queryLatestQuestions: function (){
 
 		var questionsQuery = new Parse.Query('Question')
-			.descending("createdAt")
+			.descending("updatedAt")
 
-			console.log(this.props.showMoreName)
 		if(this.props.showMoreName != undefined)
 			questionsQuery.limit(6)
 
@@ -158,7 +154,7 @@ var GridViewLoader = React.createClass({
 		var questionsQuery = query
 			.equalTo('type', 'liked')
 			.equalTo('fromUser', user)
-			.descending("createdAt")
+			.descending("updatedAt")
 			.include(['question', 'question.createdBy', 'question.tag_1', 'question.tag_2', 'question.tag_3']);
 
 		if(this.props.showMoreName != undefined)
@@ -230,8 +226,10 @@ var GridViewLoader = React.createClass({
 			if(data[0] && data[0].className == 'Activity')	
 				data = data.map((activity) => activity.question)
 
+			console.log(data)
+
 			return (
-				<View>
+				<View style={styles.container}>
 					<GridView data={data} source={this.props.data || this.props.type} secondary={this.secondaryModeHandler()} toRoute={this.props.toRoute || this.props.data.toRoute} emitter={this.props.emitter}/>
 
 					{this.props.showMoreName && data.length >= 6 ? 
