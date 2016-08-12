@@ -10,7 +10,7 @@ BeAuthentic helps you learn more about yourself, and others, by providing meanin
 * Connect with others around the globe by sharing thoughts through each question's answer section. 
 * Authentic conversation: meaningful conversations are two way streets, so you can only see answer from others if you have shared yours.
 
-App contains broad topic from: 
+App contains broad topics from: 
 * Relationships and determining compatibility
 * Networking/interview 
 * Self-growth 
@@ -18,7 +18,7 @@ App contains broad topic from:
 * Double dates
 * and more!
 
-Never have another boring conversation again talking about the weather... (it's always sunny in California (and Philadelphia))
+Never have another boring conversation about the weather again... (it's always sunny in California (and Philadelphia))
 
 Made with love using React Native in Sunny California. Source on https://github.com/jssolichin/react-native-beauthentic
 

@@ -134,12 +134,23 @@ var LargeItem = React.createClass({
 
 		return (
 			<View style={styles.insideContainer}>
-				<Image
-					style={styles.heroImage}
-					source={{uri: imageUri}}
-					>
-					<LinearGradient colors={['rgba(255,255,255,.3)', 'rgba(255,255,255,1)']} style={styles.linearGradient}>
-					</LinearGradient>
+				<View
+					style={{height:(this.state.curImgHeight <= 0 ? null : this.state.curImgHeight)}}
+					onLayout={(e)=>{
+					  let {height} = e.nativeEvent.layout;
+					  let minimumImgHeight = imageHeight + 25;
+					  if(height<= minimumImgHeight) this.setState({curImgHeight:minimumImgHeight}); //just change the curImgHeight state property to the minimum height.
+					}} 
+				>
+
+					<Image
+						style={styles.heroImage}
+						source={{uri: imageUri}}
+						>
+						<LinearGradient colors={['rgba(255,255,255,.3)', 'rgba(255,255,255,1)']} style={styles.linearGradient}>
+						</LinearGradient>
+
+					</Image>
 
 					<View style={styles.mainContainer}>
 						<TouchableOpacity onPress={this._goToSinglePage}>
@@ -148,7 +159,8 @@ var LargeItem = React.createClass({
 							</Text>
 						</TouchableOpacity>
 					</View>
-				</Image>
+
+				</View>
 
 					<View style={styles.metaData}>
 						<ScrollView directionalLockEnabled={true} style={styles.tagsList} horizontal={true} contentInset={{top: 50,bottom:-50}} >
@@ -249,19 +261,20 @@ var styles = {
 	},
 	mainContainer: {
 		backgroundColor: 'transparent',
-		top: -20,
-		left: -20,
+		marginTop: -imageHeight -20,
+		marginLeft: -20,
+		width: imageWidth + 20,
 	},
 	heroText: {
 		paddingTop: 2,
 		fontSize: 50,
 		lineHeight: 48,
-		height: imageHeight + 30,
 	},
 	metaData: {
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		width: width - 40,
+		marginLeft: 5,
 	},
 	tagsList: {
 		flexDirection: 'row',

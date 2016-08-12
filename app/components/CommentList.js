@@ -59,6 +59,7 @@ var CommentList = React.createClass({
 			  name: this.props.showMoreName,
 			  component: CommentList,
 			  passProps: {
+				  emitter: this.props.emitter,
 				  query: this.props.query,
 				  toRoute: this.props.toRoute,
 				  visibleUser: this.props.visibleUser,
@@ -101,6 +102,7 @@ var CommentList = React.createClass({
 											 hideUsername={this.props.hideUsername}
 											 toRoute={this.props.toRoute}
 											 showArrow={this.props.showArrow}
+											 emitter={this.props.emitter}
 										 />
 										 ) }
 

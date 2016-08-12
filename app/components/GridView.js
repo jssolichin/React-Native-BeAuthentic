@@ -236,7 +236,8 @@ var GridViewLoader = React.createClass({
 					<TouchableOpacity onPress={this._goToFullView} style={{flex: 1, alignItems: 'flex-end', marginHorizontal: 20, marginTop: 5}}>
 						<Text style={globalStyles.text.color.gray}>Show More</Text>
 					</TouchableOpacity>
-					: null}
+					: 
+						<View style={{height: 48}} />}
 
 				</View>);
 

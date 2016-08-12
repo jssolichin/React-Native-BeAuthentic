@@ -30,7 +30,7 @@ var slides = [
 	},
 	{
 		title: 'REMEMBER, LIFE IS MORE THAN AN APP',
-		body: "Real conversations, with ourselves and others, can help us be more authentic--online, or offline; So, look up!"
+		body: "Real conversations, with ourselves and others, can help us be more authentic—online, or offline; So, look up!"
 	},
 ]
 
@@ -38,7 +38,9 @@ var Slide = function (props) {
 	return (
 		<View style={[styles.slide]}>
 			<Text style={[globalStyles.text.heading, {fontSize: 50, width: 200}]}>{props.title}</Text>
-			<Text style={[globalStyles.text.roman, globalStyles.text.size.large]}>{props.body}</Text>
+			<Text style={[globalStyles.text.roman, globalStyles.text.size.large, 
+				height <= 480 && globalStyles.text.size.medium,
+			]}>{props.body}</Text>
 			{props.children}
 		</View>
 	)
@@ -132,7 +134,7 @@ var styles = StyleSheet.create({
 	},
 	actionContainer: {
 		width: width - 40,
-		marginTop: 60,
+		marginTop: height <= 480 ? 10 : 60,
 	},
 	actionItem: {
 		marginTop: 5,	

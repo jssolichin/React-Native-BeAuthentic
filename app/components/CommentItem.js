@@ -23,6 +23,9 @@ var CommentItem = React.createClass({
 			this.props.toRoute({
 				  name: this.props.data.createdBy.username, 
 				  component: ProfilePage,
+				  passProps: {
+					  emitter: this.props.emitter, 
+				  },
 				  data: {
 					  userId: this.props.data.createdBy.objectId,
 					  toRoute: this.props.toRoute,

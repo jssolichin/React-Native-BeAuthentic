@@ -236,7 +236,7 @@ var ProfilePage = React.createClass({
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
-			<CommentList showMoreName="My Answers" query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true} dirty={this.state.questionsAnsweredDirty}/>
+			<CommentList showMoreName="My Answers" query={{answersByUserId: this.props.data.id}} hideUsername={true} visibleComment={this.state.currentUserProfilePage} toRoute={this.props.toRoute} showArrow={true} dirty={this.state.questionsAnsweredDirty} emitter={this.props.emitter}/>
 
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions asked</Text>
@@ -300,7 +300,7 @@ var styles = StyleSheet.create({
 	  flexDirection: 'row',
 	  alignItems: 'center',
 	  justifyContent: 'space-between',
-	  paddingHorizontal: 20,
+	  paddingHorizontal: width <= 320 ? 0 : 20,
   },
   stat: {
 	  alignItems: 'center',

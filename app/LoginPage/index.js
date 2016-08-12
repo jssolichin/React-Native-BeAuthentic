@@ -30,7 +30,7 @@ var LoginPage = React.createClass({
 			var user = new Parse.User();
 			user.set("username", this.state.username);
 			user.set("password", this.state.password);
-			user.set("email", this.state.email);
+			user.set("email", this.state.email.toLowerCase());
 			user.set("showNotifHelp", true);
 			user.set("showCommentsHelp", true);
 

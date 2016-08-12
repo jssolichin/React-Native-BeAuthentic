@@ -23,9 +23,11 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		B53143D71D58D11900734E84 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B53143D61D58D11800734E84 /* assets */; };
 		B599A7601D56C3D100302C4C /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B599A75F1D56C3B200302C4C /* libRNSpinkit.a */; };
 		B5B1A0B01D3C88F400E5027B /* BeAuthentic in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B1A0AF1D3C88F200E5027B /* BeAuthentic */; };
 		B5B1A0B21D3C93F200E5027B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FE62C51C0984160008ABBC /* libBVLinearGradient.a */; };
+		B5E2307D1D59BC35003EA64F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */; };
 		B5F5630E1B67649B00E12C10 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5630D1B67648300E12C10 /* libReactNativeIcons.a */; };
 		B5F563101B6764ED00E12C10 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5F5630F1B6764ED00E12C10 /* ionicons.ttf */; };
 		F35B97271C34A7F1005B718D /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F35B97261C34A77B005B718D /* libRCTCameraRoll.a */; };
@@ -162,8 +164,10 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		B53143D61D58D11800734E84 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = iOS/assets; sourceTree = "<group>"; };
 		B599A74D1D56C3B200302C4C /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 		B5B1A0AF1D3C88F200E5027B /* BeAuthentic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BeAuthentic; sourceTree = "<group>"; };
+		B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B5F562FE1B67648300E12C10 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
 		B5F5630F1B6764ED00E12C10 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
 		B5FE62C01C0984160008ABBC /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
@@ -282,6 +286,7 @@
 		13B07FAE1A68108700A75B9A /* BeAuthentic */ = {
 			isa = PBXGroup;
 			children = (
+				B53143D61D58D11800734E84 /* assets */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -341,6 +346,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */,
 				B5B1A0AF1D3C88F200E5027B /* BeAuthentic */,
 				F35B97211C34A779005B718D /* RCTCameraRoll.xcodeproj */,
 				F35B971F1C349558005B718D /* Libraries */,
@@ -642,10 +648,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B53143D71D58D11900734E84 /* assets in Resources */,
 				B5F563101B6764ED00E12C10 /* ionicons.ttf in Resources */,
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				B5E2307D1D59BC35003EA64F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,7 +753,7 @@
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.beauthentic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				PRODUCT_NAME = BeAuthentic;
 				PROVISIONING_PROFILE = "";
 			};
@@ -766,7 +774,7 @@
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.beauthentic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				PRODUCT_NAME = BeAuthentic;
 				PROVISIONING_PROFILE = "";
 			};
@@ -814,6 +822,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -853,6 +862,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
