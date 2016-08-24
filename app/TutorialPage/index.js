@@ -37,8 +37,8 @@ var slides = [
 var Slide = function (props) {
 	return (
 		<View style={[styles.slide]}>
-			<Text style={[globalStyles.text.heading, {fontSize: 50, width: 200}]}>{props.title}</Text>
-			<Text style={[globalStyles.text.roman, globalStyles.text.size.large, 
+			<Text allowFontScaling={false} style={[globalStyles.text.heading, {fontSize: 50, width: 200}]}>{props.title}</Text>
+			<Text allowFontScaling={false} style={[globalStyles.text.roman, globalStyles.text.size.large, 
 				height <= 480 && globalStyles.text.size.medium,
 			]}>{props.body}</Text>
 			{props.children}
@@ -134,7 +134,8 @@ var styles = StyleSheet.create({
 	},
 	actionContainer: {
 		width: width - 40,
-		marginTop: height <= 480 ? 10 : 60,
+		position: 'absolute',
+		bottom: 60,
 	},
 	actionItem: {
 		marginTop: 5,	

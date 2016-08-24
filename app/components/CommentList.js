@@ -37,6 +37,7 @@ var CommentList = React.createClass({
 
 			query.equalTo('question', question)
 				.notEqualTo('createdBy', Parse.User.current())
+				.equalTo('publicallyShared', true)
 				.include('createdBy');
 		}
 
@@ -103,6 +104,7 @@ var CommentList = React.createClass({
 											 toRoute={this.props.toRoute}
 											 showArrow={this.props.showArrow}
 											 emitter={this.props.emitter}
+											 showFull={this.props.showFull}
 										 />
 										 ) }
 

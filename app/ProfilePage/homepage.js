@@ -57,10 +57,10 @@ var Stat = React.createClass({
 		if(this.state.value != undefined){
 		return (
 			<View style={[styles.stat]}>
-				<Text style={[globalStyles.text.heading, globalStyles.text.weight.bold, {fontSize: 40,}]}>
+				<Text allowFontScaling={false} style={[globalStyles.text.heading, globalStyles.text.weight.bold, {fontSize: 40,}]}>
 					{this.state.value}
 				</Text>
-				<Text style={[globalStyles.text.roman, {marginTop: -10, fontSize: 11,}]}>
+				<Text allowFontScaling={false} style={[globalStyles.text.roman, {marginTop: -10, fontSize: 11,}]}>
 					{this.props.name}
 				</Text>
 			</View>
@@ -205,6 +205,11 @@ var ProfilePage = React.createClass({
 					<Text style={[globalStyles.text.roman, {marginTop: -5,}]}>
 						{this.props.data.bio ? globalHelpers.censorship(this.props.data.bio, this.state.visible) : null}
 					</Text>
+					{this.props.data.badge ?
+					<Text style={[globalStyles.text.size.small, styles.badge,]}>
+						{this.props.data.badge}	
+					</Text>
+					: null }
 				</View>
 			</View>
 
@@ -228,11 +233,6 @@ var ProfilePage = React.createClass({
 				})}
 			</View>
 
-			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
-				<Text style={globalStyles.text.roman}>Questions liked</Text>
-			</EachDetail>
-			<GridView showMoreName="Questions Liked" query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsLikedDirty} emitter={this.props.emitter}/>
-
 			<EachDetail heading={true}>
 				<Text style={globalStyles.text.roman}>Questions answered</Text>
 			</EachDetail>
@@ -247,6 +247,11 @@ var ProfilePage = React.createClass({
 				<Text style={globalStyles.text.roman}>My Collections</Text>
 			</EachDetail>
 			<CollectionList query={{userId: this.props.data.id}} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} dirty={this.state.collectionsDirty} emitter={this.props.emitter}/>
+
+			<EachDetail heading={true} style={[{flexDirection: 'column'}]}>
+				<Text style={globalStyles.text.roman}>Questions liked</Text>
+			</EachDetail>
+			<GridView showMoreName="Questions Liked" query={{favoritesByUserId: this.props.data.id}} toRoute={this.props.toRoute} dirty={this.state.questionsLikedDirty} emitter={this.props.emitter}/>
 
       </ScrollView>
     );
@@ -315,6 +320,14 @@ var styles = StyleSheet.create({
   hint: {
 	  marginTop: 10,
  	paddingHorizontal: 10, 
+  },
+  badge: {
+	  backgroundColor: '#eee', 
+	  color: '#777', 
+	  marginTop: 5, 
+	  paddingVertical: 2, 
+	  paddingHorizontal: 5, 
+	  borderRadius: 3,
   }
 });
 

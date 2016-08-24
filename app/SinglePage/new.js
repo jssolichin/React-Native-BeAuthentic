@@ -261,7 +261,7 @@ var SinglePage = React.createClass({
 					<Text style={globalStyles.text.eachDetailSubheading}>To see other's hearts, you must share yours</Text>
 				</EachDetail>
 
-				<CommentList toRoute={this.props.toRoute} query={{answersByQuestionId: this.props.data.question.objectId}} hideQuestion={true} visibleUser={publicallyShared} visibleComment={publicallyShared} />
+				<CommentList showFull={true} toRoute={this.props.toRoute} query={{answersByQuestionId: this.props.data.question.objectId}} hideQuestion={true} visibleUser={publicallyShared} visibleComment={publicallyShared} />
 
 			 </ScrollView>
 		);

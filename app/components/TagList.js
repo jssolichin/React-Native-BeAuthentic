@@ -34,6 +34,9 @@ var TagsList = React.createClass({
 			if(this.props.query && this.props.query.ascending)
 				tagQuery.ascending(this.props.query.ascending);
 
+			if(this.props.query && this.props.query.descending)
+				tagQuery.descending(this.props.query.descending);
+
 		return {
 			tags: tagQuery,
 		}

@@ -80,7 +80,7 @@ var CommentItem = React.createClass({
 				{username}
 				<View>
 				{question}
-				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-40}]} numberOfLines={2}>
+				<Text style={[styles.eachDetailText, this.props.hideUsername && {width: width-40}]} numberOfLines={this.props.showFull ? null : 2}>
 					{globalHelpers.censorship(this.props.data.text, this.props.visibleComment)}
 					</Text>
 				</View>

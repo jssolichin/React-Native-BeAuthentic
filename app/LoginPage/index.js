@@ -94,7 +94,7 @@ var LoginPage = React.createClass({
 				<View style={styles.inputContainer}>
 					<TextInput
 						style={styles.inputText}
-						onChangeText={(username) => this.setState({username})}
+						onChangeText={(username) => this.setState({username: username.trim()})}
 						autoCorrect={false}
 						value={this.state.username}
 						placeholder="username"
@@ -134,8 +134,9 @@ var LoginPage = React.createClass({
 				<View style={styles.inputContainer}>
 				<TextInput
 					style={styles.inputText}
-					onChangeText={(email) => this.setState({email})}
+					onChangeText={(email) => this.setState({email: email.trim()})}
 					value={this.state.email}
+					keyboardType="email-address"
 					placeholder={"Email" + (this.state.passwordRecoveryMode ? "" : " (for Password Reset Only)")}
 					placeholderTextColor='#aaa'
 				/>

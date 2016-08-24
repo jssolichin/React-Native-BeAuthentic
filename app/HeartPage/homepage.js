@@ -148,7 +148,6 @@ var WriteBox = React.createClass({
 	_pickImage: function(){
 		var that = this;
 		var image = imagePicker.open({
-		    takePhoto: true,
 		    useLastPhoto: true,
 		    chooseFromLibrary: true
 		}).then(function(imageUri) {

@@ -92,7 +92,11 @@ var TagInput = React.createClass({
 					<EachTag key={i} tag={tag} normal={true} callback={this._removeTag} displayX={true}/>))}
 				</View>
 				<TextInput
-					style={[styles.inputText, this.state.chosenTags.length >= 3 && {width: 0}]}
+					style={[
+						styles.inputText, 
+						this.state.chosenTags.length <= 0 && {width: width},
+						this.state.chosenTags.length >= 3 && {width: 0}
+					]}
 					onChangeText={(text) => {
 						this._getTypeAhead(text);
 						this.setState({text});
