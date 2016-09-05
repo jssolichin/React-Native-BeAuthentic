@@ -42,11 +42,11 @@ var WriteBox = React.createClass({
 		if(value){ //make sure we're turning private to public only
 
 			AlertIOS.alert(
-				'You can\'t undo this',
+				'Are you sure? You can\'t un-public your answer',
 				'Our community is built on trust. Because you will see private answers that can\'t be unread, you can\'t make private your public responses',
 				[
 					{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-					{text: 'OK', onPress: () => {
+					{text: 'Yes', onPress: () => {
 							this.setState({publicallyShared: value});
 							this._onSubmitResponse();
 						}
@@ -140,41 +140,47 @@ var SinglePage = React.createClass({
 
 		var batch = new ParseReact.Mutation.Batch();
 
-		var whoToNotify = [this.props.data.question.createdBy];
-		whoToNotify = whoToNotify.concat(this.data.answer.map(function(answer){return answer.createdBy}))
+		console.log(comment)
 
-		whoToNotify.forEach((user) => {
-			if(Parse.User.current().id != user.objectId) {
+		if(comment.publicallyShared) {
+			var whoToNotify = [this.props.data.question.createdBy];
+			whoToNotify = whoToNotify.concat(this.data.answer.map(function(answer){return answer.createdBy}))
 
-				var postACL = new Parse.ACL();
-				postACL.setWriteAccess( user.objectId, true ) ;
-				postACL.setPublicReadAccess(true);
+			whoToNotify.forEach((user) => {
+				if(Parse.User.current().id != user.objectId) {
 
-				var activityCreator = ParseReact.Mutation.Create('Activity', {
-					ACL: postACL,
-					fromUser: Parse.User.current(),
-					toUser: user,
-					question: this.props.data.question,
-					type: 'comment',
-				});
+					var postACL = new Parse.ACL();
+					postACL.setWriteAccess( user.objectId, true ) ;
+					postACL.setPublicReadAccess(true);
 
-				activityCreator.dispatch({batch: batch});
-			}
-		})
+					var activityCreator = ParseReact.Mutation.Create('Activity', {
+						ACL: postACL,
+						fromUser: Parse.User.current(),
+						toUser: user,
+						question: this.props.data.question,
+						type: 'comment',
+					});
+
+					activityCreator.dispatch({batch: batch});
+				}
+			})
+		}
 
 		var answerCreator;
 		var existingAnswer = this.data.answer.filter(function(d){return d.createdBy.objectId == Parse.User.current().id});
 
+		var postACL = new Parse.ACL(Parse.User.current());
+		if(comment.publicallyShared)
+			postACL.setPublicReadAccess(true);
+
 		if(existingAnswer.length > 0){
 			answerCreator = ParseReact.Mutation.Set(existingAnswer[0], {
+				ACL: postACL,
 				text: comment.text,
 				publicallyShared: comment.publicallyShared,
 			})
 		}
 		else {
-			var postACL = new Parse.ACL(Parse.User.current());
-			postACL.setPublicReadAccess(true);
-
 			answerCreator = ParseReact.Mutation.Create('Answer', {
 				ACL: postACL,
 				question: this.props.data.question,
@@ -261,7 +267,7 @@ var SinglePage = React.createClass({
 					<Text style={globalStyles.text.eachDetailSubheading}>To see other's hearts, you must share yours</Text>
 				</EachDetail>
 
-				<CommentList showFull={true} toRoute={this.props.toRoute} query={{answersByQuestionId: this.props.data.question.objectId}} hideQuestion={true} visibleUser={publicallyShared} visibleComment={publicallyShared} />
+				<CommentList showFull={true} toRoute={this.props.toRoute} query={{answersByQuestionId: this.props.data.question.objectId}} hideQuestion={true} visibleUser={publicallyShared} visibleComment={publicallyShared} emitter={this.props.emitter} />
 
 			 </ScrollView>
 		);

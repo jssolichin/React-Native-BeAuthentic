@@ -21,7 +21,9 @@ var CommentList = React.createClass({
 	observe: function (){
 
 		var query = new Parse.Query('Answer')
-			.include('questions');
+		.descending('updatedAt')
+		.include('question');
+		
 
 		if(this.props.query.answersByUserId){
 			var user = new Parse.User();

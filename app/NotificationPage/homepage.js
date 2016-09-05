@@ -79,11 +79,29 @@ var NotificationItem = React.createClass({
 			  },
 		    });
   	},
+	_goToRespondPage: function() {
+		console.log(this.props.data.question)
+		var RespondPage = require('../SinglePage/new.js');
+		this.props.toRoute({
+			name: 'Respond',
+			component: RespondPage,
+			passProps: {
+				emitter: this.props.emitter,
+			},
+			data: {
+				question: {objectId: this.props.data.question.id, text: this.props.data.question.get('text')}, 
+				toRoute: this.props.toRoute,
+			}
+		})	
+  	},
 	_goToProfilePage: function() {
 		var ProfilePage = require('../ProfilePage/homepage.js');
 	    this.props.toRoute({
 		      name: this.props.data.user.get('username'), 
 		      component: ProfilePage,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
 			  data: {
 				  userId: this.props.data.user.id,
 				  toRoute: this.props.toRoute,
@@ -113,7 +131,7 @@ var NotificationItem = React.createClass({
 					<Text style={[]}>
 						{this.state.text}
 					</Text>
-					<Text onPress={this._goToSinglePage} style={[globalStyles.text.romanBold]}>
+					<Text onPress={this._goToRespondPage} style={[globalStyles.text.romanBold]}>
 						{this.props.data.type != 'follow' ? this.props.data.question.get('text').substring(0, 39) + "..." : this.props.data.question.text}
 					</Text>
 					<Text style={[]}>
@@ -130,7 +148,8 @@ var NotificationItem = React.createClass({
 
 var NotificationPage = React.createClass({
 	getInitialState: function() {
-	  return {
+		return {
+			notificationsLimit: 10,
 	  };
 	},
 	componentDidMount: function(){
@@ -153,46 +172,51 @@ var NotificationPage = React.createClass({
 	
 	},
 	_getActivity: function (){
-		var that = this;
+		if(!this.state.loadingMore) {
+			var that = this;
 
-		var Activity = Parse.Object.extend("Activity");
-		var query = new Parse.Query(Activity)
-			.limit(10)
-			.include('question')
-			.include('fromUser')
-			.descending('updatedAt')
-			.equalTo('toUser', Parse.User.current())
-			.notEqualTo('fromUser', Parse.User.current());
+			var Activity = Parse.Object.extend("Activity");
+			var query = new Parse.Query(Activity)
+				.limit(this.state.notificationsLimit)
+				.include('question')
+				.include('fromUser')
+				.descending('createdAt')
+				.equalTo('toUser', Parse.User.current())
+				.notEqualTo('fromUser', Parse.User.current());
 
-		query.find({
-			success: (activities) => {
-				var notifications = activities.map((activity)=> {
-					
-					activity.set('readStatus', true).save(null, {
-						success: function (){
-							that.props.updateBadge(0);
-						},
-						error: function (obj,error) {
-							console.log(obj, error)	
+			this.setState({loadingMore: true })
+			query.find({
+				success: (activities) => {
+					this.setState({loadingMore: false })
+
+					console.log(activities)
+					var notifications = activities.map((activity)=> {
+						
+						activity.set('readStatus', true).save(null, {
+							success: function (){
+								that.props.updateBadge(0);
+							},
+							error: function (obj,error) {
+								console.log(obj, error)	
+							}
+						});
+
+						return {
+							type: activity.get('type'), 
+							user: activity.get('fromUser'), 
+							question: activity.get('question'), 
+							time: moment(activity.createdAt).fromNow(), 
 						}
-					});
+					})
 
-					return {
-						type: activity.get('type'), 
-						user: activity.get('fromUser'), 
-						question: activity.get('question'), 
-						time: moment(activity.createdAt).fromNow(), 
-					}
-				})
-
-				var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-				this.setState({dataSource: ds.cloneWithRows(notifications) });
-		  },
-		  error: function(error) {
-			  console.log(error); return null;
-		  }
-		});
-			
+					var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+					this.setState({dataSource: ds.cloneWithRows(notifications) });
+			  },
+			  error: function(error) {
+				  console.log(error); return null;
+			  }
+			});
+		}
 	},
 	_closeHint: function (){
 
@@ -207,6 +231,13 @@ var NotificationPage = React.createClass({
 			})
 
 		this.setState({'showHint': false});
+	},
+	_loadMore: function (){
+		if(!this.state.loadingMore && this.state.notificationsLimit <= 50) {
+			console.log('Call Loading More');
+			this.setState({notificationsLimit: this.state.notificationsLimit + 10});
+			this._getActivity();
+		}
 	},
 	render: function() {
 		
@@ -224,7 +255,14 @@ var NotificationPage = React.createClass({
 			  automaticallyAdjustContentInsets={false}
 			  dataSource={this.state.dataSource}
 			  enableEmptySections={true}
-			renderRow={(rowData) => <NotificationItem data={rowData} toRoute={this.props.toRoute}/>}
+			  onEndReached={this._loadMore}
+			  renderFooter={() => this.state.loadingMore ? 
+				<View style={[globalStyles.loadingSpinner]}>
+					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
+				</View>
+				: null
+			  }
+			renderRow={(rowData) => <NotificationItem data={rowData} emitter={this.props.emitter} toRoute={this.props.toRoute}/>}
 		/>
 		 :  
 			<View style={[globalStyles.loadingSpinner]}>

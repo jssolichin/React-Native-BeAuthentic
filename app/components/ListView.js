@@ -12,36 +12,6 @@ var ListItem = require('../components/ListItem.js');
 var SinglePage = require('../SinglePage/index.js');
 var EachDetail = require('../components/EachDetail.js');
 
-var listData = [
-	{
-		authorName: 'Jonathan',
-		question: "What are three verbs that describes your life? Why?",
-		tags: ["Ice Breaker", "Love", "Adventurous"],
-		topComment: {
-			name: "Jonathan",
-			comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-		}
-	},
-	{
-		authorName: 'Jonathan',
-		question: "What is your earliest memory?",
-		tags: ["Ice Breaker", "Love", "Adventurous"],
-		topComment: {
-			name: "Jonathan",
-			comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-		}
-	},
-	{
-		authorName: 'Jonathan',
-		question: "What are three verbs that describes your life? Why?",
-		tags: ["Ice Breaker", "Love", "Adventurous"],
-		topComment: {
-			name: "Jonathan",
-			comment: "Maker, Thinker, and Believer. I think that I am a maker because I pursue..."
-		}
-	},
-];
-
 var HomePage = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function(props, state) {
@@ -53,7 +23,7 @@ var HomePage = React.createClass({
 	getInitialState: function() {
 		var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
 		return {
-			dataSource: ds.cloneWithRows(listData),
+			dataSource: ds.cloneWithRows([]),
 		};
 	},
 	_goToSinglePage: function(rowData) {

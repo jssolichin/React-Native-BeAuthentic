@@ -43,6 +43,7 @@ var GetToKnow = React.createClass({
 			notifCount: 0,
 			presses: 0,
 			showOnboarding: false,
+			notificationRecentlyUpdated: false,
 		};
 	},
 	componentDidMount: function(){
@@ -57,32 +58,43 @@ var GetToKnow = React.createClass({
 
 	},
 	componentDidUpdate: function(){
-		if(this.data.currentUser && this.state.notificationBadge == undefined)
-			this.getNotificationReadStatus();
+
+			if(this.data.currentUser && this.state.notificationBadge == undefined)
+				this.getNotificationReadStatus();
+
 	},
 	getNotificationReadStatus: function (value){
 
-		console.log('getNotificationReadStatus')
-		if(value)
-			this.setState({notificationBadge: value.toString()});
-		else {
-			var Activity = Parse.Object.extend("Activity");
-			var query = new Parse.Query(Activity)
-				.limit(10)
-				.equalTo('toUser', this.data.currentUser)
-				.notEqualTo('readStatus', true);
+		if(!this.state.notificationRecentlyUpdated) {
 
-			query.count({
-				success: (value) => {
+			this.setState({notificationRecentlyUpdated: true})
 
-					console.log('notificationBadge', value)
+			console.log('getNotificationReadStatus')
+			if(value)
+				this.setState({notificationBadge: value.toString()});
+			else {
+				var Activity = Parse.Object.extend("Activity");
+				var query = new Parse.Query(Activity)
+					.limit(10)
+					.equalTo('toUser', this.data.currentUser)
+					.notEqualTo('readStatus', true);
 
-					this.setState({notificationBadge: value.toString()})
-				},
-				error: function(error){
-					console.log(error)
-				}
-			});
+				query.count({
+					success: (value) => {
+
+						console.log('notificationBadge', value)
+
+						this.setState({notificationBadge: value.toString()})
+					},
+					error: function(error){
+						console.log(error)
+					}
+				});
+			}
+
+			setTimeout(() => {
+				this.setState({notificationRecentlyUpdated: false});
+			}, 3000);
 		}
 
 	},

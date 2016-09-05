@@ -24,6 +24,7 @@ var Navigator = React.createClass({
 			component: Homepage,
 			passProps: {
 				updateBadge: this.props.updateBadge,
+				emitter: this.props.emitter,
 			}
 
 		};
