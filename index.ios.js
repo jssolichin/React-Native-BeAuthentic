@@ -22,6 +22,65 @@ Parse.initialize(
 var ParseReact = require('parse-react/react-native');
 var {EventEmitter} = require('fbemitter');
 
+var PushNotification = require('react-native-push-notification');
+
+PushNotification.configure({
+
+    // (optional) Called when Token is generated (iOS and Android)
+    onRegister: function(token) {
+		Parse._getInstallationId()
+		.then(function(id) {
+			  var Installation = Parse.Object.extend("_Installation");
+			  var query = new Parse.Query(Installation);
+			  query.equalTo("installationId", id);
+			  query.find()
+			  .then(function (installations){
+					  var installation;
+					  
+					  if (installations.length == 0) {
+						// No previous installation object, create new one.
+						installation = new Installation();
+					  } else {
+						// Found previous one, update.
+						installation = installations[0];
+					  }
+					  
+					  installation.set("channels", ['global']);
+					  installation.set("deviceToken", token.token);
+					  installation.set("deviceType", "ios");
+					  installation.set("installationId", id);
+
+					  var savedItem = installation.save();
+					  console.log(savedItem)
+					  return savedItem;
+				});
+		})
+    },
+
+    // (required) Called when a remote or local notification is opened or received
+    onNotification: function(notification) {
+        console.log( 'NOTIFICATION:', notification );
+    },
+
+    // IOS ONLY (optional): default: all - Permissions to register.
+    permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+    },
+
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: false,
+
+    /**
+      * (optional) default: true
+      * - Specified if permissions (ios) and token (android and ios) will requested or not,
+      * - if not, you must call PushNotificationsHandler.requestPermissions() later
+      */
+    requestPermissions: false,
+});
+
 var LoginPage = require('./app/LoginPage/index.js');
 var HomePage = require('./app/HomePage/index.js');
 var ExplorePage = require('./app/ExplorePage/index.js');

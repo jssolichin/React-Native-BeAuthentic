@@ -24,9 +24,12 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		B53143D71D58D11900734E84 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B53143D61D58D11800734E84 /* assets */; };
+		B571B3131D7E041000A178F9 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D3490F1D7DD0C7008D75A0 /* libCodePush.a */; };
+		B571B3141D7E042300A178F9 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D54D8BB4E96948B9866CC750 /* libz.tbd */; };
 		B599A7601D56C3D100302C4C /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B599A75F1D56C3B200302C4C /* libRNSpinkit.a */; };
 		B5B1A0B01D3C88F400E5027B /* BeAuthentic in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B1A0AF1D3C88F200E5027B /* BeAuthentic */; };
 		B5B1A0B21D3C93F200E5027B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FE62C51C0984160008ABBC /* libBVLinearGradient.a */; };
+		B5D348FA1D7D4315008D75A0 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D348F91D7D42FB008D75A0 /* libRCTPushNotification.a */; };
 		B5E2307D1D59BC35003EA64F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */; };
 		B5F5630E1B67649B00E12C10 /* libReactNativeIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F5630D1B67648300E12C10 /* libReactNativeIcons.a */; };
 		B5F563101B6764ED00E12C10 /* ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5F5630F1B6764ED00E12C10 /* ionicons.ttf */; };
@@ -119,6 +122,20 @@
 			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
 			remoteInfo = RNSpinkit;
 		};
+		B5D348F81D7D42FB008D75A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5D348F41D7D42FA008D75A0 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
+		B5D3490E1D7DD0C7008D75A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B409B9F75E6941318EDFC988 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
 		B5F5630C1B67648300E12C10 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B5F562FE1B67648300E12C10 /* ReactNativeIcons.xcodeproj */;
@@ -164,13 +181,17 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		B409B9F75E6941318EDFC988 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		B53143D61D58D11800734E84 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = iOS/assets; sourceTree = "<group>"; };
 		B599A74D1D56C3B200302C4C /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 		B5B1A0AF1D3C88F200E5027B /* BeAuthentic */ = {isa = PBXFileReference; lastKnownFileType = folder; path = BeAuthentic; sourceTree = "<group>"; };
+		B5D348F21D7D4235008D75A0 /* RCTPushNotificationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCTPushNotificationManager.m; path = "node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotificationManager.m"; sourceTree = "<group>"; };
+		B5D348F41D7D42FA008D75A0 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		B5F562FE1B67648300E12C10 /* ReactNativeIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeIcons.xcodeproj; path = "node_modules/react-native-icons/ios/ReactNativeIcons.xcodeproj"; sourceTree = "<group>"; };
 		B5F5630F1B6764ED00E12C10 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = ionicons.ttf; path = "node_modules/react-native-icons/ios/ReactNativeIcons/Libraries/FontAwesomeKit/ionicons.ttf"; sourceTree = "<group>"; };
 		B5FE62C01C0984160008ABBC /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		D54D8BB4E96948B9866CC750 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F35B97111C349535005B718D /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = node_modules; sourceTree = "<group>"; };
 		F35B971F1C349558005B718D /* Libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Libraries; path = "node_modules/react-native/Libraries"; sourceTree = "<group>"; };
 		F35B97211C34A779005B718D /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
@@ -189,6 +210,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B571B3141D7E042300A178F9 /* libz.tbd in Frameworks */,
+				B5D348FA1D7D4315008D75A0 /* libRCTPushNotification.a in Frameworks */,
 				B599A7601D56C3D100302C4C /* libRNSpinkit.a in Frameworks */,
 				B5B1A0B21D3C93F200E5027B /* libBVLinearGradient.a in Frameworks */,
 				B5B1A0B01D3C88F400E5027B /* BeAuthentic in Frameworks */,
@@ -204,6 +227,7 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				B571B3131D7E041000A178F9 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +330,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		486D8E2D1B584EB7ADBE9F50 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D54D8BB4E96948B9866CC750 /* libz.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +349,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				B5D348F41D7D42FA008D75A0 /* RCTPushNotification.xcodeproj */,
 				B599A74D1D56C3B200302C4C /* RNSpinkit.xcodeproj */,
 				B5FE62C01C0984160008ABBC /* BVLinearGradient.xcodeproj */,
 				B5F562FE1B67648300E12C10 /* ReactNativeIcons.xcodeproj */,
@@ -331,6 +364,7 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				F35B97281C35DBC9005B718D /* RCTCustom.m */,
+				B409B9F75E6941318EDFC988 /* CodePush.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -346,6 +380,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B5D348F21D7D4235008D75A0 /* RCTPushNotificationManager.m */,
 				B5E2307C1D59BC31003EA64F /* Default-568h@2x.png */,
 				B5B1A0AF1D3C88F200E5027B /* BeAuthentic */,
 				F35B97211C34A779005B718D /* RCTCameraRoll.xcodeproj */,
@@ -356,6 +391,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* BeAuthenticTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				486D8E2D1B584EB7ADBE9F50 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -374,6 +410,22 @@
 			isa = PBXGroup;
 			children = (
 				B599A75F1D56C3B200302C4C /* libRNSpinkit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B5D348F51D7D42FA008D75A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B5D348F91D7D42FB008D75A0 /* libRCTPushNotification.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B5D3490A1D7DD0C6008D75A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B5D3490F1D7DD0C7008D75A0 /* libCodePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -446,7 +498,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 610;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -455,6 +507,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = GDDF4Q62SU;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -473,6 +530,10 @@
 				{
 					ProductGroup = B5FE62C11C0984160008ABBC /* Products */;
 					ProjectRef = B5FE62C01C0984160008ABBC /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = B5D3490A1D7DD0C6008D75A0 /* Products */;
+					ProjectRef = B409B9F75E6941318EDFC988 /* CodePush.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -497,6 +558,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = B5D348F51D7D42FA008D75A0 /* Products */;
+					ProjectRef = B5D348F41D7D42FA008D75A0 /* RCTPushNotification.xcodeproj */;
 				},
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
@@ -613,6 +678,20 @@
 			remoteRef = B599A75E1D56C3B200302C4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B5D348F91D7D42FB008D75A0 /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = B5D348F81D7D42FB008D75A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B5D3490F1D7DD0C7008D75A0 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = B5D3490E1D7DD0C7008D75A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B5F5630D1B67648300E12C10 /* libReactNativeIcons.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -716,6 +795,11 @@
 				INFOPLIST_FILE = BeAuthenticTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/BeAuthenticTests\"",
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = BeAuthenticTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeAuthentic.app/BeAuthentic";
 			};
@@ -733,6 +817,11 @@
 				INFOPLIST_FILE = BeAuthenticTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/BeAuthenticTests\"",
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = BeAuthenticTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeAuthentic.app/BeAuthentic";
 			};
@@ -748,11 +837,16 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",
-					"$(SRCROOT)/../react-native/React",
+					"$(SRCROOT)/../react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				PRODUCT_NAME = BeAuthentic;
 				PROVISIONING_PROFILE = "";
@@ -769,11 +863,16 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../React/**",
-					"$(SRCROOT)/../react-native/React",
+					"$(SRCROOT)/../react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
 				PRODUCT_NAME = BeAuthentic;
 				PROVISIONING_PROFILE = "";
@@ -797,6 +896,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -818,6 +918,8 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -844,6 +946,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = eVfOCyXbEdxsSXRrysrbNRKVca9HNk6brFLoW;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -859,6 +962,8 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -868,6 +973,98 @@
 			};
 			name = Release;
 		};
+		B5D3491E1D7DDA02008D75A0 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODEPUSH_KEY = h3rgOqYAWsSRvS8yCNrboBkpquRrNk6brFLoW;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/node_modules/react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Staging;
+		};
+		B5D3491F1D7DDA02008D75A0 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../React/**",
+					"$(SRCROOT)/../react-native/React/**",
+					"$(SRCROOT)/node_modules/react-native/Libraries/PushNotificationIOS/**",
+					"$(SRCROOT)/node_modules/react-native-code-push/ios/CodePush/**",
+				);
+				INFOPLIST_FILE = iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sevenbillionyou.BeAuthentic;
+				PRODUCT_NAME = BeAuthentic;
+				PROVISIONING_PROFILE = "";
+			};
+			name = Staging;
+		};
+		B5D349201D7DDA02008D75A0 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = BeAuthenticTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/BeAuthenticTests\"",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = BeAuthenticTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeAuthentic.app/BeAuthentic";
+			};
+			name = Staging;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -876,6 +1073,7 @@
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
 				00E356F71AD99517003FC87E /* Release */,
+				B5D349201D7DDA02008D75A0 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -885,6 +1083,7 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+				B5D3491F1D7DDA02008D75A0 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -894,6 +1093,7 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+				B5D3491E1D7DDA02008D75A0 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

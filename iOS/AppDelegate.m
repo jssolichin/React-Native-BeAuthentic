@@ -7,7 +7,10 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+#import "RCTPushNotificationManager.h"
+
 #import "AppDelegate.h"
+#import "CodePush.h"
 
 #import "RCTRootView.h"
 
@@ -31,7 +34,12 @@
    * on the same Wi-Fi network.
    */
 
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
+   
+#ifdef DEBUG
+    jsCodeLocation = [NSURL URLWithString:@"http://192.168.1.122:8081/index.ios.bundle"];
+#else
+    jsCodeLocation = [CodePush bundleURL];
+#endif
 
   /**
    * OPTION 2
@@ -43,7 +51,9 @@
    * see http://facebook.github.io/react-native/docs/runningondevice.html
    */
 
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+   //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  
+  
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"GetToKnow"
@@ -56,6 +66,35 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+  
+
+}
+
+// Required to register for notifications
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+}
+// Required for the register event.
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  [RCTPushNotificationManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+// Required for the notification event.
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
+{
+  [RCTPushNotificationManager didReceiveRemoteNotification:notification];
+}
+// Required for the localNotification event.
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+  [RCTPushNotificationManager didReceiveLocalNotification:notification];
+}
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+  NSLog(@"%@", error);
 }
 
 @end
+
+

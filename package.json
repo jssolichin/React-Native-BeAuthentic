@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh",
-	 "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./iOS/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
+    "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./iOS/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
   },
   "dependencies": {
     "fbemitter": "^2.0.2",
@@ -15,9 +15,11 @@
     "react": "^0.14.5",
     "react-native": "^0.24.0",
     "react-native-carousel": "^0.4.4",
+    "react-native-code-push": "^1.14.6-beta",
     "react-native-icons": "^0.7.0",
     "react-native-imagepicker": "^1.0.0",
     "react-native-linear-gradient": "^1.5.12",
+    "react-native-push-notification": "^1.0.7",
     "react-native-spinkit": "^0.1.2",
     "react-native-swiper": "^1.4.3",
     "react-native-timeago": "0.1.0"

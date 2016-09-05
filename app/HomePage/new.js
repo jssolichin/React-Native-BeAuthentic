@@ -13,12 +13,14 @@ var { Icon, } = require('react-native-icons');
 var Parse = require('parse/react-native');
 var ParseReact = require('parse-react/react-native');
 var LinearGradient = require('react-native-linear-gradient');
+var PushNotification = require('react-native-push-notification');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 
 var globalStyles = require("../globalStyles.js");
 var EachTag = require('../components/EachTag.js');
 var Button = require('../components/Button.js');
+var Banner = require('../components/Banner.js');
 var LargeItem = require('../components/LargeItem.js');
 
 var NewHome = React.createClass({
@@ -40,6 +42,46 @@ var NewHome = React.createClass({
 		return {
 		}
 	},
+	componentDidMount: function(){
+		this._getShowPushRequest();	
+	},
+	_getShowPushRequest: function (){
+		var User = Parse.Object.extend("User");
+		var query = new Parse.Query(User)
+		.equalTo('objectId', Parse.User.current().id);
+
+		query.first({
+			success: (user)	=> {
+				var showPushRequest = user.get('showPushRequest');
+				if(showPushRequest == undefined)
+					showPushRequest = true;
+
+				this.setState({showPushRequest: showPushRequest});
+			},
+			error: (error) => {
+				console.log(error)	
+			}
+		})
+	
+	},
+	_closeHint: function (){
+
+		var object = new Parse.User
+		object.objectId = Parse.User.current().id;
+
+		var mutator = ParseReact.Mutation.Set(object, {showPushRequest: false});
+
+		mutator.dispatch()
+			.then((error,data) => {
+				console.log(error, data)
+			})
+
+		this.setState({'showPushRequest': false});
+	},
+	_requestPermissions: function (){
+		PushNotification.requestPermissions();
+		this._closeHint();
+	},
 	_addNewQuestion: function (){
 		this.props.changeTab('heart');
 	},
@@ -54,6 +96,18 @@ var NewHome = React.createClass({
 				contentInset={{bottom: 50}}
 				style={styles.container}
 				>
+
+		  {this.state.showPushRequest ? 
+			  <Banner 
+				  title='Learn About Yourself Everyday' 
+				  body='Sometimes life gets too busy and we forget the most important things. We can remind you to answer the question of the day to help you continually learn about yourself. ' 
+				  onPress={this._closeHint}> 
+					<TouchableOpacity onPress={this._requestPermissions}>
+						<Button text="Turn On Notifications" style={{marginTop: 20}} />
+					</TouchableOpacity>
+			  </Banner>
+				  : null
+		  }
 
 				<LargeItem data={lastQuotdData} toRoute={this.props.toRoute} emitter={this.props.emitter}/>
 
