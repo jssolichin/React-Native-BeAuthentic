@@ -35,6 +35,9 @@ var NotificationItem = React.createClass({
 				text = ' asked ';
 				iconType = 'ios-help-outline';
 				break;
+			case 'quotd':
+				iconType = 'ios-help-outline';
+				break;
 			case 'liked':
 				text = ' liked ';
 				iconType = 'ios-heart-outline';
@@ -124,19 +127,31 @@ var NotificationItem = React.createClass({
 						/>
 					</View>
 				</TouchableHighlight>
-				<Text style={[globalStyles.text.roman, styles.notificationText]}>
-					<Text onPress={this._goToProfilePage} style={[globalStyles.text.romanBold]}>
-						{this.props.data.user.get('username')} 
-					</Text>
-					<Text style={[]}>
-						{this.state.text}
-					</Text>
-					<Text onPress={this._goToRespondPage} style={[globalStyles.text.romanBold]}>
-						{this.props.data.type != 'follow' ? this.props.data.question.get('text').substring(0, 39) + "..." : this.props.data.question.text}
-					</Text>
-					<Text style={[]}>
-						&nbsp;
-					</Text>
+					<Text style={[globalStyles.text.roman, styles.notificationText]}>
+						{this.props.data.type != 'quotd' ? 
+							<Text>
+								<Text onPress={this._goToProfilePage} style={[globalStyles.text.romanBold]}>
+									{this.props.data.user.get('username')} 
+								</Text>
+								<Text style={[]}>
+									{this.state.text}
+								</Text>
+								<Text onPress={this._goToRespondPage} style={[globalStyles.text.romanBold]}>
+									{this.props.data.type != 'follow' ? this.props.data.question.get('text').substring(0, 39) + "..." : this.props.data.question.text}
+								</Text>
+								<Text style={[]}>
+									&nbsp;
+								</Text>
+							</Text>
+						: 
+							<Text>
+								A new question of the day: 
+								<Text onPress={this._goToSinglePage} style={[globalStyles.text.romanBold]}>
+									{this.props.data.question.get('text')}
+								</Text>
+								&nbsp;
+							</Text>
+						}
 					<Text style={[globalStyles.text.color.gray]}>
 						{this.props.data.time}
 					</Text>
@@ -177,21 +192,26 @@ var NotificationPage = React.createClass({
 
 			var Activity = Parse.Object.extend("Activity");
 			var query = new Parse.Query(Activity)
-				.limit(this.state.notificationsLimit)
-				.include('question')
-				.include('fromUser')
-				.descending('createdAt')
 				.equalTo('toUser', Parse.User.current())
 				.notEqualTo('fromUser', Parse.User.current());
+				
+			var query2 = new Parse.Query(Activity)
+				.equalTo('type', 'quotd');
+
+			var mainQuery = Parse.Query.or(query, query2)
+				.include('question')
+				.include('fromUser')
+				.limit(this.state.notificationsLimit)
+				.descending('createdAt');
 
 			this.setState({loadingMore: true })
-			query.find({
+			mainQuery.find({
 				success: (activities) => {
 					this.setState({loadingMore: false })
 
-					console.log(activities)
 					var notifications = activities.map((activity)=> {
 						
+						if(activity.get('type') != 'quotd')
 						activity.set('readStatus', true).save(null, {
 							success: function (){
 								that.props.updateBadge(0);
@@ -256,6 +276,7 @@ var NotificationPage = React.createClass({
 			  dataSource={this.state.dataSource}
 			  enableEmptySections={true}
 			  onEndReached={this._loadMore}
+			  onEndReachedThreshold={100}
 			  renderFooter={() => this.state.loadingMore ? 
 				<View style={[globalStyles.loadingSpinner]}>
 					<Spinner isVisible={true} size={50} type='Arc' color='#000'/>
