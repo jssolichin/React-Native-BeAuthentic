@@ -14,53 +14,9 @@ var ParseReact = require('parse-react/react-native');
 var Spinner = require('react-native-spinkit');
 
 var EachDetail = require('./EachDetail.js');
+var CollectionListItem = require('../components/CollectionListItem.js');
 var globalStyles = require("../globalStyles.js");
 
-var CollectionListItem = React.createClass({
-	_collectionSettings: function () {
-		var CollectionSettingsButton = require('./CollectionSettingsButton.js');
-		return 	<CollectionSettingsButton emitter={this.props.emitter} data={this.props.data} replaceRoute={this.props.replaceRoute} toRoute={this.props.toRoute} toBack={this.props.toBack}/>;
-	},
-	_goToCollectionView: function (){
-			
-		if(this.props.toRoute){
-			var GridView = require("./GridView.js");
-
-			var rightCorner;
-			if(this.props.data.createdBy.objectId == Parse.User.current().id)
-				rightCorner = this._collectionSettings;
-
-			this.props.toRoute({
-				  name: this.props.data.name,
-				  component: GridView,
-				  rightCorner: rightCorner,
-				  passProps: {
-				 	emitter: this.props.emitter 
-				  },
-				  data: {
-					  collection: this.props.data, 
-					  toRoute: this.props.toRoute,
-					  description: this.props.data.description,
-					  source: this.props.data.source,
-					  createdBy: this.props.data.createdBy,
-				  }
-				});
-		}
-
-	},
-	render: function (){
-		return (
-		  <TouchableOpacity onPress={this._goToCollectionView}>
-			<EachDetail subItem={true}>
-				<View style={[styles.row]}>
-					<Text> {this.props.data.name}</Text>
-					<Text style={styles.buttonText}>›</Text>
-				</View>
-			</EachDetail>
-		</TouchableOpacity>
-		)	
-	}
-})
 var CollectionList = React.createClass({
 	mixins: [ParseReact.Mixin],
 	observe: function (){
@@ -91,6 +47,20 @@ var CollectionList = React.createClass({
 			this.refreshQueries('collections');
 		}
 	},
+	_goToCollectionPage: function() {
+		var CollectionPage = require('./CollectionPage.js');
+
+		this.props.toRoute({
+			  name: 'All Collections', 
+			  component: CollectionPage,
+			  passProps: {
+				  emitter: this.props.emitter,
+			  },
+			  data: {
+				  toRoute: this.props.toRoute,
+			  },
+			});
+  	},
 	render: function() {
 
 		return (
@@ -101,7 +71,12 @@ var CollectionList = React.createClass({
 
 				{this.data.collections ? 
 					this.data.collections.length > 0 ? 
-						this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} emitter={this.props.emitter}/>) 
+						<View>
+							{this.data.collections.map((collection, i) => <CollectionListItem key={i} data={collection} toRoute={this.props.toRoute} toBack={this.props.toBack} replaceRoute={this.props.replaceRoute} emitter={this.props.emitter}/>)}
+							<TouchableOpacity onPress={this._goToCollectionPage} style={{flex: 1, alignItems: 'flex-end', marginHorizontal: 20, marginTop: 5}}>
+								<Text style={globalStyles.text.color.gray}>Show More</Text>
+							</TouchableOpacity>
+						</View>
 						: 
 						<View style={{padding: 20, paddingBottom: 0}}>
 							<Text style={globalStyles.text.color.gray}>Looks like there's nothing here!</Text>
