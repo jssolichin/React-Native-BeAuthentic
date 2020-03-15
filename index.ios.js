@@ -14,11 +14,14 @@ var {
 } = React;
 var { TabBarIOS, } = require('react-native-icons');
 var TabBarItemIOS = TabBarIOS.Item;
+var codePush = require('react-native-code-push')
 var Parse = require('parse/react-native');
 Parse.initialize(
 	'N5En87e1m9jZbT2dX9BJQm0yGnoQ8LGtYPP9KDwd',
-	'TbgrWR8WAIF9vk9Cbs01Y81L43UZqt9Fb3Ykm53d'
+	'TbgrWR8WAIF9vk9Cbs01Y81L43UZqt9Fb3Ykm53d',
 );
+Parse.serverURL = 'https://parseapi.back4app.com'
+
 var ParseReact = require('parse-react/react-native');
 var {EventEmitter} = require('fbemitter');
 
@@ -106,6 +109,9 @@ var GetToKnow = React.createClass({
 		};
 	},
 	componentDidMount: function(){
+
+		codePush.sync();
+		
 		const value = AsyncStorage.getItem('@GlobalData:showOnboarding')
 		.then((value) => {
 			if (value == undefined || value == null || value == 'true')

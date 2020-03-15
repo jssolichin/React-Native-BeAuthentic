@@ -15,6 +15,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 var { Icon, } = require('react-native-icons');
 var Spinner = require('react-native-spinkit');
+var PushNotification = require('react-native-push-notification');
 
 var EachDetail = require('../components/EachDetail.js');
 var TagInput = require('../components/TagInput.js');
@@ -215,6 +216,7 @@ var NotificationPage = React.createClass({
 						activity.set('readStatus', true).save(null, {
 							success: function (){
 								that.props.updateBadge(0);
+								PushNotification.setApplicationIconBadgeNumber(0);
 							},
 							error: function (obj,error) {
 								console.log(obj, error)	
